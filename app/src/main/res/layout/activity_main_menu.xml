@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <!--<RelativeLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:background="@color/tumblr_grey">-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/txtNickname"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_toLeftOf="@+id/btnLogout"-->
+    <!--android:text="nickname"-->
+    <!--android:textSize="@dimen/item_font_size_large" />-->
+
+    <!--<ImageButton-->
+    <!--android:id="@+id/btnLogout"-->
+    <!--android:layout_width="20dp"-->
+    <!--android:layout_height="20dp"-->
+    <!--android:layout_alignParentRight="true"-->
+    <!--android:layout_centerHorizontal="true"-->
+    <!--android:layout_marginLeft="5dp"-->
+    <!--android:layout_marginRight="5dp"-->
+    <!--android:adjustViewBounds="true"-->
+    <!--android:contentDescription="Logout"-->
+    <!--android:longClickable="true"-->
+    <!--android:padding="0dp"-->
+    <!--android:scaleType="fitCenter"-->
+    <!--android:src="@drawable/logout" />-->
+
+    <!--</RelativeLayout>-->
+
+    <include layout="@layout/toolbar" />
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btnViewAssemblymanList"
+                android:text="국회\n의원" />
+
+            <Button
+                android:id="@+id/btnViewBillList"
+                android:text="의안" />
+
+            <Button
+                android:id="@+id/btnViewHallOfFame"
+                android:text="명예\n전당" />
+
+            <Button
+                android:id="@+id/btnViewPublicOpinion"
+                android:text="국민\n참여" />
+
+            <Button
+                android:id="@+id/btnViewMypage"
+                android:text="마이\n페이지" />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</LinearLayout>

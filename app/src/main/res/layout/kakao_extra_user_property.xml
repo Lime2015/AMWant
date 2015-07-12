@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:text="@string/address" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/address"
+            android:hint="ex)GuaCheonSi GyeongGiDo"
+            android:layout_toLeftOf="@+id/btnViewAddressDlg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+        <Button
+            android:id="@+id/btnViewAddressDlg"
+            android:text="+"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:text="@string/birthday" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/birthday"
+            android:hint="ex)19741201"
+            android:layout_toLeftOf="@+id/btnViewBirthDayDlg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+        <Button
+            android:id="@+id/btnViewBirthDayDlg"
+            android:text="+"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:text="@string/gender" />
+
+    <Spinner
+        android:id="@+id/gender"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/com_kakao_profile_property_margin"
+        android:layout_marginRight="@dimen/com_kakao_profile_property_margin"
+        android:layout_marginTop="@dimen/com_kakao_profile_property_margin"
+        android:entries="@array/gender_types"
+        android:paddingLeft="@dimen/com_kakao_padding"
+        android:textSize="@dimen/com_kakao_profile_property_text"
+        android:textStyle="bold" />
+
+
+</LinearLayout>
