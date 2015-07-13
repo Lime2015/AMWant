@@ -29,7 +29,9 @@ import java.util.HashMap;
 public class WASignupActivity extends Activity {
 
     private final String TAG = "WASignupActivity";
-    private final String SERVER_URL = "http://52.69.102.82:8080";
+
+//    private final String SERVER_URL = "http://52.69.102.82";
+    private final String SERVER_URL = "http://192.168.0.3:9080";
     private final String SERVER_SAVE_MEMBER = "/WatchAssemblyWebServer/saveMember.do";
 
     // property keyQu
@@ -66,7 +68,7 @@ public class WASignupActivity extends Activity {
      * 서버에 없는 데이터가 없는 신규 회원의 경우 추가 정보 받기
      */
     private void onClickSignup(final HashMap<String, String> properties) {
-        Log.d(TAG, "request saveMember.do extra signup info...");
+        Log.d(TAG, "saveMember.do start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
         // save extra info
         final String strAddress = properties.get(ADDRESS_KEY);

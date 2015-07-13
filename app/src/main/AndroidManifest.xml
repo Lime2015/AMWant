@@ -26,19 +26,47 @@
             android:windowSoftInputMode="adjustResize" />
 
         <activity
-            android:name=".activity.AssemblymanListActivity"
+            android:name=".activity.AssemblymenListActivity"
             android:launchMode="singleTop"
-            android:theme="@style/AppTheme"
+            android:theme="@style/AssTheme"
             android:windowSoftInputMode="adjustResize" />
 
         <activity
-            android:theme="@style/AppTheme"
+            android:name=".activity.AssemblymanActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/AssTheme"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".activity.BillListActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/BillTheme"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".activity.HallOfFameActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/HallTheme"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".activity.PublicOpinionsActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/PublicTheme"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".activity.MypageActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/MypageTheme"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
             android:name=".activity.SampleSignupActivity"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize" />
 
         <activity
-            android:theme="@style/AppTheme"
             android:name=".activity.WASignupActivity"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize" />
@@ -46,6 +74,7 @@
         <meta-data
             android:name="com.kakao.sdk.AppKey"
             android:value="@string/kakao_app_key" />
+
     </application>
 
 </manifest>

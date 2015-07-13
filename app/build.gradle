@@ -38,4 +38,5 @@ dependencies {
     compile 'com.turbomanage.basic-http-client:http-client-android:0.89'
 
     compile 'com.jpardogo.materialtabstrip:library:1.1.0'
+    compile 'com.ikimuhendis:ldrawer:0.1'
 }

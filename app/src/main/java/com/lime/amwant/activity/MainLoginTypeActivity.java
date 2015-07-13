@@ -19,6 +19,7 @@ import com.kakao.exception.KakaoException;
 import com.kakao.widget.LoginButton;
 import com.lime.amwant.R;
 import com.lime.amwant.db.WatchAssemblyDatabase;
+import com.lime.amwant.frame.MyLoginButton;
 import com.lime.amwant.vo.MemberInfo;
 import com.lime.amwant.vo.ServerResult;
 import com.loopj.android.http.AsyncHttpClient;
@@ -37,8 +38,8 @@ public class MainLoginTypeActivity extends ActionBarActivity {
     private final SessionCallback mySessionCallback = new MySessionStatusCallback();
     private Session session;
 
-        private final String SERVER_URL = "http://52.69.102.82";
-//    private final String SERVER_URL = "http://192.168.50.184:9080";
+//        private final String SERVER_URL = "http://52.69.102.82";
+    private final String SERVER_URL = "http://192.168.0.3:9080";
     private final String SERVER_CHECK_MEMBER = "/WatchAssemblyWebServer/checkMember.do";
     private final int WA_SIGNUP_CODE = 1100;
 
@@ -52,6 +53,9 @@ public class MainLoginTypeActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_login_type);
 
+        initializeDatabase();
+        kakaoMemberInfo = null;
+
         btnDemo = (Button) findViewById(R.id.demo_btn);
         btnDemo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,15 +67,16 @@ public class MainLoginTypeActivity extends ActionBarActivity {
         // SimpleLoginActivity
         Session.initialize(this);
         loginButton = (LoginButton) findViewById(R.id.com_kakao_login);
+//        loginButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                finish();
+//            }
+//        });
 
         session = Session.getCurrentSession();
         session.addCallback(mySessionCallback);
 
-        kakaoMemberInfo = null;
-        userProfile = UserProfile.loadFromCache();
-
-        initializeDatabase();
-//        Log.d(TAG, ":onCreate OK!!");
     }
 
     @Override
@@ -99,6 +104,8 @@ public class MainLoginTypeActivity extends ActionBarActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
+        Log.d(TAG, "onActivityResult start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+
         if (Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
             checkLoginInfo();
             return;
@@ -108,7 +115,9 @@ public class MainLoginTypeActivity extends ActionBarActivity {
     }
 
     private void checkLoginInfo() {
-        Log.d(TAG, "checkLoginInfo start >>");
+        Log.d(TAG, "checkLoginInfo start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        userProfile = UserProfile.loadFromCache();
+
         if (kakaoMemberInfo == null && userProfile != null) {
             long id = userProfile.getId();
             String nickname = userProfile.getNickname();
@@ -126,6 +135,8 @@ public class MainLoginTypeActivity extends ActionBarActivity {
     }
 
     private void checkMemberInServer() {
+        Log.d(TAG, "checkMemberInServer start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
         Gson gson = new GsonBuilder().create();
@@ -169,16 +180,18 @@ public class MainLoginTypeActivity extends ActionBarActivity {
     }
 
     private void redirectWASignupActivity() {
+        Log.d(TAG, "WASignupActivity start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         Intent intent = new Intent(this, WASignupActivity.class);
         intent.putExtra("kakaoMemberInfo", kakaoMemberInfo);
         startActivityForResult(intent, WA_SIGNUP_CODE);
-        finish();
+//        finish();
     }
 
     private void showMainMenuActivity() {
 //        Toast.makeText(getApplicationContext(), "Show MyPage !!", Toast.LENGTH_LONG).show();
 
         // MainMenuActivity
+        Log.d(TAG, "MainMenuActivity start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         Intent intent = new Intent(this, MainMenuActivity.class);
         intent.putExtra("memberInfo", kakaoMemberInfo);
         startActivity(intent);
@@ -230,15 +243,6 @@ public class MainLoginTypeActivity extends ActionBarActivity {
         final Intent intent = new Intent(MainLoginTypeActivity.this, SampleSignupActivity.class);
         startActivity(intent);
         finish();
-    }
-
-    protected void setBackground(Drawable drawable) {
-        final View root = findViewById(android.R.id.content);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            root.setBackground(drawable);
-        } else {
-            root.setBackgroundDrawable(drawable);
-        }
     }
 
     private void initializeDatabase() {

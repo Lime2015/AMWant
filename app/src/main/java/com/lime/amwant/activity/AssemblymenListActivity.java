@@ -4,8 +4,11 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.SearchView;
@@ -24,11 +27,11 @@ import com.lime.amwant.vo.MemberInfo;
 /**
  * Created by SeongSan on 2015-07-13.
  */
-public class AssemblymanListActivity extends ActionBarActivity {
+public class AssemblymenListActivity extends ActionBarActivity {
 
-    private final String TAG = "AssemblymanListActivity";
+    private final String TAG = "AssemblymenListActivity";
 
-    private String[] navItems = {"±¹È¸ÀÇ¿ø", "ÀÇ¾È", "¸í¿¹ÀÇÀü´ç", "±¹¹ÎÂü¿©", "¸¶ÀÌÆäÀÌÁö"};
+    private String[] navItems = {"êµ­íšŒì˜ì›", "ì˜ì•ˆ", "ëª…ì˜ˆì „ë‹¹", "êµ­ë¯¼ì°¸ì—¬", "ë§ˆì´í˜ì´ì§€"};
 
     private ListView lvNavList;
 
@@ -41,20 +44,25 @@ public class AssemblymanListActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_assemblyman_list);
+        setContentView(R.layout.activity_category_list);
 
         Intent intent = getIntent();
         memberInfo = (MemberInfo) intent.getSerializableExtra("memberInfo");
 
         if (memberInfo.getMemberId().equals("")) {
-            navItems = new String[]{"±¹È¸ÀÇ¿ø", "ÀÇ¾È", "¸í¿¹ÀÇÀü´ç", "±¹¹ÎÂü¿©"};
+            navItems = new String[]{"êµ­íšŒì˜ì›", "ì˜ì•ˆ", "ëª…ì˜ˆì „ë‹¹", "êµ­ë¯¼ì°¸ì—¬"};
         }
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("±¹È¸ÀÇ¿ø");
+        ActionBar bar = getSupportActionBar();
+        bar.setTitle("êµ­íšŒì˜ì›");
+        bar.setDisplayHomeAsUpEnabled(true);
+        bar.setHomeButtonEnabled(true);
+        bar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(android.R.color.holo_blue_dark)));
 
         lvNavList = (ListView) findViewById(R.id.drawer);
+        lvNavList.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_light));
 
         lvNavList.setAdapter(
                 new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, navItems));
@@ -63,7 +71,6 @@ public class AssemblymanListActivity extends ActionBarActivity {
         dlDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         dtToggle = new ActionBarDrawerToggle(this, dlDrawer, 0, 0);
         dlDrawer.setDrawerListener(dtToggle);
-
 
     }
 
@@ -76,23 +83,22 @@ public class AssemblymanListActivity extends ActionBarActivity {
         MenuItem searchItem = menu.findItem(R.id.action_search);
 //        MenuItem logoutItem = menu.findItem(R.id.action_logout);
 
-        SearchManager searchManager = (SearchManager) AssemblymanListActivity.this.getSystemService(Context.SEARCH_SERVICE);
+        SearchManager searchManager = (SearchManager) AssemblymenListActivity.this.getSystemService(Context.SEARCH_SERVICE);
 
         SearchView searchView = null;
         if (searchItem != null) {
             searchView = (SearchView) searchItem.getActionView();
         }
         if (searchView != null) {
-            searchView.setSearchableInfo(searchManager.getSearchableInfo(AssemblymanListActivity.this.getComponentName()));
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(AssemblymenListActivity.this.getComponentName()));
         }
         return super.onCreateOptionsMenu(menu);
 
     }
 
     @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        // Sync the toggle state after onRestoreInstanceState has occurred.
         dtToggle.syncState();
     }
 
@@ -101,6 +107,7 @@ public class AssemblymanListActivity extends ActionBarActivity {
         super.onConfigurationChanged(newConfig);
         dtToggle.onConfigurationChanged(newConfig);
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -115,7 +122,34 @@ public class AssemblymanListActivity extends ActionBarActivity {
 
         @Override
         public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
-            dlDrawer.closeDrawer(lvNavList); // Ãß°¡µÊ
+            dlDrawer.closeDrawer(lvNavList);
+            if (position != 0) {
+                viewSubmain(position);
+            }
         }
+    }
+
+    private void viewSubmain(int index) {
+        Intent intent = null;
+        switch (index){
+            case 0:
+                intent = new Intent(this, AssemblymenListActivity.class);
+                break;
+            case 1:
+                intent = new Intent(this, BillListActivity.class);
+                break;
+            case 2:
+                intent = new Intent(this, HallOfFameActivity.class);
+                break;
+            case 3:
+                intent = new Intent(this, PublicOpinionsActivity.class);
+                break;
+            case 4:
+                intent = new Intent(this, MypageActivity.class);
+                break;
+        }
+        intent.putExtra("memberInfo", memberInfo);
+        startActivity(intent);
+        finish();
     }
 }

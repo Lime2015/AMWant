@@ -1,7 +1,9 @@
 package com.lime.amwant.activity;
 
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -44,13 +46,15 @@ public class MainMenuActivity extends ActionBarActivity {
         Intent intent = getIntent();
         memberInfo = (MemberInfo) intent.getSerializableExtra("memberInfo");
 
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        ActionBar bar = getSupportActionBar();
+        bar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.com_kakao_brown)));
         if (memberInfo.getMemberId().equals("")) {
-            getSupportActionBar().setTitle("둘러보기");
+            bar.setTitle("둘러보기");
         } else {
-            getSupportActionBar().setTitle(memberInfo.getMemberNickname());
+            bar.setTitle(memberInfo.getMemberNickname());
         }
 
         btnViewMypage = (Button) findViewById(R.id.btnViewMypage);
@@ -123,17 +127,19 @@ public class MainMenuActivity extends ActionBarActivity {
         Intent intent = null;
         switch (index){
             case 0:
-                intent = new Intent(this, AssemblymanListActivity.class);
+                intent = new Intent(this, AssemblymenListActivity.class);
                 break;
             case 1:
+                intent = new Intent(this, BillListActivity.class);
                 break;
             case 2:
+                intent = new Intent(this, HallOfFameActivity.class);
                 break;
             case 3:
+                intent = new Intent(this, PublicOpinionsActivity.class);
                 break;
             case 4:
-                break;
-            default:
+                intent = new Intent(this, MypageActivity.class);
                 break;
         }
         intent.putExtra("memberInfo", memberInfo);
