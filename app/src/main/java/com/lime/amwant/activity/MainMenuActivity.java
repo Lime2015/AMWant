@@ -120,10 +120,24 @@ public class MainMenuActivity extends ActionBarActivity {
     }
 
     private void viewSubmain(int index) {
-//        Intent intent = new Intent(this, SubmainActivity.class);
-//        intent.putExtra("memberInfo", memberInfo);
-//        intent.putExtra("index", index);
-//        startActivity(intent);
+        Intent intent = null;
+        switch (index){
+            case 0:
+                intent = new Intent(this, AssemblymanListActivity.class);
+                break;
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+            default:
+                break;
+        }
+        intent.putExtra("memberInfo", memberInfo);
+        startActivity(intent);
     }
 
     @Override

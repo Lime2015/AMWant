@@ -10,10 +10,4 @@
         android:orderInCategory="100"
         app:showAsAction="always" />
 
-    <item
-        android:id="@+id/action_settings"
-        android:icon="@drawable/setting"
-        android:title="@string/action_settings"
-        android:orderInCategory="100"
-        app:showAsAction="always" />
 </menu>

@@ -4,7 +4,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
-    <com.lime.watchassembly.layout.ExtraUserPropertyFrame
+    <com.lime.amwant.frame.ExtraUserPropertyFrame
         android:id="@+id/wa_extra_user_property"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

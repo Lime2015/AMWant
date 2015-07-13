@@ -7,9 +7,8 @@ import android.os.Build;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -19,6 +18,7 @@ import com.kakao.UserProfile;
 import com.kakao.exception.KakaoException;
 import com.kakao.widget.LoginButton;
 import com.lime.amwant.R;
+import com.lime.amwant.db.WatchAssemblyDatabase;
 import com.lime.amwant.vo.MemberInfo;
 import com.lime.amwant.vo.ServerResult;
 import com.loopj.android.http.AsyncHttpClient;
@@ -33,21 +33,32 @@ public class MainLoginTypeActivity extends ActionBarActivity {
     private static String TAG = "MainLoginTypeActivity";
 
     private LoginButton loginButton;
+    private Button btnDemo;
     private final SessionCallback mySessionCallback = new MySessionStatusCallback();
     private Session session;
 
-    private final String SERVER_URL = "http://52.69.102.82";
-    //    private final String SERVER_URL = "http://192.168.0.9:9080";
+        private final String SERVER_URL = "http://52.69.102.82";
+//    private final String SERVER_URL = "http://192.168.50.184:9080";
     private final String SERVER_CHECK_MEMBER = "/WatchAssemblyWebServer/checkMember.do";
     private final int WA_SIGNUP_CODE = 1100;
 
     private MemberInfo kakaoMemberInfo;
     private UserProfile userProfile;
 
+    private WatchAssemblyDatabase database;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_login_type);
+
+        btnDemo = (Button) findViewById(R.id.demo_btn);
+        btnDemo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDemo();
+            }
+        });
 
         // SimpleLoginActivity
         Session.initialize(this);
@@ -56,7 +67,11 @@ public class MainLoginTypeActivity extends ActionBarActivity {
         session = Session.getCurrentSession();
         session.addCallback(mySessionCallback);
 
-        Log.d(TAG, ":onCreate OK!!");
+        kakaoMemberInfo = null;
+        userProfile = UserProfile.loadFromCache();
+
+        initializeDatabase();
+//        Log.d(TAG, ":onCreate OK!!");
     }
 
     @Override
@@ -69,7 +84,7 @@ public class MainLoginTypeActivity extends ActionBarActivity {
     protected void onResume() {
         super.onResume();
 
-        if (session.isClosed()){
+        if (session.isClosed()) {
             loginButton.setVisibility(View.VISIBLE);
 //            loginButton.setVisibility(View.GONE);
 //            loginButton.performClick();
@@ -77,6 +92,8 @@ public class MainLoginTypeActivity extends ActionBarActivity {
             loginButton.setVisibility(View.GONE);
             session.implicitOpen();
         }
+
+        checkLoginInfo();
     }
 
     @Override
@@ -106,28 +123,6 @@ public class MainLoginTypeActivity extends ActionBarActivity {
                 checkMemberInServer();
             }
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     private void checkMemberInServer() {
@@ -164,24 +159,6 @@ public class MainLoginTypeActivity extends ActionBarActivity {
                 }
             }
 
-            //            @Override
-//            public void onSuccess(String content) {
-////                prgDialog.hide();
-//
-//                Log.d(TAG, "AsyncHttpClient response result:" + content);
-//
-//                Gson gson = new GsonBuilder().create();
-//                ServerResult serverResult = gson.fromJson(content, ServerResult.class);
-//
-//                if (serverResult.getResult() == 0) {
-//                    // 신규회원
-//                    redirectWASignupActivity();
-//                } else {
-//                    // 기존회원
-//                    showMyPage();
-//                }
-//            }
-
             @Override
             public void onFailure(int statusCode, Throwable error, String content) {
 //                prgDialog.hide();
@@ -208,6 +185,14 @@ public class MainLoginTypeActivity extends ActionBarActivity {
         finish();
     }
 
+    private void showDemo() {
+        // MainMenuActivity
+        Intent intent = new Intent(this, MainMenuActivity.class);
+        intent.putExtra("memberInfo", new MemberInfo());
+        startActivity(intent);
+        finish();
+    }
+
 
     // SimpleLoginActivity
     private class MySessionStatusCallback implements SessionCallback {
@@ -223,7 +208,8 @@ public class MainLoginTypeActivity extends ActionBarActivity {
 
         /**
          * 세션이 삭제되었으니 로그인 화면이 보여야 한다.
-         * @param exception  에러가 발생하여 close가 된 경우 해당 exception
+         *
+         * @param exception 에러가 발생하여 close가 된 경우 해당 exception
          */
         @Override
         public void onSessionClosed(final KakaoException exception) {
@@ -240,7 +226,7 @@ public class MainLoginTypeActivity extends ActionBarActivity {
 
     }
 
-    protected void onSessionOpened(){
+    protected void onSessionOpened() {
         final Intent intent = new Intent(MainLoginTypeActivity.this, SampleSignupActivity.class);
         startActivity(intent);
         finish();
@@ -253,5 +239,22 @@ public class MainLoginTypeActivity extends ActionBarActivity {
         } else {
             root.setBackgroundDrawable(drawable);
         }
+    }
+
+    private void initializeDatabase() {
+        if (database != null) {
+            database.close();
+            database = null;
+        }
+
+        database = WatchAssemblyDatabase.getInstance(this);
+        boolean isOpen = database.open();
+        if (isOpen) {
+            Log.d(TAG, "WatchAssembly database is open.");
+        } else {
+            Log.d(TAG, "WatchAssembly database is not open.");
+        }
+
+        Log.d(TAG, "initializeDatabase success!!");
     }
 }

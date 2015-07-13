@@ -2,11 +2,11 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 22
-    buildToolsVersion "22.0.1"
+    buildToolsVersion "22.0.0"
 
     defaultConfig {
         applicationId "com.lime.amwant"
-        minSdkVersion 11
+        minSdkVersion 14
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"
@@ -36,4 +36,6 @@ dependencies {
     compile 'com.loopj.android:android-async-http:1.4.4'
     compile 'com.google.code.gson:gson:2.2.2'
     compile 'com.turbomanage.basic-http-client:http-client-android:0.89'
+
+    compile 'com.jpardogo.materialtabstrip:library:1.1.0'
 }
