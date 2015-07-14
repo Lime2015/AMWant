@@ -40,37 +40,86 @@
             android:name=".activity.AssemblymenListActivity"
             android:launchMode="singleTask"
             android:theme="@style/AssTheme"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".activity.AssemblymanActivity"
             android:launchMode="singleTask"
             android:theme="@style/AssTheme"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.AssemblymenListActivity" />
+        </activity>
 
         <activity
             android:name=".activity.BillListActivity"
             android:launchMode="singleTask"
             android:theme="@style/BillTheme"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".activity.BillActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/AssTheme"
+            android:windowSoftInputMode="adjustResize">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.BillListActivity" />
+        </activity>
 
         <activity
             android:name=".activity.HallOfFameActivity"
             android:launchMode="singleTask"
             android:theme="@style/HallTheme"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".activity.PublicOpinionsActivity"
             android:launchMode="singleTask"
             android:theme="@style/PublicTheme"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".activity.MypageActivity"
             android:launchMode="singleTask"
             android:theme="@style/MypageTheme"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".activity.WASignupActivity"

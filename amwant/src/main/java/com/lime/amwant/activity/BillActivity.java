@@ -11,10 +11,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.TypedValue;
@@ -26,11 +24,11 @@ import com.lime.amwant.fragment.SuperAwesomeCardFragment;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 /**
- * Created by Administrator on 2015-07-13.
+ * Created by Administrator on 2015-07-15.
  */
-public class AssemblymanActivity extends ActionBarActivity {
+public class BillActivity extends ActionBarActivity {
 
-    private static final String TAG = "AssemblymanActivity";
+    private static final String TAG = "BillActivity";
 
     private Toolbar toolbar;
 
@@ -58,7 +56,7 @@ public class AssemblymanActivity extends ActionBarActivity {
         bar.setTitle(name);
         bar.setDisplayHomeAsUpEnabled(true);
         bar.setHomeButtonEnabled(true);
-        bar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(android.R.color.holo_blue_dark)));
+        bar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(android.R.color.holo_green_dark)));
 
         tabs = (PagerSlidingTabStrip)findViewById(R.id.tabs);
         pager = (ViewPager) findViewById(R.id.pager);
@@ -73,7 +71,7 @@ public class AssemblymanActivity extends ActionBarActivity {
                 .getDisplayMetrics());
         pager.setPageMargin(pageMargin);
         pager.setCurrentItem(0);
-        changeColor(getResources().getColor(android.R.color.holo_blue_dark));
+        changeColor(getResources().getColor(android.R.color.holo_green_dark));
     }
 
     private void changeColor(int newColor) {
@@ -111,7 +109,7 @@ public class AssemblymanActivity extends ActionBarActivity {
 
     private class MyPagerAdapter extends FragmentPagerAdapter {
 
-        private final String[] TITLES = {"기본정보", "법안발의", "본회의활동", "상임위활동", "국민참여"};
+        private final String[] TITLES = {"기본정보", "국민참여"};
 
         public MyPagerAdapter(FragmentManager fm) {
             super(fm);
