@@ -5,22 +5,20 @@
     android:orientation="vertical"
     android:layout_gravity="center">
 
-    <Button
-        android:id="@+id/kakao_btn"
-        android:text="카카오 로그인"
-        android:textColor="@color/com_kakao_brown"
-        android:textStyle="bold"
-        android:background="@color/com_kakao_button_background_press"
-        android:layout_width="250dp"
-        android:layout_height="35dp"
+    <com.kakao.widget.LoginButton
+        android:id="@+id/com_kakao_login"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="10dp" />
 
     <Button
         android:id="@+id/demo_btn"
         android:text="@string/demo_btn_name"
         android:textColor="@android:color/white"
+        android:textSize="18sp"
         android:textStyle="bold"
         android:background="#ff4285f4"
-        android:layout_width="250dp"
-        android:layout_height="35dp" />
+        android:layout_width="300dp"
+        android:layout_height="50dp" />
+
 </LinearLayout>

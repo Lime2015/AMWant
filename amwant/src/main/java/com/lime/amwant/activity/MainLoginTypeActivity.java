@@ -29,7 +29,6 @@ public class MainLoginTypeActivity extends ActionBarActivity {
 
     private static String TAG = "MainLoginTypeActivity";
 
-    private Button btnKakao;
     private Button btnDemo;
 
     private final String SERVER_URL = "http://52.69.102.82";
@@ -40,6 +39,10 @@ public class MainLoginTypeActivity extends ActionBarActivity {
     private MemberInfo kakaoMemberInfo;
     private UserProfile userProfile;
 
+
+    private LoginButton loginButton;
+    private final SessionCallback mySessionCallback = new MySessionStatusCallback();
+    private Session session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,19 +87,83 @@ public class MainLoginTypeActivity extends ActionBarActivity {
                 showDemo();
             }
         });
-        btnKakao = (Button) findViewById(R.id.kakao_btn);
-        btnKakao.setOnClickListener(new View.OnClickListener() {
+
+        loginButton = (LoginButton) findViewById(R.id.com_kakao_login);
+        loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showKakaoLogin();
+                finish();
             }
         });
+
+        session = Session.getCurrentSession();
+        session.addCallback(mySessionCallback);
     }
 
     @Override
     protected void onDestroy() {
         Log.d(TAG, "onDestroy start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         super.onDestroy();
+        if (session != null) session.removeCallback(mySessionCallback);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (session != null) {
+            if (session.isClosed()) {
+                loginButton.setVisibility(View.VISIBLE);
+            } else {
+                loginButton.setVisibility(View.GONE);
+                session.implicitOpen();
+            }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
+            return;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private class MySessionStatusCallback implements SessionCallback {
+        /**
+         * 세션이 오픈되었으면 가입페이지로 이동 한다.
+         */
+        @Override
+        public void onSessionOpened() {
+            //뺑글이 종료
+            // 프로그레스바를 보이고 있었다면 중지하고 세션 오픈후 보일 페이지로 이동
+            MainLoginTypeActivity.this.onSessionOpened();
+        }
+
+        /**
+         * 세션이 삭제되었으니 로그인 화면이 보여야 한다.
+         *
+         * @param exception 에러가 발생하여 close가 된 경우 해당 exception
+         */
+        @Override
+        public void onSessionClosed(final KakaoException exception) {
+            //뺑글이 종료
+            // 프로그레스바를 보이고 있었다면 중지하고 세션 오픈을 못했으니 다시 로그인 버튼 노출.
+            loginButton.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        public void onSessionOpening() {
+            //뺑글이 시작
+        }
+
+    }
+
+    protected void onSessionOpened() {
+        // 세션이 오픈되어 있음. 즉, Access Token을 얻어 낼 수 있는 위치임.
+        final Intent intent = new Intent(MainLoginTypeActivity.this, SampleSignupActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private void checkMemberInServer() {
@@ -160,16 +227,4 @@ public class MainLoginTypeActivity extends ActionBarActivity {
         startActivity(intent);
         finish();
     }
-
-    private void showKakaoLogin() {
-        Log.d(TAG, "showKakaoLogin start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-
-        if (userProfile == null || userProfile.getId() < 0) {
-            Log.d(TAG, "카카오 로그인 시도 시작");
-            Intent intent = new Intent(this, SampleLoginActivity.class);
-            startActivity(intent);
-            finish();
-        }
-    }
-
 }
