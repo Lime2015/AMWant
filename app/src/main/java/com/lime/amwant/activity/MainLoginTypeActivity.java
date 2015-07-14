@@ -2,8 +2,6 @@ package com.lime.amwant.activity;
 
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,8 +16,6 @@ import com.kakao.UserProfile;
 import com.kakao.exception.KakaoException;
 import com.kakao.widget.LoginButton;
 import com.lime.amwant.R;
-import com.lime.amwant.db.WatchAssemblyDatabase;
-import com.lime.amwant.frame.MyLoginButton;
 import com.lime.amwant.vo.MemberInfo;
 import com.lime.amwant.vo.ServerResult;
 import com.loopj.android.http.AsyncHttpClient;
@@ -32,29 +28,33 @@ import org.apache.http.Header;
 public class MainLoginTypeActivity extends ActionBarActivity {
 
     private static String TAG = "MainLoginTypeActivity";
+    private int mDestroyFlag;
 
     private LoginButton loginButton;
     private Button btnDemo;
     private final SessionCallback mySessionCallback = new MySessionStatusCallback();
     private Session session;
 
-//        private final String SERVER_URL = "http://52.69.102.82";
-    private final String SERVER_URL = "http://192.168.0.3:9080";
+    private final String SERVER_URL = "http://52.69.102.82";
+    //    private final String SERVER_URL = "http://192.168.0.3:9080";
     private final String SERVER_CHECK_MEMBER = "/WatchAssemblyWebServer/checkMember.do";
     private final int WA_SIGNUP_CODE = 1100;
 
     private MemberInfo kakaoMemberInfo;
     private UserProfile userProfile;
 
-    private WatchAssemblyDatabase database;
+//    private WatchAssemblyDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_login_type);
 
-        initializeDatabase();
+//        initializeDatabase();
         kakaoMemberInfo = null;
+        mDestroyFlag = 0;
 
         btnDemo = (Button) findViewById(R.id.demo_btn);
         btnDemo.setOnClickListener(new View.OnClickListener() {
@@ -65,7 +65,8 @@ public class MainLoginTypeActivity extends ActionBarActivity {
         });
 
         // SimpleLoginActivity
-        Session.initialize(this);
+//        Session.initialize(this);
+        userProfile = UserProfile.loadFromCache();
         loginButton = (LoginButton) findViewById(R.id.com_kakao_login);
 //        loginButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -76,18 +77,50 @@ public class MainLoginTypeActivity extends ActionBarActivity {
 
         session = Session.getCurrentSession();
         session.addCallback(mySessionCallback);
+    }
 
+    private void checkLoginInfo() {
+        Log.d(TAG, "checkLoginInfo start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+
+        if (kakaoMemberInfo == null && userProfile != null) {
+            long id = userProfile.getId();
+            String nickname = userProfile.getNickname();
+
+            if (id > 0) {
+                Log.d(TAG, "로그인정보:" + id + "/" + nickname);
+
+                kakaoMemberInfo = new MemberInfo("" + id, 1, nickname);
+//                txtNickname.setText(kakaoMemberInfo.getMemberNickname());
+
+                // web server 회원인지 체크
+                checkMemberInServer();
+            }
+        }
     }
 
     @Override
     protected void onDestroy() {
+
+        if (mDestroyFlag == 0) return;
+
+        Log.d(TAG, "onDestroy start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+
         super.onDestroy();
         session.removeCallback(mySessionCallback);
     }
 
     @Override
+    public void onBackPressed() {
+        mDestroyFlag = 1;
+        super.onBackPressed();
+    }
+
+    @Override
     protected void onResume() {
+        Log.d(TAG, "onResume start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+
         super.onResume();
+        mDestroyFlag = 0;
 
         if (session.isClosed()) {
             loginButton.setVisibility(View.VISIBLE);
@@ -107,31 +140,11 @@ public class MainLoginTypeActivity extends ActionBarActivity {
         Log.d(TAG, "onActivityResult start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
         if (Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
-            checkLoginInfo();
+//            checkLoginInfo();
             return;
         }
 
         super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    private void checkLoginInfo() {
-        Log.d(TAG, "checkLoginInfo start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-        userProfile = UserProfile.loadFromCache();
-
-        if (kakaoMemberInfo == null && userProfile != null) {
-            long id = userProfile.getId();
-            String nickname = userProfile.getNickname();
-
-            if (id > 0) {
-                Log.d(TAG, "로그인정보:" + id + "/" + nickname);
-
-                kakaoMemberInfo = new MemberInfo("" + id, 1, nickname);
-//                txtNickname.setText(kakaoMemberInfo.getMemberNickname());
-
-                // web server 회원인지 체크
-                checkMemberInServer();
-            }
-        }
     }
 
     private void checkMemberInServer() {
@@ -181,10 +194,11 @@ public class MainLoginTypeActivity extends ActionBarActivity {
 
     private void redirectWASignupActivity() {
         Log.d(TAG, "WASignupActivity start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+
         Intent intent = new Intent(this, WASignupActivity.class);
         intent.putExtra("kakaoMemberInfo", kakaoMemberInfo);
         startActivityForResult(intent, WA_SIGNUP_CODE);
-//        finish();
+        finish();
     }
 
     private void showMainMenuActivity() {
@@ -192,6 +206,9 @@ public class MainLoginTypeActivity extends ActionBarActivity {
 
         // MainMenuActivity
         Log.d(TAG, "MainMenuActivity start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+
+        mDestroyFlag = 1;
+
         Intent intent = new Intent(this, MainMenuActivity.class);
         intent.putExtra("memberInfo", kakaoMemberInfo);
         startActivity(intent);
@@ -245,20 +262,20 @@ public class MainLoginTypeActivity extends ActionBarActivity {
         finish();
     }
 
-    private void initializeDatabase() {
-        if (database != null) {
-            database.close();
-            database = null;
-        }
-
-        database = WatchAssemblyDatabase.getInstance(this);
-        boolean isOpen = database.open();
-        if (isOpen) {
-            Log.d(TAG, "WatchAssembly database is open.");
-        } else {
-            Log.d(TAG, "WatchAssembly database is not open.");
-        }
-
-        Log.d(TAG, "initializeDatabase success!!");
-    }
+//    private void initializeDatabase() {
+//        if (database != null) {
+//            database.close();
+//            database = null;
+//        }
+//
+//        database = WatchAssemblyDatabase.getInstance(this);
+//        boolean isOpen = database.open();
+//        if (isOpen) {
+//            Log.d(TAG, "WatchAssembly database is open.");
+//        } else {
+//            Log.d(TAG, "WatchAssembly database is not open.");
+//        }
+//
+//        Log.d(TAG, "initializeDatabase success!!");
+//    }
 }

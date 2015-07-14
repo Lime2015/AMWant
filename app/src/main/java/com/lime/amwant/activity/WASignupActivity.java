@@ -30,8 +30,8 @@ public class WASignupActivity extends Activity {
 
     private final String TAG = "WASignupActivity";
 
-//    private final String SERVER_URL = "http://52.69.102.82";
-    private final String SERVER_URL = "http://192.168.0.3:9080";
+    private final String SERVER_URL = "http://52.69.102.82";
+//    private final String SERVER_URL = "http://192.168.0.3:9080";
     private final String SERVER_SAVE_MEMBER = "/WatchAssemblyWebServer/saveMember.do";
 
     // property keyQu
