@@ -4,15 +4,24 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
+import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,9 +29,14 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.astuetz.PagerSlidingTabStrip;
 import com.lime.amwant.R;
+import com.lime.amwant.fragment.MypageDataFragment;
+import com.lime.amwant.fragment.SuperAwesomeCardFragment;
 import com.lime.amwant.vo.MemberInfo;
+import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 /**
  * Created by Administrator on 2015-07-13.
@@ -40,6 +54,13 @@ public class MypageActivity extends ActionBarActivity {
     private ActionBarDrawerToggle dtToggle;
 
     private MemberInfo memberInfo;
+
+    private PagerSlidingTabStrip tabs;
+    private ViewPager pager;
+    private MyPagerAdapter adapter;
+    private Drawable oldBackground = null;
+    private int currentColor;
+    private SystemBarTintManager mTintManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +93,27 @@ public class MypageActivity extends ActionBarActivity {
         dtToggle = new ActionBarDrawerToggle(this, dlDrawer, 0, 0);
         dlDrawer.setDrawerListener(dtToggle);
 
+        tabs = (PagerSlidingTabStrip)findViewById(R.id.tabs);
+        pager = (ViewPager) findViewById(R.id.pager);
+
+        mTintManager = new SystemBarTintManager(this);
+        // enable status bar tint
+        mTintManager.setStatusBarTintEnabled(true);
+        adapter = new MyPagerAdapter(getSupportFragmentManager());
+        pager.setAdapter(adapter);
+        tabs.setViewPager(pager);
+        final int pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources()
+                .getDisplayMetrics());
+        pager.setPageMargin(pageMargin);
+        pager.setCurrentItem(0);
+        changeColor(getResources().getColor(android.R.color.holo_orange_dark));
+
+//        tabs.setOnTabReselectedListener(new PagerSlidingTabStrip.OnTabReselectedListener() {
+//            @Override
+//            public void onTabReselected(int position) {
+//                Toast.makeText(MypageActivity.this, "Tab reselected: " + position, Toast.LENGTH_SHORT).show();
+//            }
+//        });
     }
 
 
@@ -153,4 +195,66 @@ public class MypageActivity extends ActionBarActivity {
         finish();
     }
 
+
+    private void changeColor(int newColor) {
+        tabs.setBackgroundColor(newColor);
+        mTintManager.setTintColor(newColor);
+        // change ActionBar color just if an ActionBar is available
+        Drawable colorDrawable = new ColorDrawable(newColor);
+        Drawable bottomDrawable = new ColorDrawable(getResources().getColor(android.R.color.transparent));
+        LayerDrawable ld = new LayerDrawable(new Drawable[]{colorDrawable, bottomDrawable});
+        if (oldBackground == null) {
+            getSupportActionBar().setBackgroundDrawable(ld);
+        } else {
+            TransitionDrawable td = new TransitionDrawable(new Drawable[]{oldBackground, ld});
+            getSupportActionBar().setBackgroundDrawable(td);
+            td.startTransition(200);
+        }
+
+        oldBackground = ld;
+        currentColor = newColor;
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("currentColor", currentColor);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        currentColor = savedInstanceState.getInt("currentColor");
+        changeColor(currentColor);
+    }
+
+
+    private class MyPagerAdapter extends FragmentPagerAdapter {
+
+        private final String[] TITLES = {"내정보", "관심의원", "관심의안", "데이터"};
+
+        public MyPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return TITLES[position];
+        }
+
+        @Override
+        public int getCount() {
+            return TITLES.length;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            switch (position){
+                case 3:
+                    return MypageDataFragment.newInstance();
+                default:
+                    return SuperAwesomeCardFragment.newInstance(position);
+            }
+        }
+    }
 }

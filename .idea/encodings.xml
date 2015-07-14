@@ -2,10 +2,11 @@
 <project version="4">
   <component name="Encoding" useUTFGuessing="false" native2AsciiForPropertiesFiles="false" defaultCharsetForPropertiesFiles="UTF-8">
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/lime/amwant/activity/MainMenuActivity.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/lime/amwant/adapter/RVMypageDataAdapter.java" charset="x-windows-949" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/lime/amwant/db/WatchAssemblyDatabase.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/lime/amwant/listitem/AssemblymanListItem.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main_menu.xml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/card_item_mypage_data.xml" charset="x-windows-949" />
     <file url="PROJECT" charset="UTF-8" />
   </component>
 </project>
-

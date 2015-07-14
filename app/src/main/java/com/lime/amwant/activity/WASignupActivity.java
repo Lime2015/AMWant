@@ -150,8 +150,8 @@ public class WASignupActivity extends Activity {
 
 
     private void redirectKakaoActivity() {
-        Intent intent = new Intent(this, MainLoginTypeActivity.class);
-        startActivity(intent);
+//        Intent intent = new Intent(this, MainLoginTypeActivity.class);
+//        startActivity(intent);
         finish();
     }
 

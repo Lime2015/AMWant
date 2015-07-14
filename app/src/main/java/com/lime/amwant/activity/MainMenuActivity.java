@@ -50,7 +50,7 @@ public class MainMenuActivity extends ActionBarActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar bar = getSupportActionBar();
-        bar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.com_kakao_brown)));
+        bar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.primary_dark_material_light)));
         if (memberInfo.getMemberId().equals("")) {
             bar.setTitle("둘러보기");
         } else {

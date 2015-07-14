@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.lime.amwant" >
+    package="com.lime.amwant">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -9,10 +9,10 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
             android:name=".activity.MainLoginTypeActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -22,43 +22,48 @@
 
         <activity
             android:name=".activity.MainMenuActivity"
-            android:launchMode="singleTop"
+            android:launchMode="singleTask"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize" />
 
         <activity
+            android:name=".activity.SampleLoginActivity"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
             android:name=".activity.AssemblymenListActivity"
-            android:launchMode="singleTop"
+            android:launchMode="singleTask"
             android:theme="@style/AssTheme"
             android:windowSoftInputMode="adjustResize" />
 
         <activity
             android:name=".activity.AssemblymanActivity"
-            android:launchMode="singleTop"
+            android:launchMode="singleTask"
             android:theme="@style/AssTheme"
             android:windowSoftInputMode="adjustResize" />
 
         <activity
             android:name=".activity.BillListActivity"
-            android:launchMode="singleTop"
+            android:launchMode="singleTask"
             android:theme="@style/BillTheme"
             android:windowSoftInputMode="adjustResize" />
 
         <activity
             android:name=".activity.HallOfFameActivity"
-            android:launchMode="singleTop"
+            android:launchMode="singleTask"
             android:theme="@style/HallTheme"
             android:windowSoftInputMode="adjustResize" />
 
         <activity
             android:name=".activity.PublicOpinionsActivity"
-            android:launchMode="singleTop"
+            android:launchMode="singleTask"
             android:theme="@style/PublicTheme"
             android:windowSoftInputMode="adjustResize" />
 
         <activity
             android:name=".activity.MypageActivity"
-            android:launchMode="singleTop"
+            android:launchMode="singleTask"
             android:theme="@style/MypageTheme"
             android:windowSoftInputMode="adjustResize" />
 
