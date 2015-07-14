@@ -189,11 +189,15 @@ public class MainLoginTypeActivity extends ActionBarActivity {
     }
 
     private void showKakaoLogin() {
+        Log.d(TAG, "showKakaoLogin start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+//        Log.d(TAG, "userProfile:" + userProfile);
+//        Log.d(TAG, "userProfile.getId():" + userProfile.getId());
+
         if (userProfile == null || userProfile.getId() < 0) {
             Log.d(TAG, "카카오 로그인 시도 시작");
             Intent intent = new Intent(this, SampleLoginActivity.class);
             startActivity(intent);
-//            finish();
+            finish();
         }
     }
 

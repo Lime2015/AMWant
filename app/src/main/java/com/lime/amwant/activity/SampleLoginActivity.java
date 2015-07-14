@@ -64,7 +64,6 @@ public class SampleLoginActivity extends Activity {
 
         session = Session.getCurrentSession();
         session.addCallback(mySessionCallback);
-
     }
 
     @Override
@@ -72,50 +71,28 @@ public class SampleLoginActivity extends Activity {
         Log.d(TAG, "onDestroy start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
 //        redirectMainLoginActivity();
-//        onBackPressed();
         super.onDestroy();
         session.removeCallback(mySessionCallback);
     }
 
     @Override
     protected void onResume() {
-        Log.d(TAG, "onResume start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-
         super.onResume();
 
         if (session.isClosed()){
             loginButton.setVisibility(View.VISIBLE);
-//            loginButton.setVisibility(View.GONE);
-//            loginButton.performClick();
         } else {
             loginButton.setVisibility(View.GONE);
             session.implicitOpen();
         }
-
-        UserProfile userProfile = UserProfile.loadFromCache();
-        if (userProfile != null || userProfile.getId() > 0) finish();
     }
 
-        @Override
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d(TAG, "onActivityResult start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-
         if (Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
-            redirectMainLoginActivity();
             return;
         }
-
         super.onActivityResult(requestCode, resultCode, data);
-    }
-
-
-    private void redirectMainLoginActivity() {
-        Log.d(TAG, "redirectMainLoginActivity start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-        Log.d(TAG, "카카오 로그인 성공!!");
-
-//        Intent intent = new Intent(this, MainLoginTypeActivity.class);
-//        startActivity(intent);
-//        finish();
     }
 
     private class MySessionStatusCallback implements SessionCallback {
@@ -131,14 +108,14 @@ public class SampleLoginActivity extends Activity {
 
         /**
          * 세션이 삭제되었으니 로그인 화면이 보여야 한다.
-         * @param exception  에러가 발생하여 close가 된 경우 해당 exception
+         *
+         * @param exception 에러가 발생하여 close가 된 경우 해당 exception
          */
         @Override
         public void onSessionClosed(final KakaoException exception) {
             //뺑글이 종료
             // 프로그레스바를 보이고 있었다면 중지하고 세션 오픈을 못했으니 다시 로그인 버튼 노출.
             loginButton.setVisibility(View.VISIBLE);
-//            onBackPressed();
         }
 
         @Override
@@ -147,20 +124,11 @@ public class SampleLoginActivity extends Activity {
         }
 
     }
-
     protected void onSessionOpened(){
+        // 세션이 오픈되어 있음. 즉, Access Token을 얻어 낼 수 있는 위치임.
         final Intent intent = new Intent(SampleLoginActivity.this, SampleSignupActivity.class);
         startActivity(intent);
         finish();
-    }
-
-    protected void setBackground(Drawable drawable) {
-        final View root = findViewById(android.R.id.content);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            root.setBackground(drawable);
-        } else {
-            root.setBackgroundDrawable(drawable);
-        }
     }
 
 }

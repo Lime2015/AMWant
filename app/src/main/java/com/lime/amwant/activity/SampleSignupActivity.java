@@ -20,6 +20,7 @@ package com.lime.amwant.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.kakao.APIErrorResult;
 import com.kakao.MeResponseCallback;
@@ -32,8 +33,12 @@ import com.kakao.helper.Logger;
  * me를 호출하여 가입 여부에 따라 가입 페이지를 그리던지 Main 페이지로 이동 시킨다.
  */
 public class SampleSignupActivity extends Activity {
+
+    private static String TAG = "SampleSignupActivity";
+
     /**
      * Main으로 넘길지 가입 페이지를 그릴지 판단하기 위해 me를 호출한다.
+     *
      * @param savedInstanceState 기존 session 정보가 저장된 객체
      */
     @Override
@@ -46,18 +51,19 @@ public class SampleSignupActivity extends Activity {
      * 자동가입앱인 경우는 가입안된 유저가 나오는 것은 에러 상황.
      */
     protected void showSignup() {
-        Logger.getInstance().d("not registered user");
+        Log.d(TAG, "not registered user");
         redirectLoginActivity();
     }
 
     protected void redirectMainActivity() {
-//        final Intent intent = new Intent(this, SampleMainActivity.class);
-//        startActivity(intent);
-//        finish();
+        Log.d(TAG, "redirectMainActivity start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        final Intent intent = new Intent(SampleSignupActivity.this, MainLoginTypeActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     protected void redirectLoginActivity() {
-        Intent intent = new Intent(this, MainLoginTypeActivity.class);
+        Intent intent = new Intent(this, SampleLoginActivity.class);
         startActivity(intent);
         finish();
     }
@@ -70,7 +76,7 @@ public class SampleSignupActivity extends Activity {
 
             @Override
             protected void onSuccess(final UserProfile userProfile) {
-                Logger.getInstance().d("UserProfile : " + userProfile);
+                Log.d(TAG, "UserProfile : " + userProfile);
                 userProfile.saveUserToCache();
                 redirectMainActivity();
             }
@@ -88,7 +94,7 @@ public class SampleSignupActivity extends Activity {
             @Override
             protected void onFailure(final APIErrorResult errorResult) {
                 String message = "failed to get user info. msg=" + errorResult;
-                Logger.getInstance().d(message);
+                Log.d(TAG, message);
                 redirectLoginActivity();
             }
         });

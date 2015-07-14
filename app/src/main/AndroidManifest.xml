@@ -32,6 +32,11 @@
             android:windowSoftInputMode="adjustResize" />
 
         <activity
+            android:name=".activity.SampleSignupActivity"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
             android:name=".activity.AssemblymenListActivity"
             android:launchMode="singleTask"
             android:theme="@style/AssTheme"
@@ -65,11 +70,6 @@
             android:name=".activity.MypageActivity"
             android:launchMode="singleTask"
             android:theme="@style/MypageTheme"
-            android:windowSoftInputMode="adjustResize" />
-
-        <activity
-            android:name=".activity.SampleSignupActivity"
-            android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize" />
 
         <activity
