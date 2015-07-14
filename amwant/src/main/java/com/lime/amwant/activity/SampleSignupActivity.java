@@ -58,6 +58,7 @@ public class SampleSignupActivity extends Activity {
     protected void redirectMainActivity() {
         Log.d(TAG, "redirectMainActivity start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         final Intent intent = new Intent(SampleSignupActivity.this, MainLoginTypeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivity(intent);
         finish();
     }

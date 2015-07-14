@@ -28,7 +28,6 @@ import org.apache.http.Header;
 public class MainLoginTypeActivity extends ActionBarActivity {
 
     private static String TAG = "MainLoginTypeActivity";
-//    private int mDestroyFlag;
 
     private Button btnKakao;
     private Button btnDemo;
@@ -47,28 +46,9 @@ public class MainLoginTypeActivity extends ActionBarActivity {
         Log.d(TAG, "onCreate start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_login_type);
 
-//        initializeDatabase();
         kakaoMemberInfo = null;
-//        mDestroyFlag = 0;
-
-        btnDemo = (Button) findViewById(R.id.demo_btn);
-        btnDemo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDemo();
-            }
-        });
-        btnKakao = (Button) findViewById(R.id.kakao_btn);
-        btnKakao.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showKakaoLogin();
-            }
-        });
-
-//        checkLoginInfo();
+        checkLoginInfo();
     }
 
     private void checkLoginInfo() {
@@ -84,32 +64,39 @@ public class MainLoginTypeActivity extends ActionBarActivity {
 
             if (id > 0) {
                 Log.d(TAG, "로그인정보:" + id + "/" + nickname);
-
                 kakaoMemberInfo = new MemberInfo("" + id, 1, nickname);
-//                txtNickname.setText(kakaoMemberInfo.getMemberNickname());
-
                 // web server 회원인지 체크
                 checkMemberInServer();
+            } else {
+                initView();
             }
+        } else {
+            initView();
         }
+    }
+
+    private void initView() {
+        setContentView(R.layout.activity_main_login_type);
+        btnDemo = (Button) findViewById(R.id.demo_btn);
+        btnDemo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDemo();
+            }
+        });
+        btnKakao = (Button) findViewById(R.id.kakao_btn);
+        btnKakao.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showKakaoLogin();
+            }
+        });
     }
 
     @Override
     protected void onDestroy() {
-
-//        if (mDestroyFlag == 0) return;
-
         Log.d(TAG, "onDestroy start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-
         super.onDestroy();
-    }
-
-    @Override
-    protected void onResume() {
-        Log.d(TAG, "onResume start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-
-        super.onResume();
-        checkLoginInfo();
     }
 
     private void checkMemberInServer() {
@@ -122,17 +109,11 @@ public class MainLoginTypeActivity extends ActionBarActivity {
         Log.d(TAG, "memberJSON:" + gson.toJson(kakaoMemberInfo));
         params.put("memberJSON", gson.toJson(kakaoMemberInfo));
 
-//        prgDialog.setMessage("check member...");
-//        prgDialog.show();
-
-//        client.addHeader("Accept-Encoding", "gzip");
         client.post(SERVER_URL + SERVER_CHECK_MEMBER, params, new AsyncHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-//                super.onSuccess(statusCode, headers, responseBody);
                 String content = new String(responseBody);
-//                prgDialog.hide();
 
                 Log.d(TAG, "AsyncHttpClient response result:" + content);
 
@@ -150,9 +131,7 @@ public class MainLoginTypeActivity extends ActionBarActivity {
 
             @Override
             public void onFailure(int statusCode, Throwable error, String content) {
-//                prgDialog.hide();
                 Log.d(TAG, "AsyncHttpClient response fail:" + statusCode);
-//                Toast.makeText(getApplicationContext(), "서버연결실패!!" + statusCode, Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -163,16 +142,11 @@ public class MainLoginTypeActivity extends ActionBarActivity {
         Intent intent = new Intent(this, WASignupActivity.class);
         intent.putExtra("kakaoMemberInfo", kakaoMemberInfo);
         startActivityForResult(intent, WA_SIGNUP_CODE);
-//        finish();
+        finish();
     }
 
     private void showMainMenuActivity() {
-//        Toast.makeText(getApplicationContext(), "Show MyPage !!", Toast.LENGTH_LONG).show();
-
-        // MainMenuActivity
         Log.d(TAG, "MainMenuActivity start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-
-//        mDestroyFlag = 1;
 
         Intent intent = new Intent(this, MainMenuActivity.class);
         intent.putExtra("memberInfo", kakaoMemberInfo);
@@ -181,7 +155,6 @@ public class MainLoginTypeActivity extends ActionBarActivity {
     }
 
     private void showDemo() {
-        // MainMenuActivity
         Intent intent = new Intent(this, MainMenuActivity.class);
         intent.putExtra("memberInfo", new MemberInfo());
         startActivity(intent);
@@ -190,8 +163,6 @@ public class MainLoginTypeActivity extends ActionBarActivity {
 
     private void showKakaoLogin() {
         Log.d(TAG, "showKakaoLogin start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-//        Log.d(TAG, "userProfile:" + userProfile);
-//        Log.d(TAG, "userProfile.getId():" + userProfile.getId());
 
         if (userProfile == null || userProfile.getId() < 0) {
             Log.d(TAG, "카카오 로그인 시도 시작");

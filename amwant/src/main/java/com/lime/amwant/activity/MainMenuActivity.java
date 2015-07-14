@@ -51,7 +51,9 @@ public class MainMenuActivity extends ActionBarActivity {
         setSupportActionBar(toolbar);
         ActionBar bar = getSupportActionBar();
         bar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.primary_dark_material_light)));
-        if (memberInfo.getMemberId().equals("")) {
+        if (memberInfo == null) {
+            bar.setTitle("둘러보기");
+        } else if (memberInfo.getMemberId().equals("")) {
             bar.setTitle("둘러보기");
         } else {
             bar.setTitle(memberInfo.getMemberNickname());
@@ -125,7 +127,7 @@ public class MainMenuActivity extends ActionBarActivity {
 
     private void viewSubmain(int index) {
         Intent intent = null;
-        switch (index){
+        switch (index) {
             case 0:
                 intent = new Intent(this, AssemblymenListActivity.class);
                 break;

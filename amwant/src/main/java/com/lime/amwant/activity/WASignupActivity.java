@@ -98,12 +98,9 @@ public class WASignupActivity extends Activity {
         Log.d(TAG, "memberJSON:" + gson.toJson(kakaoMemberInfo));
         params.put("memberJSON", gson.toJson(kakaoMemberInfo));
 
-//        prgDialog.setMessage("check member...");
-//        prgDialog.show();
         client.post(SERVER_URL + SERVER_SAVE_MEMBER, params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(String content) {
-//                prgDialog.hide();
 
                 Log.d(TAG, "AsyncHttpClient response result:" + content);
 
@@ -116,42 +113,29 @@ public class WASignupActivity extends Activity {
                     Toast.makeText(getApplicationContext(), "Success Signup !!", Toast.LENGTH_LONG).show();
 
                     redirectKakaoActivity();
-//                    Intent retIntent = new Intent();
-//                    retIntent.putExtra("kakaoMemberInfo", kakaoMemberInfo);
-//                    setResult(RESULT_OK, retIntent);
-//                    finish();
                 } else {
                     // 신규 등록 실패
                     Log.d(TAG, "fail to request new member info in server");
                     Toast.makeText(getApplicationContext(), "fail to request new member info in server", Toast.LENGTH_LONG).show();
 
                     redirectKakaoActivity();
-//                    Intent retIntent = new Intent();
-//                    retIntent.putExtra("kakaoMemberInfo", kakaoMemberInfo);
-//                    setResult(RESULT_CANCELED, retIntent);
-//                    finish();
                 }
             }
 
             @Override
             public void onFailure(int statusCode, Throwable error, String content) {
-//                prgDialog.hide();
                 Log.d(TAG, "AsyncHttpClient response fail:" + statusCode);
                 Toast.makeText(getApplicationContext(), "AsyncHttpClient response fail:" + statusCode, Toast.LENGTH_LONG).show();
 
                 redirectKakaoActivity();
-//                Intent retIntent = new Intent();
-//                retIntent.putExtra("kakaoMemberInfo", kakaoMemberInfo);
-//                setResult(RESULT_CANCELED, retIntent);
-//                finish();
             }
         });
     }
 
-
     private void redirectKakaoActivity() {
-//        Intent intent = new Intent(this, MainLoginTypeActivity.class);
-//        startActivity(intent);
+        Intent intent = new Intent(this, MainLoginTypeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        startActivity(intent);
         finish();
     }
 
