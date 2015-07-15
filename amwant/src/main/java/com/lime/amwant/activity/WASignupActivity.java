@@ -13,7 +13,7 @@ import com.google.gson.GsonBuilder;
 import com.lime.amwant.R;
 import com.lime.amwant.frame.ExtraUserPropertyFrame;
 import com.lime.amwant.vo.MemberInfo;
-import com.lime.amwant.vo.ServerResult;
+import com.lime.amwant.result.CheckMemberResult;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -105,7 +105,7 @@ public class WASignupActivity extends Activity {
                 Log.d(TAG, "AsyncHttpClient response result:" + content);
 
                 Gson gson = new GsonBuilder().create();
-                ServerResult serverResult = gson.fromJson(content, ServerResult.class);
+                CheckMemberResult serverResult = gson.fromJson(content, CheckMemberResult.class);
 
                 if (serverResult.getResult() == 1) {
                     // 정상 신규 등록

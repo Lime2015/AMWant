@@ -28,4 +28,5 @@
     <style name="PublicTheme" parent="AppBaseTheme">
         <item name="colorAccent">@android:color/holo_red_light</item>
     </style>
+
 </resources>

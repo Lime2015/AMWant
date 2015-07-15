@@ -17,7 +17,7 @@ import com.kakao.exception.KakaoException;
 import com.kakao.widget.LoginButton;
 import com.lime.amwant.R;
 import com.lime.amwant.vo.MemberInfo;
-import com.lime.amwant.vo.ServerResult;
+import com.lime.amwant.result.CheckMemberResult;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -58,8 +58,8 @@ public class MainLoginTypeActivity extends ActionBarActivity {
         Log.d(TAG, "checkLoginInfo start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
         userProfile = UserProfile.loadFromCache();
-        Log.d(TAG, "kakaoMemberInfo:" + kakaoMemberInfo);
-        Log.d(TAG, "userProfile:" + userProfile);
+//        Log.d(TAG, "kakaoMemberInfo:" + kakaoMemberInfo);
+//        Log.d(TAG, "userProfile:" + userProfile);
 
         if (kakaoMemberInfo == null && userProfile != null) {
             long id = userProfile.getId();
@@ -92,7 +92,7 @@ public class MainLoginTypeActivity extends ActionBarActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                MainLoginTypeActivity.this.finish();
             }
         });
 
@@ -114,8 +114,10 @@ public class MainLoginTypeActivity extends ActionBarActivity {
         if (session != null) {
             if (session.isClosed()) {
                 loginButton.setVisibility(View.VISIBLE);
+                btnDemo.setVisibility(View.VISIBLE);
             } else {
                 loginButton.setVisibility(View.GONE);
+                btnDemo.setVisibility(View.GONE);
                 session.implicitOpen();
             }
         }
@@ -150,6 +152,7 @@ public class MainLoginTypeActivity extends ActionBarActivity {
             //뺑글이 종료
             // 프로그레스바를 보이고 있었다면 중지하고 세션 오픈을 못했으니 다시 로그인 버튼 노출.
             loginButton.setVisibility(View.VISIBLE);
+            btnDemo.setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -185,9 +188,9 @@ public class MainLoginTypeActivity extends ActionBarActivity {
                 Log.d(TAG, "AsyncHttpClient response result:" + content);
 
                 Gson gson = new GsonBuilder().create();
-                ServerResult serverResult = gson.fromJson(content, ServerResult.class);
+                CheckMemberResult result = gson.fromJson(content, CheckMemberResult.class);
 
-                if (serverResult.getResult() == 0) {
+                if (result.getResult() == 0) {
                     // 신규회원
                     redirectWASignupActivity();
                 } else {
@@ -198,7 +201,7 @@ public class MainLoginTypeActivity extends ActionBarActivity {
 
             @Override
             public void onFailure(int statusCode, Throwable error, String content) {
-                Log.d(TAG, "AsyncHttpClient response fail:" + statusCode);
+                Log.d(TAG, "checkMemberInServer response fail:" + statusCode);
             }
         });
     }

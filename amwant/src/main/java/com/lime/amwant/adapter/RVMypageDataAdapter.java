@@ -5,11 +5,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.lime.amwant.R;
-import com.lime.amwant.vo.TableInfo;
+import com.lime.amwant.listitem.TableInfoListItem;
 
 import java.util.List;
 
@@ -21,6 +22,7 @@ public class RVMypageDataAdapter extends RecyclerView.Adapter<RVMypageDataAdapte
         TextView tableName;
         TextView lastTag;
         ImageView icTable;
+        ImageButton btnRefresh;
 
         PersonViewHolder(View itemView) {
             super(itemView);
@@ -28,12 +30,13 @@ public class RVMypageDataAdapter extends RecyclerView.Adapter<RVMypageDataAdapte
             tableName = (TextView) itemView.findViewById(R.id.table_name);
             lastTag = (TextView) itemView.findViewById(R.id.last_tag);
             icTable = (ImageView) itemView.findViewById(R.id.ic_table);
+            btnRefresh = (ImageButton) itemView.findViewById(R.id.btn_refresh);
         }
     }
 
-    List<TableInfo> tables;
+    List<TableInfoListItem> tables;
 
-    public RVMypageDataAdapter(List<TableInfo> tables) {
+    public RVMypageDataAdapter(List<TableInfoListItem> tables) {
         this.tables = tables;
     }
 
@@ -52,8 +55,9 @@ public class RVMypageDataAdapter extends RecyclerView.Adapter<RVMypageDataAdapte
     @Override
     public void onBindViewHolder(PersonViewHolder personViewHolder, int i) {
         personViewHolder.tableName.setText(tables.get(i).getTableName());
-        personViewHolder.lastTag.setText("last:" + tables.get(i).getLastTag());
+        personViewHolder.lastTag.setText("last tag : " + tables.get(i).getLastTag());
         personViewHolder.icTable.setImageResource(tables.get(i).getIcTable());
+        personViewHolder.btnRefresh.setImageResource(tables.get(i).getIcRefresh());
     }
 
     @Override

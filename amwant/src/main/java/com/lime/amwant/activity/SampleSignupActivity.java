@@ -47,24 +47,10 @@ public class SampleSignupActivity extends Activity {
         requestMe();
     }
 
-    /**
-     * 자동가입앱인 경우는 가입안된 유저가 나오는 것은 에러 상황.
-     */
-    protected void showSignup() {
-        Log.d(TAG, "not registered user");
-        redirectLoginActivity();
-    }
-
     protected void redirectMainActivity() {
         Log.d(TAG, "redirectMainActivity start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         final Intent intent = new Intent(SampleSignupActivity.this, MainLoginTypeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-        startActivity(intent);
-        finish();
-    }
-
-    protected void redirectLoginActivity() {
-        Intent intent = new Intent(this, SampleLoginActivity.class);
         startActivity(intent);
         finish();
     }
@@ -84,19 +70,19 @@ public class SampleSignupActivity extends Activity {
 
             @Override
             protected void onNotSignedUp() {
-                showSignup();
+                redirectMainActivity();
             }
 
             @Override
             protected void onSessionClosedFailure(final APIErrorResult errorResult) {
-                redirectLoginActivity();
+                redirectMainActivity();
             }
 
             @Override
             protected void onFailure(final APIErrorResult errorResult) {
                 String message = "failed to get user info. msg=" + errorResult;
                 Log.d(TAG, message);
-                redirectLoginActivity();
+                redirectMainActivity();
             }
         });
     }
