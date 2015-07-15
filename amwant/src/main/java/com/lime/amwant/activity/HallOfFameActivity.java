@@ -81,7 +81,7 @@ public class HallOfFameActivity extends ActionBarActivity {
         bar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.holo_purple_dark)));
 
         lvNavList = (ListView) findViewById(R.id.drawer);
-        lvNavList.setBackgroundColor(getResources().getColor(android.R.color.holo_purple));
+        lvNavList.setBackgroundColor(getResources().getColor(R.color.holo_purple_dark));
 
         lvNavList.setAdapter(
                 new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, navItems));

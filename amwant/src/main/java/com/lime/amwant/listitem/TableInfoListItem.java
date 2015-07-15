@@ -5,16 +5,18 @@ package com.lime.amwant.listitem;
  */
 public class TableInfoListItem {
     private String tableName;
-    private int lastTag;
+    private int appTag;
+    private int serverTag;
     private int icTable;
     private int icRefresh;
 
     public TableInfoListItem() {
     }
 
-    public TableInfoListItem(String tableName, int lastTag, int icTable, int icRefresh) {
+    public TableInfoListItem(String tableName, int appTag, int serverTag, int icTable, int icRefresh) {
         this.tableName = tableName;
-        this.lastTag = lastTag;
+        this.appTag = appTag;
+        this.serverTag = serverTag;
         this.icTable = icTable;
         this.icRefresh = icRefresh;
     }
@@ -27,12 +29,12 @@ public class TableInfoListItem {
         this.tableName = tableName;
     }
 
-    public int getLastTag() {
-        return lastTag;
+    public int getAppTag() {
+        return appTag;
     }
 
-    public void setLastTag(int lastTag) {
-        this.lastTag = lastTag;
+    public void setAppTag(int appTag) {
+        this.appTag = appTag;
     }
 
     public int getIcTable() {
@@ -50,4 +52,13 @@ public class TableInfoListItem {
     public void setIcRefresh(int icRefresh) {
         this.icRefresh = icRefresh;
     }
+
+    public int getServerTag() {
+        return serverTag;
+    }
+
+    public void setServerTag(int serverTag) {
+        this.serverTag = serverTag;
+    }
+
 }

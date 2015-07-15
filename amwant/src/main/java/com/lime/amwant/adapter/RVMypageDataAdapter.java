@@ -20,7 +20,8 @@ public class RVMypageDataAdapter extends RecyclerView.Adapter<RVMypageDataAdapte
 
         CardView cv;
         TextView tableName;
-        TextView lastTag;
+        TextView appTag;
+        TextView serverTag;
         ImageView icTable;
         ImageButton btnRefresh;
 
@@ -28,7 +29,8 @@ public class RVMypageDataAdapter extends RecyclerView.Adapter<RVMypageDataAdapte
             super(itemView);
             cv = (CardView) itemView.findViewById(R.id.cv_mypage_data);
             tableName = (TextView) itemView.findViewById(R.id.table_name);
-            lastTag = (TextView) itemView.findViewById(R.id.last_tag);
+            appTag = (TextView) itemView.findViewById(R.id.app_tag);
+            serverTag = (TextView) itemView.findViewById(R.id.server_tag);
             icTable = (ImageView) itemView.findViewById(R.id.ic_table);
             btnRefresh = (ImageButton) itemView.findViewById(R.id.btn_refresh);
         }
@@ -55,10 +57,13 @@ public class RVMypageDataAdapter extends RecyclerView.Adapter<RVMypageDataAdapte
     @Override
     public void onBindViewHolder(PersonViewHolder personViewHolder, int i) {
         personViewHolder.tableName.setText(tables.get(i).getTableName());
-        personViewHolder.lastTag.setText("last tag : " + tables.get(i).getLastTag());
+        personViewHolder.appTag.setText("app tag : " + tables.get(i).getAppTag());
+        personViewHolder.serverTag.setText("server tag : " + tables.get(i).getServerTag());
         personViewHolder.icTable.setImageResource(tables.get(i).getIcTable());
         personViewHolder.btnRefresh.setImageResource(tables.get(i).getIcRefresh());
     }
+
+
 
     @Override
     public int getItemCount() {

@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <string name="server_url">http://52.69.102.82</string>
+    <!--<string name="server_url">http://192.168.0.3:9080</string>-->
+    <string name="server_check_tag">/WatchAssemblyWebServer/checkTag.do</string>
+    <string name="server_check_member">/WatchAssemblyWebServer/checkMember.do</string>
+    <string name="server_save_member">/WatchAssemblyWebServer/saveMember.do</string>
+
+
     <string name="app_name">국회의Want</string>
     <string name="demo_btn_name">둘러보기</string>
     <string name="action_settings">설정</string>

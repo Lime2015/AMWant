@@ -62,7 +62,7 @@ public class BillListActivity extends ActionBarActivity {
         bar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(android.R.color.holo_green_dark)));
 
         lvNavList = (ListView) findViewById(R.id.drawer);
-        lvNavList.setBackgroundColor(getResources().getColor(android.R.color.holo_green_light));
+        lvNavList.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
 
         lvNavList.setAdapter(
                 new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, navItems));

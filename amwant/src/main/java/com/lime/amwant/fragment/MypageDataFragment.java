@@ -1,5 +1,6 @@
 package com.lime.amwant.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -34,14 +35,10 @@ public class MypageDataFragment extends Fragment {
     private static String TAG = "MypageDataFragment";
 
     private RecyclerView rv;
+    private RVMypageDataAdapter adapter;
     private List<TableInfoListItem> tables;
 
-    private final String SERVER_URL = "http://52.69.102.82";
-    //    private final String SERVER_URL = "http://192.168.0.3:9080";
-    private final String SERVER_CHECK_TAG = "/WatchAssemblyWebServer/checkTag.do";
-
     private AMWDatabase database;
-
 
 
     public static MypageDataFragment newInstance() {
@@ -63,6 +60,7 @@ public class MypageDataFragment extends Fragment {
         rv.setLayoutManager(llm);
         rv.setHasFixedSize(true);
 
+        initializeDatabase(rootView.getContext());
         initializeData();
         initializeAdapter();
 
@@ -71,30 +69,41 @@ public class MypageDataFragment extends Fragment {
 
     private void initializeData() {
         tables = new ArrayList<>();
-        tables.add(new TableInfoListItem("국회의원", 0, R.drawable.assemblyman, R.drawable.refresh));
+        tables.add(new TableInfoListItem("국회의원", 0, 0, R.drawable.assemblyman, R.drawable.check_orange));
     }
 
     private void initializeAdapter() {
-        RVMypageDataAdapter adapter = new RVMypageDataAdapter(tables);
+        adapter = new RVMypageDataAdapter(tables);
         rv.setAdapter(adapter);
+        checkServerTag();
     }
 
     private void checkServerTag() {
         Log.d(TAG, "checkServerTag start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
         AsyncHttpClient client = new AsyncHttpClient();
-        client.post(SERVER_URL + SERVER_CHECK_TAG, new AsyncHttpResponseHandler() {
+        client.post(getResources().getString(R.string.server_url) + getResources().getString(R.string.server_check_tag), new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String content = new String(responseBody);
+                Log.d(TAG, "checkServerTag result:" + content);
 
                 Gson gson = new GsonBuilder().create();
                 CheckTagResult result = gson.fromJson(content, CheckTagResult.class);
                 CheckTagResult resultDB = database.checkTag();
 
-                if(result.getAssemblymanTag()>resultDB.getAssemblymanTag()){
-
+                TableInfoListItem item0 = tables.get(0);
+                if (result.getAssemblymanTag() > resultDB.getAssemblymanTag()) {
+                    item0.setAppTag(resultDB.getAssemblymanTag());
+                    item0.setServerTag(result.getAssemblymanTag());
+                    item0.setIcRefresh(R.drawable.refresh);
+                } else {
+                    item0.setAppTag(resultDB.getAssemblymanTag());
+                    item0.setServerTag(result.getAssemblymanTag());
+                    item0.setIcRefresh(R.drawable.check_orange);
                 }
+
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -106,13 +115,13 @@ public class MypageDataFragment extends Fragment {
     }
 
 
-    private void initializeDatabase() {
+    private void initializeDatabase(Context context) {
         if (database != null) {
             database.close();
             database = null;
         }
 
-        database = AMWDatabase.getInstance(getActivity());
+        database = AMWDatabase.getInstance(context);
         boolean isOpen = database.open();
         if (isOpen) {
             Log.d(TAG, "WatchAssembly database is open.");

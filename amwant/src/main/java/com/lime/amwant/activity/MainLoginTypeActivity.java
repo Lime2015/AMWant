@@ -31,9 +31,6 @@ public class MainLoginTypeActivity extends ActionBarActivity {
 
     private Button btnDemo;
 
-    private final String SERVER_URL = "http://52.69.102.82";
-    //    private final String SERVER_URL = "http://192.168.0.3:9080";
-    private final String SERVER_CHECK_MEMBER = "/WatchAssemblyWebServer/checkMember.do";
     private final int WA_SIGNUP_CODE = 1100;
 
     private MemberInfo kakaoMemberInfo;
@@ -179,7 +176,7 @@ public class MainLoginTypeActivity extends ActionBarActivity {
         Log.d(TAG, "memberJSON:" + gson.toJson(kakaoMemberInfo));
         params.put("memberJSON", gson.toJson(kakaoMemberInfo));
 
-        client.post(SERVER_URL + SERVER_CHECK_MEMBER, params, new AsyncHttpResponseHandler() {
+        client.post(getResources().getString(R.string.server_url) + getResources().getString(R.string.server_check_member), params, new AsyncHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {

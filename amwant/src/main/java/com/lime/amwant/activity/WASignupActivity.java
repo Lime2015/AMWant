@@ -30,10 +30,6 @@ public class WASignupActivity extends Activity {
 
     private final String TAG = "WASignupActivity";
 
-    private final String SERVER_URL = "http://52.69.102.82";
-//    private final String SERVER_URL = "http://192.168.0.3:9080";
-    private final String SERVER_SAVE_MEMBER = "/WatchAssemblyWebServer/saveMember.do";
-
     // property keyQu
     private  static final String ADDRESS_KEY = "address";
     private  static final String BIRTHDAY_KEY = "birthday";
@@ -98,7 +94,7 @@ public class WASignupActivity extends Activity {
         Log.d(TAG, "memberJSON:" + gson.toJson(kakaoMemberInfo));
         params.put("memberJSON", gson.toJson(kakaoMemberInfo));
 
-        client.post(SERVER_URL + SERVER_SAVE_MEMBER, params, new AsyncHttpResponseHandler() {
+        client.post(getResources().getString(R.string.server_url) + getResources().getString(R.string.server_save_member), params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(String content) {
 
