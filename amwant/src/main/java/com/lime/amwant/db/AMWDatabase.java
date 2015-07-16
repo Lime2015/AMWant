@@ -8,6 +8,9 @@ import android.util.Log;
 
 import com.lime.amwant.result.CheckTagResult;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * Created by Administrator on 2015-06-11.
@@ -126,8 +129,15 @@ public class AMWDatabase {
     }
 
     public CheckTagResult checkTag() {
-        CheckTagResult result = new CheckTagResult(0,0,0,0,0,0);
-
+        CheckTagResult result = new CheckTagResult();
+        List<Integer> list = new ArrayList<Integer>();
+        list.add(0);
+        list.add(0);
+        list.add(0);
+        list.add(0);
+        list.add(0);
+        list.add(0);
+        result.setTagList(list);
         return result;
     }
 

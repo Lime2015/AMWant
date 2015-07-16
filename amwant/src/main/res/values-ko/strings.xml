@@ -6,6 +6,7 @@
     <string name="server_check_tag">/WatchAssemblyWebServer/checkTag.do</string>
     <string name="server_check_member">/WatchAssemblyWebServer/checkMember.do</string>
     <string name="server_save_member">/WatchAssemblyWebServer/saveMember.do</string>
+    <string name="server_request_assemblyman">/WatchAssemblyWebServer/requestAssemblyman.do</string>
 
 
     <string name="app_name">국회의Want</string>
