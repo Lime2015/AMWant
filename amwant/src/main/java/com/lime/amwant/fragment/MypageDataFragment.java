@@ -186,9 +186,12 @@ public class MypageDataFragment extends Fragment {
                 Log.d(TAG, "requestAssemblyman result:" + content);
 
                 Gson gson = new GsonBuilder().create();
-                List<Assemblyman> result = gson.fromJson(content, new TypeToken<List<Assemblyman>>() {
-                }.getType());
+                List<Assemblyman> assList = gson.fromJson(content, new TypeToken<List<Assemblyman>>(){}.getType());
 
+                if(database.insertAssemblymenList(assList)){
+                    Log.d(TAG,"assemblyman db insert success!!");
+                    checkServerTag();
+                }
             }
 
             @Override

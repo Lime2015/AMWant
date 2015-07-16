@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/cv_mypage_data"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp">
+
+        <ImageView
+            android:id="@+id/photo_ass"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:scaleType="fitCenter" />
+
+        <ImageView
+            android:id="@+id/ic_like"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="5dp"
+            android:layout_marginRight="3dp"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@+id/photo_ass"
+            android:padding="0dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/like" />
+
+        <TextView
+            android:id="@+id/count_like"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="7dp"
+            android:layout_toRightOf="@+id/ic_like"
+            android:text="0"
+            android:textColor="#ff2771c3"
+            android:textSize="10sp" />
+
+        <ImageView
+            android:id="@+id/ic_dislike"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_below="@+id/ic_like"
+            android:layout_toRightOf="@+id/photo_ass"
+            android:padding="0dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/dislike" />
+
+        <TextView
+            android:id="@+id/count_dislike"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/count_like"
+            android:layout_toRightOf="@+id/ic_like"
+            android:text="0"
+            android:textColor="#FF0202"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/ass_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="20dp"
+            android:layout_toRightOf="@+id/count_like"
+            android:text="홍길동"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/ass_party_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ass_name"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="10dp"
+            android:layout_toRightOf="@+id/count_like"
+            android:text="율도당"
+            android:textSize="11sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/ass_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ass_name"
+            android:layout_toRightOf="@+id/ass_party_name"
+            android:text="율도시 율도구"
+            android:textSize="11sp"
+            android:textStyle="bold" />
+
+        <CheckBox
+            android:id="@+id/ass_checked"
+            style="@android:style/Widget.CompoundButton.CheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:checked="false" />
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

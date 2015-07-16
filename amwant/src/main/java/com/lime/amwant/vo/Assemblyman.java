@@ -8,7 +8,7 @@ public class Assemblyman {
     private String assemblymanName;
     private String imageUrl;
     private String orgImageUrl;
-    private String mod_dttm;
+    private String modDttm;
     private int partyId;
     private String partyName;
     private String localConstituency;
@@ -16,12 +16,12 @@ public class Assemblyman {
 
     public Assemblyman(){}
 
-    public Assemblyman(String assemblymanId, String assemblymanName, String imageUrl, String orgImageUrl, String mod_dttm, int partyId, String partyName, String localConstituency, int updateTag) {
+    public Assemblyman(String assemblymanId, String assemblymanName, String imageUrl, String orgImageUrl, String modDttm, int partyId, String partyName, String localConstituency, int updateTag) {
         this.assemblymanId = assemblymanId;
         this.assemblymanName = assemblymanName;
         this.imageUrl = imageUrl;
         this.orgImageUrl = orgImageUrl;
-        this.mod_dttm = mod_dttm;
+        this.modDttm = modDttm;
         this.partyId = partyId;
         this.partyName = partyName;
         this.localConstituency = localConstituency;
@@ -60,12 +60,12 @@ public class Assemblyman {
         this.orgImageUrl = orgImageUrl;
     }
 
-    public String getMod_dttm() {
-        return mod_dttm;
+    public String getModDttm() {
+        return modDttm;
     }
 
-    public void setMod_dttm(String mod_dttm) {
-        this.mod_dttm = mod_dttm;
+    public void setModDttm(String modDttm) {
+        this.modDttm = modDttm;
     }
 
     public int getPartyId() {
