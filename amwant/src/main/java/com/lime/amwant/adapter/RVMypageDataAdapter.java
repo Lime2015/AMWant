@@ -14,9 +14,9 @@ import com.lime.amwant.listitem.TableInfoListItem;
 
 import java.util.List;
 
-public class RVMypageDataAdapter extends RecyclerView.Adapter<RVMypageDataAdapter.PersonViewHolder> {
+public class RVMypageDataAdapter extends RecyclerView.Adapter<RVMypageDataAdapter.DataViewHolder> {
 
-    public static class PersonViewHolder extends RecyclerView.ViewHolder {
+    public static class DataViewHolder extends RecyclerView.ViewHolder {
 
         CardView cv;
         TextView tableName;
@@ -25,7 +25,7 @@ public class RVMypageDataAdapter extends RecyclerView.Adapter<RVMypageDataAdapte
         ImageView icTable;
         ImageButton btnRefresh;
 
-        PersonViewHolder(View itemView) {
+        DataViewHolder(View itemView) {
             super(itemView);
             cv = (CardView) itemView.findViewById(R.id.cv_mypage_data);
             tableName = (TextView) itemView.findViewById(R.id.table_name);
@@ -48,19 +48,19 @@ public class RVMypageDataAdapter extends RecyclerView.Adapter<RVMypageDataAdapte
     }
 
     @Override
-    public PersonViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+    public DataViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.card_mypage_data, viewGroup, false);
-        PersonViewHolder pvh = new PersonViewHolder(v);
+        DataViewHolder pvh = new DataViewHolder(v);
         return pvh;
     }
 
     @Override
-    public void onBindViewHolder(PersonViewHolder personViewHolder, int i) {
-        personViewHolder.tableName.setText(tables.get(i).getTableName());
-        personViewHolder.appTag.setText("app tag : " + tables.get(i).getAppTag());
-        personViewHolder.serverTag.setText("server tag : " + tables.get(i).getServerTag());
-        personViewHolder.icTable.setImageResource(tables.get(i).getIcTable());
-        personViewHolder.btnRefresh.setImageResource(tables.get(i).getIcRefresh());
+    public void onBindViewHolder(DataViewHolder dataViewHolder, int i) {
+        dataViewHolder.tableName.setText(tables.get(i).getTableName());
+        dataViewHolder.appTag.setText("app tag : " + tables.get(i).getAppTag());
+        dataViewHolder.serverTag.setText("server tag : " + tables.get(i).getServerTag());
+        dataViewHolder.icTable.setImageResource(tables.get(i).getIcTable());
+        dataViewHolder.btnRefresh.setImageResource(tables.get(i).getIcRefresh());
     }
 
 

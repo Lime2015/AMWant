@@ -4,26 +4,30 @@ package com.lime.amwant.listitem;
  * Created by SeongSan on 2015-06-30.
  */
 public class AssemblymanListItem {
-    private String imageUrl;
+    private int idPhoto;
     private String assemblymanName;
     private String partyName;
     private String localConstituency;
+    private int countLike;
+    private int countDislike;
 
     public AssemblymanListItem(){}
 
-    public AssemblymanListItem(String imageUrl, String assemblymanName, String partyName, String localConstituency) {
-        this.imageUrl = imageUrl;
+    public AssemblymanListItem(int idPhoto, String assemblymanName, String partyName, String localConstituency, int countLike, int countDislike) {
+        this.idPhoto = idPhoto;
         this.assemblymanName = assemblymanName;
         this.partyName = partyName;
         this.localConstituency = localConstituency;
+        this.countLike = countLike;
+        this.countDislike = countDislike;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public int getIdPhoto() {
+        return idPhoto;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setIdPhoto(int idPhoto) {
+        this.idPhoto = idPhoto;
     }
 
     public String getAssemblymanName() {
@@ -48,5 +52,21 @@ public class AssemblymanListItem {
 
     public void setLocalConstituency(String localConstituency) {
         this.localConstituency = localConstituency;
+    }
+
+    public int getCountLike() {
+        return countLike;
+    }
+
+    public void setCountLike(int countLike) {
+        this.countLike = countLike;
+    }
+
+    public int getCountDislike() {
+        return countDislike;
+    }
+
+    public void setCountDislike(int countDislike) {
+        this.countDislike = countDislike;
     }
 }

@@ -11,8 +11,11 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,9 +23,19 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.lime.amwant.R;
+import com.lime.amwant.adapter.RVAssemblymenListAdapter;
+import com.lime.amwant.adapter.RVMypageDataAdapter;
+import com.lime.amwant.db.AMWDatabase;
+import com.lime.amwant.listener.RecyclerItemClickListener;
+import com.lime.amwant.listitem.AssemblymanListItem;
+import com.lime.amwant.listitem.TableInfoListItem;
 import com.lime.amwant.vo.MemberInfo;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by SeongSan on 2015-07-13.
@@ -40,6 +53,11 @@ public class AssemblymenListActivity extends ActionBarActivity {
     private ActionBarDrawerToggle dtToggle;
 
     private MemberInfo memberInfo;
+
+    private RecyclerView rv;
+    private RVAssemblymenListAdapter adapter;
+    private List<AssemblymanListItem> tables;
+    private AMWDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +90,43 @@ public class AssemblymenListActivity extends ActionBarActivity {
         dtToggle = new ActionBarDrawerToggle(this, dlDrawer, 0, 0);
         dlDrawer.setDrawerListener(dtToggle);
 
+
+        rv = (RecyclerView) findViewById(R.id.rv_assemblyman);
+
+        LinearLayoutManager llm = new LinearLayoutManager(this);
+        rv.setLayoutManager(llm);
+        rv.setHasFixedSize(true);
+
+        initializeDatabase(this);
+        initializeData();
+        initializeAdapter();
+
+
+        rv.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, final int position) {
+                        // do whatever
+                        view.setOnLongClickListener(new View.OnLongClickListener() {
+                            @Override
+                            public boolean onLongClick(View v) {
+                                Toast.makeText(getApplicationContext(), tables.get(position).getAssemblymanName() + " 관심의원에 등록하시겠습니까?", Toast.LENGTH_LONG).show();
+                                return true;
+                            }
+                        });
+                    }
+                })
+        );
+    }
+
+    private void initializeAdapter() {
+        adapter = new RVAssemblymenListAdapter(tables);
+        rv.setAdapter(adapter);
+    }
+
+    private void initializeData() {
+        tables = new ArrayList<>();
+
+        database.selectAssemblymenList(0);
     }
 
 
@@ -131,7 +186,7 @@ public class AssemblymenListActivity extends ActionBarActivity {
 
     private void viewSubmain(int index) {
         Intent intent = null;
-        switch (index){
+        switch (index) {
             case 0:
                 intent = new Intent(this, AssemblymenListActivity.class);
                 break;
@@ -151,5 +206,23 @@ public class AssemblymenListActivity extends ActionBarActivity {
         intent.putExtra("memberInfo", memberInfo);
         startActivity(intent);
         finish();
+    }
+
+
+    private void initializeDatabase(Context context) {
+        if (database != null) {
+            database.close();
+            database = null;
+        }
+
+        database = AMWDatabase.getInstance(context);
+        boolean isOpen = database.open();
+        if (isOpen) {
+            Log.d(TAG, "WatchAssembly database is open.");
+        } else {
+            Log.d(TAG, "WatchAssembly database is not open.");
+        }
+
+        Log.d(TAG, "initializeDatabase success!!");
     }
 }

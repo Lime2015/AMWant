@@ -43,10 +43,13 @@
                     android:text="색인" />
             </RadioGroup>
 
-            <ListView
-                android:id="@+id/list_ass"
+            <android.support.v7.widget.RecyclerView
+                android:longClickable="true"
+                android:id="@+id/rv_assemblyman"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="match_parent">
+
+            </android.support.v7.widget.RecyclerView>
 
         </LinearLayout>
 
