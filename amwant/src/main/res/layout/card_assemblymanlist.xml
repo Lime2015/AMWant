@@ -17,7 +17,7 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginRight="10dp"
             android:scaleType="fitCenter" />
 
 
@@ -40,8 +40,7 @@
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/ass_name"
             android:text="율도당"
-            android:textSize="10sp"
-            android:textStyle="bold" />
+            android:textSize="10sp" />
 
         <TextView
             android:id="@+id/ass_location"
@@ -50,13 +49,12 @@
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/ass_party_name"
             android:text="율도시 율도구"
-            android:textSize="10sp"
-            android:textStyle="bold" />
+            android:textSize="10sp" />
 
         <ImageView
             android:id="@+id/ic_like"
-            android:layout_width="12dp"
-            android:layout_height="12dp"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
             android:layout_toLeftOf="@+id/count_like"
             android:layout_centerVertical="true"
             android:layout_marginRight="5dp"
@@ -77,8 +75,8 @@
 
         <ImageView
             android:id="@+id/ic_dislike"
-            android:layout_width="12dp"
-            android:layout_height="12dp"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
             android:layout_toLeftOf="@+id/count_dislike"
             android:layout_centerVertical="true"
             android:layout_marginRight="5dp"
@@ -92,7 +90,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="30dp"
+            android:layout_marginRight="20dp"
             android:text="0"
             android:textColor="#FF0202"
             android:textSize="10sp" />

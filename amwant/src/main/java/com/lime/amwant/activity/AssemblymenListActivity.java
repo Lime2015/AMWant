@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -23,6 +24,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.lime.amwant.R;
@@ -54,6 +56,7 @@ public class AssemblymenListActivity extends ActionBarActivity {
 
     private MemberInfo memberInfo;
 
+    private RadioGroup mRgroup;
     private RecyclerView rv;
     private RVAssemblymenListAdapter adapter;
     private List<AssemblymanListItem> tables;
@@ -106,16 +109,36 @@ public class AssemblymenListActivity extends ActionBarActivity {
                     @Override
                     public void onItemClick(View view, final int position) {
                         // do whatever
-                        view.setOnLongClickListener(new View.OnLongClickListener() {
-                            @Override
-                            public boolean onLongClick(View v) {
-                                Toast.makeText(getApplicationContext(), tables.get(position).getAssemblymanName() + " 관심의원에 등록하시겠습니까?", Toast.LENGTH_LONG).show();
-                                return true;
-                            }
-                        });
+                        Toast.makeText(getApplicationContext(), tables.get(position).getAssemblymanName(), Toast.LENGTH_SHORT).show();
+//                        view.setOnLongClickListener(new View.OnLongClickListener() {
+//                            @Override
+//                            public boolean onLongClick(View v) {
+//                                Toast.makeText(getApplicationContext(), tables.get(position).getAssemblymanName() + " 관심의원에 등록하시겠습니까?", Toast.LENGTH_SHORT).show();
+//                                return true;
+//                            }
+//                        });
                     }
                 })
         );
+
+        mRgroup = (RadioGroup) findViewById(R.id.radio_group);
+        mRgroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId){
+                    case R.id.radio_up:
+                        changeSorting(0);
+                        break;
+                    case R.id.radio_fav:
+//                        changeSorting(1);
+                        Toast.makeText(getApplicationContext(), "준비중입니다...", Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.radio_name:
+                        changeSorting(2);
+                        break;
+                }
+            }
+        });
     }
 
     private void initializeAdapter() {
@@ -125,10 +148,14 @@ public class AssemblymenListActivity extends ActionBarActivity {
 
     private void initializeData() {
         tables = new ArrayList<>();
-
-        database.selectAssemblymenList(0);
+        tables = database.selectAssemblymenList(0);      // modDttm:0, 인기순:1, 이름순:2
     }
 
+    private void changeSorting(int type){
+        tables = database.selectAssemblymenList(type);
+        initializeAdapter();
+//        adapter.notifyDataSetChanged();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

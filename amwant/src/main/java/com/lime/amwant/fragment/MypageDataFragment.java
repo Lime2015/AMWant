@@ -1,6 +1,7 @@
 package com.lime.amwant.fragment;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,10 +10,10 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -41,14 +42,14 @@ public class MypageDataFragment extends Fragment {
 
     private static String TAG = "MypageDataFragment";
 
-    private RecyclerView rv;
-    private RVMypageDataAdapter adapter;
-    private List<TableInfoListItem> tables;
-    private List<Boolean> download;
+    private RecyclerView mRv;
+    private RVMypageDataAdapter mAdapter;
+    private List<TableInfoListItem> mTables;
+    private List<Boolean> mDownloadList;
 
-    private AMWDatabase database;
-    private CheckTagResult serverTag;
-    private CheckTagResult dbTag;
+    private AMWDatabase mDatabase;
+    private CheckTagResult mServerTag;
+    private CheckTagResult mDbTag;
 
     public static MypageDataFragment newInstance() {
         MypageDataFragment f = new MypageDataFragment();
@@ -63,24 +64,24 @@ public class MypageDataFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_mypage_data, container, false);
 //        ViewCompat.setElevation(rootView, 50);
 
-        rv = (RecyclerView) rootView.findViewById(R.id.rv_mypage_data);
+        mRv = (RecyclerView) rootView.findViewById(R.id.rv_mypage_data);
 
         LinearLayoutManager llm = new LinearLayoutManager(rootView.getContext());
-        rv.setLayoutManager(llm);
-        rv.setHasFixedSize(true);
+        mRv.setLayoutManager(llm);
+        mRv.setHasFixedSize(true);
 
         initializeDatabase(rootView.getContext());
         initializeData();
         initializeAdapter();
 
-        rv.addOnItemTouchListener(new RecyclerItemClickListener(rootView.getContext(), new RecyclerItemClickListener.OnItemClickListener() {
+        mRv.addOnItemTouchListener(new RecyclerItemClickListener(rootView.getContext(), new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
                         // do whatever
 //                        Log.d(TAG, "RecycerItem click event view:" + view);
 //                        Log.d(TAG, "RecycerItem click event position:" + position);
-                        if(download.get(position)){
-                            switch (position){
+                        if (mDownloadList.get(position)) {
+                            switch (position) {
                                 case 0:
                                     requestAssemblyman();
                                     break;
@@ -104,26 +105,26 @@ public class MypageDataFragment extends Fragment {
     }
 
     private void initializeData() {
-        tables = new ArrayList<>();
-        tables.add(new TableInfoListItem("국회의원", 0, 0, R.drawable.assemblyman, R.drawable.check_orange));
-        tables.add(new TableInfoListItem("의안", 0, 0, R.drawable.bill, R.drawable.check_orange));
-        tables.add(new TableInfoListItem("상임위원회", 0, 0, R.drawable.committee, R.drawable.check_orange));
-        tables.add(new TableInfoListItem("본회의", 0, 0, R.drawable.assembly, R.drawable.check_orange));
-        tables.add(new TableInfoListItem("정당", 0, 0, R.drawable.committee, R.drawable.check_orange));
-        tables.add(new TableInfoListItem("표결", 0, 0, R.drawable.assembly, R.drawable.check_orange));
+        mTables = new ArrayList<>();
+        mTables.add(new TableInfoListItem("국회의원", 0, 0, R.drawable.assemblyman, R.drawable.check_orange));
+        mTables.add(new TableInfoListItem("의안", 0, 0, R.drawable.bill, R.drawable.check_orange));
+        mTables.add(new TableInfoListItem("상임위원회", 0, 0, R.drawable.committee, R.drawable.check_orange));
+        mTables.add(new TableInfoListItem("본회의", 0, 0, R.drawable.assembly, R.drawable.check_orange));
+        mTables.add(new TableInfoListItem("정당", 0, 0, R.drawable.committee, R.drawable.check_orange));
+        mTables.add(new TableInfoListItem("표결", 0, 0, R.drawable.assembly, R.drawable.check_orange));
 
-        download = new ArrayList<>();
-        download.add(false);
-        download.add(false);
-        download.add(false);
-        download.add(false);
-        download.add(false);
-        download.add(false);
+        mDownloadList = new ArrayList<>();
+        mDownloadList.add(false);
+        mDownloadList.add(false);
+        mDownloadList.add(false);
+        mDownloadList.add(false);
+        mDownloadList.add(false);
+        mDownloadList.add(false);
     }
 
     private void initializeAdapter() {
-        adapter = new RVMypageDataAdapter(tables);
-        rv.setAdapter(adapter);
+        mAdapter = new RVMypageDataAdapter(mTables);
+        mRv.setAdapter(mAdapter);
         checkServerTag();
     }
 
@@ -139,28 +140,29 @@ public class MypageDataFragment extends Fragment {
                 Log.d(TAG, "checkServerTag result:" + content);
 
                 Gson gson = new GsonBuilder().create();
-                serverTag = gson.fromJson(content, CheckTagResult.class);
-                dbTag = database.checkTag();
+                mServerTag = gson.fromJson(content, CheckTagResult.class);
+                mDbTag = mDatabase.checkTag();
 
-                for (int i = 0; i < serverTag.getTagList().size(); i++) {
-                    TableInfoListItem item = tables.get(i);
-                    item.setAppTag(dbTag.getTagList().get(i));
-                    item.setServerTag(serverTag.getTagList().get(i));
-                    if (serverTag.getTagList().get(i) > dbTag.getTagList().get(i)) {
+                for (int i = 0; i < mServerTag.getTagList().size(); i++) {
+                    TableInfoListItem item = mTables.get(i);
+                    item.setAppTag(mDbTag.getTagList().get(i));
+                    item.setServerTag(mServerTag.getTagList().get(i));
+                    if (mServerTag.getTagList().get(i) > mDbTag.getTagList().get(i)) {
                         item.setIcRefresh(R.drawable.refresh);
-                        download.set(i, true);
+                        mDownloadList.set(i, true);
                     } else {
                         item.setIcRefresh(R.drawable.check_orange);
-                        download.set(i, false);
+                        mDownloadList.set(i, false);
                     }
                 }
 
-                adapter.notifyDataSetChanged();
+                mAdapter.notifyDataSetChanged();
             }
 
             @Override
             public void onFailure(int statusCode, Throwable error, String content) {
                 Log.d(TAG, "checkServerTag response fail:" + statusCode);
+                Toast.makeText(getActivity().getApplicationContext(),"서버접속 실패!! 잠시후에 다시 시도하세요.", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -176,7 +178,7 @@ public class MypageDataFragment extends Fragment {
 
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
-        params.put("tag", dbTag.getTagList().get(0));
+        params.put("tag", mDbTag.getTagList().get(0));
 
         String url = getResources().getString(R.string.server_url) + getResources().getString(R.string.server_request_assemblyman);
         client.post(url, new AsyncHttpResponseHandler() {
@@ -188,7 +190,7 @@ public class MypageDataFragment extends Fragment {
                 Gson gson = new GsonBuilder().create();
                 List<Assemblyman> assList = gson.fromJson(content, new TypeToken<List<Assemblyman>>(){}.getType());
 
-                if(database.insertAssemblymenList(assList)){
+                if(mDatabase.insertAssemblymenList(assList)){
                     Log.d(TAG,"assemblyman db insert success!!");
                     checkServerTag();
                 }
@@ -197,19 +199,20 @@ public class MypageDataFragment extends Fragment {
             @Override
             public void onFailure(int statusCode, Throwable error, String content) {
                 Log.d(TAG, "requestAssemblyman response fail:" + statusCode);
+                Toast.makeText(getActivity().getApplicationContext(),"서버접속 실패!! 잠시후에 다시 시도하세요.", Toast.LENGTH_LONG).show();
             }
         });
 
     }
 
     private void initializeDatabase(Context context) {
-        if (database != null) {
-            database.close();
-            database = null;
+        if (mDatabase != null) {
+            mDatabase.close();
+            mDatabase = null;
         }
 
-        database = AMWDatabase.getInstance(context);
-        boolean isOpen = database.open();
+        mDatabase = AMWDatabase.getInstance(context);
+        boolean isOpen = mDatabase.open();
         if (isOpen) {
             Log.d(TAG, "WatchAssembly database is open.");
         } else {

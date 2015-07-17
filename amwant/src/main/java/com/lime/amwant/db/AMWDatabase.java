@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.google.android.gms.internal.cu;
+import com.lime.amwant.listitem.AssemblymanListItem;
 import com.lime.amwant.result.CheckTagResult;
 import com.lime.amwant.vo.Assemblyman;
 
@@ -195,6 +196,41 @@ public class AMWDatabase {
             return false;
         }
         return true;
+    }
+
+    public List<AssemblymanListItem> selectAssemblymenList(int type) {
+        List<AssemblymanListItem> list = null;
+        String sql="";
+
+        switch (type){
+            case 0:     // mod_dttm
+                sql="select * from assemblyman order by mod_dttm";
+                break;
+            case 1:     // favorite
+                break;
+            case 2:     // naming
+                sql="select * from assemblyman order by assemblyman_name";
+                break;
+        }
+
+        Cursor cursor = rawQuery(sql);
+
+        if(cursor.moveToFirst()){
+            list = new ArrayList<>();
+            while (cursor.moveToNext()){
+                AssemblymanListItem item = new AssemblymanListItem();
+                item.setAssemblymanName(cursor.getString(1));
+                item.setCountDislike(0);
+                item.setCountLike(0);
+                item.setIdPhoto(0);
+                item.setLocalConstituency(cursor.getString(8));
+                item.setPartyName(cursor.getString(7));
+
+                list.add(item);
+            }
+        }
+
+        return list;
     }
 
 

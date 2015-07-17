@@ -18,33 +18,33 @@
             android:layout_height="wrap_content">
 
             <RadioGroup
-                android:id="@+id/radiogroup_ass"
+                android:id="@+id/radio_group"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checkedButton="@+id/radio_ass_up"
+                android:checkedButton="@+id/radio_up"
                 android:orientation="horizontal">
 
                 <RadioButton
-                    android:id="@id/radio_ass_up"
+                    android:id="@id/radio_up"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="업데이트" />
 
                 <RadioButton
-                    android:id="@+id/radio_ass_fav"
+                    android:id="@+id/radio_fav"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="인기" />
 
                 <RadioButton
-                    android:id="@+id/radio_ass_cha"
+                    android:id="@+id/radio_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="색인" />
             </RadioGroup>
 
             <android.support.v7.widget.RecyclerView
-                android:longClickable="true"
+                android:scrollbarAlwaysDrawVerticalTrack="true"
                 android:id="@+id/rv_assemblyman"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
