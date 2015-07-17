@@ -142,6 +142,10 @@ public class AssemblymenListActivity extends ActionBarActivity {
     }
 
     private void initializeAdapter() {
+        if(tables==null){
+            Toast.makeText(getApplicationContext(), "마이페이지>데이터>국회의원 데이터를 다운받으세요.", Toast.LENGTH_SHORT).show();
+            return;
+        }
         adapter = new RVAssemblymenListAdapter(tables);
         rv.setAdapter(adapter);
     }

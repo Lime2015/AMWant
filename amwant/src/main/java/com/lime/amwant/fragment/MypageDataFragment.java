@@ -148,7 +148,7 @@ public class MypageDataFragment extends Fragment {
                     item.setAppTag(mDbTag.getTagList().get(i));
                     item.setServerTag(mServerTag.getTagList().get(i));
                     if (mServerTag.getTagList().get(i) > mDbTag.getTagList().get(i)) {
-                        item.setIcRefresh(R.drawable.refresh);
+                        item.setIcRefresh(R.drawable.download);
                         mDownloadList.set(i, true);
                     } else {
                         item.setIcRefresh(R.drawable.check_orange);
