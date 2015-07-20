@@ -109,7 +109,8 @@ public class AssemblymenListActivity extends ActionBarActivity {
                     @Override
                     public void onItemClick(View view, final int position) {
                         // do whatever
-                        Toast.makeText(getApplicationContext(), tables.get(position).getAssemblymanName(), Toast.LENGTH_SHORT).show();
+                        shwoAssemblymanActivity(tables.get(position).getAssemblymanName());
+//                        Toast.makeText(getApplicationContext(), tables.get(position).getAssemblymanName(), Toast.LENGTH_SHORT).show();
 //                        view.setOnLongClickListener(new View.OnLongClickListener() {
 //                            @Override
 //                            public boolean onLongClick(View v) {
@@ -139,6 +140,12 @@ public class AssemblymenListActivity extends ActionBarActivity {
                 }
             }
         });
+    }
+
+    private void shwoAssemblymanActivity(String assemblymanName) {
+        Intent intent = new Intent(this, AssemblymanActivity.class);
+        intent.putExtra("name", assemblymanName);
+        startActivity(intent);
     }
 
     private void initializeAdapter() {

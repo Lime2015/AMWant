@@ -1,18 +1,23 @@
 package com.lime.amwant.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kakao.APIErrorResult;
@@ -20,6 +25,7 @@ import com.kakao.LogoutResponseCallback;
 import com.kakao.UserManagement;
 import com.lime.amwant.R;
 import com.lime.amwant.vo.MemberInfo;
+import com.squareup.picasso.Picasso;
 
 /**
  * Created by SeongSan on 2015-06-24.
@@ -46,18 +52,36 @@ public class MainMenuActivity extends ActionBarActivity {
         Intent intent = getIntent();
         memberInfo = (MemberInfo) intent.getSerializableExtra("memberInfo");
 
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         ActionBar bar = getSupportActionBar();
         bar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.primary_dark_material_light)));
+
+//        ActionBar bar = getSupportActionBar();
+//        bar.setDisplayShowHomeEnabled(false);
+//        bar.setDisplayShowTitleEnabled(false);
+//        LayoutInflater mInflater = LayoutInflater.from(this);
+//
+//        View mCustomView = mInflater.inflate(R.layout.custom_actionbar, null);
+//        TextView mTitleTextView = (TextView) mCustomView.findViewById(R.id.title_text);
+
         if (memberInfo == null) {
             bar.setTitle("둘러보기");
+//            mTitleTextView.setText("둘러보기");
         } else if (memberInfo.getMemberId().equals("")) {
             bar.setTitle("둘러보기");
+//            mTitleTextView.setText("둘러보기");
         } else {
             bar.setTitle(memberInfo.getMemberNickname());
+//            mTitleTextView.setText(memberInfo.getMemberNickname());
+//            ImageView imageView = (ImageView) mCustomView.findViewById(R.id.icThumbnail);
+//            Picasso.with(this).load(memberInfo.getUrlThumbnail()).into(imageView);
+//            bar.setIcon(new BitmapDrawable(getResources(),new Bitmap()));
         }
+
+//        bar.setCustomView(mCustomView);
+//        bar.setDisplayShowCustomEnabled(true);
 
         btnViewMypage = (Button) findViewById(R.id.btnViewMypage);
         btnViewMypage.setOnClickListener(new OnClickListener() {

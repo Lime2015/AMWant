@@ -13,6 +13,7 @@ public class MemberInfo implements Serializable {
     private String address;
     private Date birthDate;
     private String gender;
+    private String urlThumbnail;
 
     public MemberInfo(){
         memberId = "";
@@ -25,6 +26,7 @@ public class MemberInfo implements Serializable {
         this.address = null;
         this.birthDate = null;
         this.gender = null;
+        this.urlThumbnail = null;
     }
 
     public String getMemberId() {
@@ -74,4 +76,13 @@ public class MemberInfo implements Serializable {
     public void setGender(String gender) {
         this.gender = gender;
     }
+
+    public String getUrlThumbnail() {
+        return urlThumbnail;
+    }
+
+    public void setUrlThumbnail(String urlThumbnail) {
+        this.urlThumbnail = urlThumbnail;
+    }
+
 }

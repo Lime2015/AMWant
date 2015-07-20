@@ -66,6 +66,7 @@ public class MainLoginTypeActivity extends ActionBarActivity {
             if (id > 0) {
                 Log.d(TAG, "로그인정보:" + id + "/" + nickname);
                 kakaoMemberInfo = new MemberInfo("" + id, 1, nickname);
+                kakaoMemberInfo.setUrlThumbnail(userProfile.getThumbnailImagePath());
                 // web server 회원인지 체크
                 checkMemberInServer();
             } else {
