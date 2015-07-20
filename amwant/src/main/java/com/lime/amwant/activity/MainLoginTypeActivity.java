@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -199,6 +200,7 @@ public class MainLoginTypeActivity extends ActionBarActivity {
             @Override
             public void onFailure(int statusCode, Throwable error, String content) {
                 Log.d(TAG, "checkMemberInServer response fail:" + statusCode);
+                Toast.makeText(getApplicationContext(), "서버접속 실패!! 잠시후에 다시 시도하세요.", Toast.LENGTH_SHORT).show();
             }
         });
     }

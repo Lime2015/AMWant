@@ -1,5 +1,6 @@
 package com.lime.amwant.fragment;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -51,6 +52,8 @@ public class MypageDataFragment extends Fragment {
     private CheckTagResult mServerTag;
     private CheckTagResult mDbTag;
 
+    private ProgressBar mProgressBar;
+
     public static MypageDataFragment newInstance() {
         MypageDataFragment f = new MypageDataFragment();
         Bundle b = new Bundle();
@@ -65,6 +68,7 @@ public class MypageDataFragment extends Fragment {
 //        ViewCompat.setElevation(rootView, 50);
 
         mRv = (RecyclerView) rootView.findViewById(R.id.rv_mypage_data);
+        mProgressBar = (ProgressBar) rootView.findViewById(R.id.pb_data);
 
         LinearLayoutManager llm = new LinearLayoutManager(rootView.getContext());
         mRv.setLayoutManager(llm);
@@ -134,6 +138,21 @@ public class MypageDataFragment extends Fragment {
         AsyncHttpClient client = new AsyncHttpClient();
         String url = getResources().getString(R.string.server_url) + getResources().getString(R.string.server_check_tag);
         client.post(url, new AsyncHttpResponseHandler() {
+
+            @Override
+            public void onStart() {
+                super.onStart();
+                mProgressBar.setVisibility(ProgressBar.VISIBLE);
+            }
+
+            @Override
+            public void onProgress(int position, int length) {
+                super.onProgress(position, length);
+
+                mProgressBar.setProgress(position);
+                mProgressBar.setMax(length);
+            }
+
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String content = new String(responseBody);
@@ -160,9 +179,15 @@ public class MypageDataFragment extends Fragment {
             }
 
             @Override
+            public void onFinish() {
+                super.onFinish();
+                mProgressBar.setVisibility(ProgressBar.GONE);
+            }
+
+            @Override
             public void onFailure(int statusCode, Throwable error, String content) {
                 Log.d(TAG, "checkServerTag response fail:" + statusCode);
-                Toast.makeText(getActivity().getApplicationContext(),"서버접속 실패!! 잠시후에 다시 시도하세요.", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity().getApplicationContext(), "서버접속 실패!! 잠시후에 다시 시도하세요.", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -182,6 +207,23 @@ public class MypageDataFragment extends Fragment {
 
         String url = getResources().getString(R.string.server_url) + getResources().getString(R.string.server_request_assemblyman);
         client.post(url, new AsyncHttpResponseHandler() {
+
+            @Override
+            public void onStart() {
+                super.onStart();
+                mProgressBar.setVisibility(ProgressBar.VISIBLE);
+            }
+
+            @Override
+            public void onProgress(int position, int length) {
+                super.onProgress(position, length);
+
+
+                Log.d(TAG, "ProgressBar position:" + position / 1000 + " length:" + length);
+                mProgressBar.setProgress(position / 1000);
+//                mProgressBar.setMax(length);
+            }
+
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String content = new String(responseBody);
@@ -190,16 +232,22 @@ public class MypageDataFragment extends Fragment {
                 Gson gson = new GsonBuilder().create();
                 List<Assemblyman> assList = gson.fromJson(content, new TypeToken<List<Assemblyman>>(){}.getType());
 
-                if(mDatabase.insertAssemblymenList(assList)){
-                    Log.d(TAG,"assemblyman db insert success!!");
+                if (mDatabase.insertAssemblymenList(assList)) {
+                    Log.d(TAG, "assemblyman db insert success!!");
                     checkServerTag();
                 }
             }
 
             @Override
+            public void onFinish() {
+                super.onFinish();
+                mProgressBar.setVisibility(ProgressBar.INVISIBLE);
+            }
+
+            @Override
             public void onFailure(int statusCode, Throwable error, String content) {
                 Log.d(TAG, "requestAssemblyman response fail:" + statusCode);
-                Toast.makeText(getActivity().getApplicationContext(),"서버접속 실패!! 잠시후에 다시 시도하세요.", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity().getApplicationContext(), "서버접속 실패!! 잠시후에 다시 시도하세요.", Toast.LENGTH_SHORT).show();
             }
         });
 

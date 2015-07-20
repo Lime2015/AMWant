@@ -106,13 +106,13 @@ public class WASignupActivity extends Activity {
                 if (serverResult.getResult() == 1) {
                     // 정상 신규 등록
                     Log.d(TAG, "complete to signup in server");
-                    Toast.makeText(getApplicationContext(), "Success Signup !!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Success Signup !!", Toast.LENGTH_SHORT).show();
 
                     redirectKakaoActivity();
                 } else {
                     // 신규 등록 실패
                     Log.d(TAG, "fail to request new member info in server");
-                    Toast.makeText(getApplicationContext(), "fail to request new member info in server", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "fail to request new member info in server", Toast.LENGTH_SHORT).show();
 
                     redirectKakaoActivity();
                 }
@@ -121,7 +121,7 @@ public class WASignupActivity extends Activity {
             @Override
             public void onFailure(int statusCode, Throwable error, String content) {
                 Log.d(TAG, "AsyncHttpClient response fail:" + statusCode);
-                Toast.makeText(getApplicationContext(), "AsyncHttpClient response fail:" + statusCode, Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "서버접속 실패!! 잠시후에 다시 시도하세요.", Toast.LENGTH_SHORT).show();
 
                 redirectKakaoActivity();
             }

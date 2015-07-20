@@ -6,7 +6,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.google.android.gms.internal.cu;
 import com.lime.amwant.listitem.AssemblymanListItem;
 import com.lime.amwant.result.CheckTagResult;
 import com.lime.amwant.vo.Assemblyman;
@@ -222,7 +221,7 @@ public class AMWDatabase {
                 item.setAssemblymanName(cursor.getString(1));
                 item.setCountDislike(0);
                 item.setCountLike(0);
-                item.setIdPhoto(0);
+                item.setUrlPhoto(cursor.getString(3));
                 item.setLocalConstituency(cursor.getString(8));
                 item.setPartyName(cursor.getString(7));
 

@@ -4,7 +4,7 @@ package com.lime.amwant.listitem;
  * Created by SeongSan on 2015-06-30.
  */
 public class AssemblymanListItem {
-    private int idPhoto;
+    private String urlPhoto;
     private String assemblymanName;
     private String partyName;
     private String localConstituency;
@@ -13,8 +13,8 @@ public class AssemblymanListItem {
 
     public AssemblymanListItem(){}
 
-    public AssemblymanListItem(int idPhoto, String assemblymanName, String partyName, String localConstituency, int countLike, int countDislike) {
-        this.idPhoto = idPhoto;
+    public AssemblymanListItem(String urlPhoto, String assemblymanName, String partyName, String localConstituency, int countLike, int countDislike) {
+        this.urlPhoto = urlPhoto;
         this.assemblymanName = assemblymanName;
         this.partyName = partyName;
         this.localConstituency = localConstituency;
@@ -22,12 +22,12 @@ public class AssemblymanListItem {
         this.countDislike = countDislike;
     }
 
-    public int getIdPhoto() {
-        return idPhoto;
+    public String getUrlPhoto() {
+        return urlPhoto;
     }
 
-    public void setIdPhoto(int idPhoto) {
-        this.idPhoto = idPhoto;
+    public void setUrlPhoto(String urlPhoto) {
+        this.urlPhoto = urlPhoto;
     }
 
     public String getAssemblymanName() {

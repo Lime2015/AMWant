@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/cv_assemblyman"
-    android:longClickable="true"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:longClickable="true">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -12,22 +12,84 @@
 
         <ImageView
             android:id="@+id/ass_photo"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="30dp"
             android:layout_marginRight="10dp"
             android:scaleType="fitCenter" />
 
+        <LinearLayout
+            android:id="@+id/linear_vote"
+            android:layout_toRightOf="@+id/ass_photo"
+            android:layout_marginRight="20dp"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/ic_like"
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="5dp"
+                    android:padding="0dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/like" />
+
+                <TextView
+                    android:id="@+id/count_like"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:layout_toLeftOf="@+id/ic_dislike"
+                    android:text="0"
+                    android:textColor="#ff2771c3"
+                    android:textSize="10sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="3dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/ic_dislike"
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="3dp"
+                    android:padding="0dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/dislike" />
+
+                <TextView
+                    android:id="@+id/count_dislike"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textColor="#FF0202"
+                    android:textSize="10sp" />
+
+            </LinearLayout>
+        </LinearLayout>
+        <RelativeLayout
+            android:id="@+id/rela_name"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/linear_vote">
         <TextView
             android:id="@+id/ass_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
-            android:layout_toRightOf="@+id/ass_photo"
             android:text="홍길동"
             android:textSize="16sp"
             android:textStyle="bold" />
@@ -37,8 +99,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/ass_name"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_below="@+id/ass_name"
             android:text="율도당"
             android:textSize="10sp" />
 
@@ -46,54 +109,12 @@
             android:id="@+id/ass_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/ass_party_name"
+            android:layout_below="@+id/ass_name"
+            android:layout_marginTop="5dp"
             android:text="율도시 율도구"
             android:textSize="10sp" />
-
-        <ImageView
-            android:id="@+id/ic_like"
-            android:layout_width="10dp"
-            android:layout_height="10dp"
-            android:layout_toLeftOf="@+id/count_like"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="5dp"
-            android:padding="0dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/like" />
-
-        <TextView
-            android:id="@+id/count_like"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toLeftOf="@+id/ic_dislike"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="5dp"
-            android:text="0"
-            android:textColor="#ff2771c3"
-            android:textSize="10sp" />
-
-        <ImageView
-            android:id="@+id/ic_dislike"
-            android:layout_width="10dp"
-            android:layout_height="10dp"
-            android:layout_toLeftOf="@+id/count_dislike"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="5dp"
-            android:padding="0dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/dislike" />
-
-        <TextView
-            android:id="@+id/count_dislike"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="20dp"
-            android:text="0"
-            android:textColor="#FF0202"
-            android:textSize="10sp" />
+        </RelativeLayout>
     </RelativeLayout>
 
 </android.support.v7.widget.CardView>
