@@ -94,7 +94,7 @@ public class WASignupActivity extends Activity {
         Log.d(TAG, "memberJSON:" + gson.toJson(kakaoMemberInfo));
         params.put("memberJSON", gson.toJson(kakaoMemberInfo));
 
-        client.post(getResources().getString(R.string.server_url) + getResources().getString(R.string.server_save_member), params, new AsyncHttpResponseHandler() {
+        client.post(getResources().getString(R.string.server_url) + getResources().getString(R.string.server_name)  + getResources().getString(R.string.server_save_member), params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(String content) {
 

@@ -91,6 +91,7 @@ public class MypageDataFragment extends Fragment {
                                     requestAssemblyman();
                                     break;
                                 case 1:
+                                    requestBill();
                                     break;
                                 case 2:
                                     break;
@@ -106,12 +107,68 @@ public class MypageDataFragment extends Fragment {
 
                     @Override
                     public void onItemLongClick(MotionEvent e) {
-                        
+
                     }
                 })
         );
 
         return rootView;
+    }
+
+    private void requestBill() {
+
+        Log.d(TAG, "requestBill start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+
+        AsyncHttpClient client = new AsyncHttpClient();
+        RequestParams params = new RequestParams();
+        params.put("tag", mDbTag.getTagList().get(1));
+
+        String url = getResources().getString(R.string.server_url) + getResources().getString(R.string.server_name) + getResources().getString(R.string.server_request_assemblyman);
+        client.post(url, new AsyncHttpResponseHandler() {
+
+            @Override
+            public void onStart() {
+                super.onStart();
+                mProgressBar.setVisibility(ProgressBar.VISIBLE);
+            }
+
+            @Override
+            public void onProgress(int position, int length) {
+                super.onProgress(position, length);
+
+
+                Log.d(TAG, "ProgressBar position:" + position / 1000 + " length:" + length);
+                mProgressBar.setProgress(position / 1000);
+//                mProgressBar.setMax(length);
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String content = new String(responseBody);
+                Log.d(TAG, "requestAssemblyman result:" + content);
+
+                Gson gson = new GsonBuilder().create();
+                List<Assemblyman> assList = gson.fromJson(content, new TypeToken<List<Assemblyman>>(){}.getType());
+
+                if (mDatabase.insertAssemblymenList(assList)) {
+                    Log.d(TAG, "assemblyman db insert success!!");
+                    checkServerTag();
+                }
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                mProgressBar.setVisibility(ProgressBar.INVISIBLE);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Throwable error, String content) {
+                Log.d(TAG, "requestAssemblyman response fail:" + statusCode);
+                Toast.makeText(getActivity().getApplicationContext(), "서버접속 실패!! 잠시후에 다시 시도하세요.", Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
     private void initializeData() {
@@ -142,7 +199,7 @@ public class MypageDataFragment extends Fragment {
         Log.d(TAG, "checkServerTag start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
         AsyncHttpClient client = new AsyncHttpClient();
-        String url = getResources().getString(R.string.server_url) + getResources().getString(R.string.server_check_tag);
+        String url = getResources().getString(R.string.server_url) + getResources().getString(R.string.server_name)  + getResources().getString(R.string.server_check_tag);
         client.post(url, new AsyncHttpResponseHandler() {
 
             @Override
@@ -211,7 +268,7 @@ public class MypageDataFragment extends Fragment {
         RequestParams params = new RequestParams();
         params.put("tag", mDbTag.getTagList().get(0));
 
-        String url = getResources().getString(R.string.server_url) + getResources().getString(R.string.server_request_assemblyman);
+        String url = getResources().getString(R.string.server_url) + getResources().getString(R.string.server_name)  + getResources().getString(R.string.server_request_assemblyman);
         client.post(url, new AsyncHttpResponseHandler() {
 
             @Override

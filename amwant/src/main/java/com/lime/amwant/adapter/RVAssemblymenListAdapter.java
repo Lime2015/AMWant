@@ -1,5 +1,6 @@
 package com.lime.amwant.adapter;
 
+import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -43,9 +44,11 @@ public class RVAssemblymenListAdapter extends RecyclerView.Adapter<RVAssemblymen
     }
 
     List<AssemblymanListItem> tables;
+    Context context;
 
-    public RVAssemblymenListAdapter(List<AssemblymanListItem> tables) {
+    public RVAssemblymenListAdapter(Context context, List<AssemblymanListItem> tables) {
         this.tables = tables;
+        this.context = context;
     }
 
     @Override
@@ -70,7 +73,8 @@ public class RVAssemblymenListAdapter extends RecyclerView.Adapter<RVAssemblymen
 
         //사진 다운로드
         String url = tables.get(i).getUrlPhoto();
-        new ImageLoadTask(url, dataViewHolder.assPhoto).execute();
+        //new ImageLoadTask(url, dataViewHolder.assPhoto).execute();
+        Picasso.with(context).load(url).into(dataViewHolder.assPhoto);
     }
 
 
