@@ -1,31 +1,26 @@
 package com.lime.amwant.activity;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kakao.APIErrorResult;
 import com.kakao.LogoutResponseCallback;
 import com.kakao.UserManagement;
 import com.lime.amwant.R;
+import com.lime.amwant.statics.AMWStatic;
 import com.lime.amwant.vo.MemberInfo;
-import com.squareup.picasso.Picasso;
 
 /**
  * Created by SeongSan on 2015-06-24.
@@ -87,35 +82,35 @@ public class MainMenuActivity extends ActionBarActivity {
         btnViewMypage.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                viewSubmain(4);
+                AMWStatic.viewSubActivity(view.getContext(), 4, memberInfo);
             }
         });
         btnViewAssList = (Button) findViewById(R.id.btnViewAssemblymanList);
         btnViewAssList.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                viewSubmain(0);
+                AMWStatic.viewSubActivity(view.getContext(), 0, memberInfo);
             }
         });
         btnViewBillList = (Button) findViewById(R.id.btnViewBillList);
         btnViewBillList.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                viewSubmain(1);
+                AMWStatic.viewSubActivity(view.getContext(), 1, memberInfo);
             }
         });
         btnViewHall = (Button) findViewById(R.id.btnViewHallOfFame);
         btnViewHall.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                viewSubmain(2);
+                AMWStatic.viewSubActivity(view.getContext(), 2, memberInfo);
             }
         });
         btnViewPublic = (Button) findViewById(R.id.btnViewPublicOpinion);
         btnViewPublic.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                viewSubmain(3);
+                AMWStatic.viewSubActivity(view.getContext(), 3, memberInfo);
             }
         });
 
@@ -147,29 +142,6 @@ public class MainMenuActivity extends ActionBarActivity {
         Intent intent = new Intent(this, MainLoginTypeActivity.class);
         startActivity(intent);
         finish();
-    }
-
-    private void viewSubmain(int index) {
-        Intent intent = null;
-        switch (index) {
-            case 0:
-                intent = new Intent(this, AssemblymenListActivity.class);
-                break;
-            case 1:
-                intent = new Intent(this, BillListActivity.class);
-                break;
-            case 2:
-                intent = new Intent(this, HallOfFameActivity.class);
-                break;
-            case 3:
-                intent = new Intent(this, PublicOpinionsActivity.class);
-                break;
-            case 4:
-                intent = new Intent(this, MypageActivity.class);
-                break;
-        }
-        intent.putExtra("memberInfo", memberInfo);
-        startActivity(intent);
     }
 
     @Override

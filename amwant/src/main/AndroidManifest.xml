@@ -70,7 +70,7 @@
         <activity
             android:name=".activity.BillActivity"
             android:launchMode="singleTask"
-            android:theme="@style/AssTheme"
+            android:theme="@style/BillTheme"
             android:windowSoftInputMode="adjustResize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

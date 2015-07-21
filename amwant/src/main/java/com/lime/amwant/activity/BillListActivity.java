@@ -11,18 +11,32 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.lime.amwant.R;
+import com.lime.amwant.adapter.RVAssemblymenListAdapter;
+import com.lime.amwant.db.AMWDatabase;
+import com.lime.amwant.listener.RecyclerItemClickListener;
+import com.lime.amwant.listitem.AssemblymanListItem;
+import com.lime.amwant.statics.AMWStatic;
 import com.lime.amwant.vo.MemberInfo;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Administrator on 2015-07-13.
@@ -41,8 +55,15 @@ public class BillListActivity extends ActionBarActivity {
 
     private MemberInfo memberInfo;
 
+    private RadioGroup mRgroup;
+    private RecyclerView rv;
+    private RVAssemblymenListAdapter adapter;
+    private List<AssemblymanListItem> tables;
+    private AMWDatabase database;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_list);
 
@@ -66,14 +87,89 @@ public class BillListActivity extends ActionBarActivity {
 
         lvNavList.setAdapter(
                 new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, navItems));
-        lvNavList.setOnItemClickListener(new DrawerItemClickListener());
+        lvNavList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                dlDrawer.closeDrawer(lvNavList);
+                AMWStatic.viewSubActivity(view.getContext(), position, memberInfo);
+            }
+        });
 
         dlDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         dtToggle = new ActionBarDrawerToggle(this, dlDrawer, 0, 0);
         dlDrawer.setDrawerListener(dtToggle);
 
+        rv = (RecyclerView) findViewById(R.id.rv_cardList);
+
+        LinearLayoutManager llm = new LinearLayoutManager(this);
+        rv.setLayoutManager(llm);
+        rv.setHasFixedSize(true);
+
+        initializeDatabase(this);
+        initializeData();
+        initializeAdapter();
+
+
+        rv.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, final int position) {
+                        // do whatever
+                        showBillActivity(position);
+                    }
+
+                    @Override
+                    public void onItemLongClick(MotionEvent e) {
+                        View childView = rv.findChildViewUnder(e.getX(), e.getY());
+                        int position = rv.getChildPosition(childView);
+                        Toast.makeText(getApplicationContext(), tables.get(position).getAssemblymanName() + " 관심의안 등록~~", Toast.LENGTH_SHORT).show();
+                    }
+                })
+        );
+
+        mRgroup = (RadioGroup) findViewById(R.id.radio_group);
+        mRgroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId){
+                    case R.id.radio_up:
+                        changeSorting(0);
+                        break;
+                    case R.id.radio_fav:
+//                        changeSorting(1);
+                        Toast.makeText(getApplicationContext(), "준비중입니다...", Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.radio_name:
+                        changeSorting(2);
+                        break;
+                }
+            }
+        });
     }
 
+    private void showBillActivity(int position) {
+        Intent intent = new Intent(this, BillActivity.class);
+//        intent.putExtra("id", billId);
+        startActivity(intent);
+    }
+
+    private void initializeAdapter() {
+        if(tables==null){
+            Toast.makeText(getApplicationContext(), "마이페이지>데이터>국회의원 데이터를 다운받으세요.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+//        adapter = new RVAssemblymenListAdapter(this, tables);
+        rv.setAdapter(adapter);
+    }
+
+    private void initializeData() {
+        tables = new ArrayList<>();
+//        tables = database.selectAssemblymenList(0);      // modDttm:0, 인기순:1, 이름순:2
+    }
+
+    private void changeSorting(int type){
+//        tables = database.selectAssemblymenList(type);
+//        initializeAdapter();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -118,38 +214,20 @@ public class BillListActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private class DrawerItemClickListener implements ListView.OnItemClickListener {
-
-        @Override
-        public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
-            dlDrawer.closeDrawer(lvNavList);
-            if (position != 1) {
-                viewSubmain(position);
-            }
+    private void initializeDatabase(Context context) {
+        if (database != null) {
+            database.close();
+            database = null;
         }
-    }
 
-    private void viewSubmain(int index) {
-        Intent intent = null;
-        switch (index){
-            case 0:
-                intent = new Intent(this, AssemblymenListActivity.class);
-                break;
-            case 1:
-                intent = new Intent(this, BillListActivity.class);
-                break;
-            case 2:
-                intent = new Intent(this, HallOfFameActivity.class);
-                break;
-            case 3:
-                intent = new Intent(this, PublicOpinionsActivity.class);
-                break;
-            case 4:
-                intent = new Intent(this, MypageActivity.class);
-                break;
+        database = AMWDatabase.getInstance(context);
+        boolean isOpen = database.open();
+        if (isOpen) {
+            Log.d(TAG, "WatchAssembly database is open.");
+        } else {
+            Log.d(TAG, "WatchAssembly database is not open.");
         }
-        intent.putExtra("memberInfo", memberInfo);
-        startActivity(intent);
-        finish();
+
+        Log.d(TAG, "initializeDatabase success!!");
     }
 }

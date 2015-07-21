@@ -4,7 +4,6 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
@@ -21,6 +20,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -29,12 +29,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.lime.amwant.R;
 import com.lime.amwant.fragment.MypageDataFragment;
 import com.lime.amwant.fragment.SuperAwesomeCardFragment;
+import com.lime.amwant.statics.AMWStatic;
 import com.lime.amwant.vo.MemberInfo;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
@@ -64,6 +64,7 @@ public class MypageActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_tab);
 
@@ -87,7 +88,13 @@ public class MypageActivity extends ActionBarActivity {
 
         lvNavList.setAdapter(
                 new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, navItems));
-        lvNavList.setOnItemClickListener(new DrawerItemClickListener());
+        lvNavList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                dlDrawer.closeDrawer(lvNavList);
+                AMWStatic.viewSubActivity(view.getContext(), position, memberInfo);
+            }
+        });
 
         dlDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         dtToggle = new ActionBarDrawerToggle(this, dlDrawer, 0, 0);
@@ -159,42 +166,6 @@ public class MypageActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-    private class DrawerItemClickListener implements ListView.OnItemClickListener {
-
-        @Override
-        public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
-            dlDrawer.closeDrawer(lvNavList);
-            if (position != 4) {
-                viewSubmain(position);
-            }
-        }
-    }
-
-    private void viewSubmain(int index) {
-        Intent intent = null;
-        switch (index){
-            case 0:
-                intent = new Intent(this, AssemblymenListActivity.class);
-                break;
-            case 1:
-                intent = new Intent(this, BillListActivity.class);
-                break;
-            case 2:
-                intent = new Intent(this, HallOfFameActivity.class);
-                break;
-            case 3:
-                intent = new Intent(this, PublicOpinionsActivity.class);
-                break;
-            case 4:
-                intent = new Intent(this, MypageActivity.class);
-                break;
-        }
-        intent.putExtra("memberInfo", memberInfo);
-        startActivity(intent);
-        finish();
-    }
-
 
     private void changeColor(int newColor) {
         tabs.setBackgroundColor(newColor);
