@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
 /**
  * Created by SeongSan on 2015-07-16.
@@ -14,11 +15,12 @@ public class RecyclerItemClickListener implements RecyclerView.OnItemTouchListen
 
     public interface OnItemClickListener {
         public void onItemClick(View view, int position);
+        public void onItemLongClick(MotionEvent e);
     }
 
     GestureDetector mGestureDetector;
 
-    public RecyclerItemClickListener(Context context, OnItemClickListener listener) {
+    public RecyclerItemClickListener(final Context context, OnItemClickListener listener) {
         mListener = listener;
         mGestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
             @Override
@@ -26,10 +28,11 @@ public class RecyclerItemClickListener implements RecyclerView.OnItemTouchListen
                 return true;
             }
 
-//            @Override
-//            public void onLongPress(MotionEvent e) {
-//                super.onLongPress(e);
-//            }
+            @Override
+            public void onLongPress(MotionEvent e) {
+//                Toast.makeText(context.getApplicationContext(), "LongClickListenr~~", Toast.LENGTH_SHORT).show();
+                mListener.onItemLongClick(e);
+            }
         });
 //        mGestureDetector.setIsLongpressEnabled(true);
     }

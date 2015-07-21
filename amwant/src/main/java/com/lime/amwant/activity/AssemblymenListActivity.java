@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -110,14 +111,13 @@ public class AssemblymenListActivity extends ActionBarActivity {
                     public void onItemClick(View view, final int position) {
                         // do whatever
                         shwoAssemblymanActivity(tables.get(position).getAssemblymanName());
-//                        Toast.makeText(getApplicationContext(), tables.get(position).getAssemblymanName(), Toast.LENGTH_SHORT).show();
-//                        view.setOnLongClickListener(new View.OnLongClickListener() {
-//                            @Override
-//                            public boolean onLongClick(View v) {
-//                                Toast.makeText(getApplicationContext(), tables.get(position).getAssemblymanName() + " 관심의원에 등록하시겠습니까?", Toast.LENGTH_SHORT).show();
-//                                return true;
-//                            }
-//                        });
+                    }
+
+                    @Override
+                    public void onItemLongClick(MotionEvent e) {
+                        View childView = rv.findChildViewUnder(e.getX(), e.getY());
+                        int position = rv.getChildPosition(childView);
+                        Toast.makeText(getApplicationContext(), tables.get(position).getAssemblymanName() + " 관심의원 등록~~", Toast.LENGTH_SHORT).show();
                     }
                 })
         );
