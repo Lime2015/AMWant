@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="server_url">http://52.69.102.82</string>
+    <!--<string name="server_url">http://192.168.50.2:8090</string>-->
+    <!--<string name="server_name">/WatchAssemblyWebServer</string>-->
+    <string name="server_name">/WAServer</string>
+    <string name="server_check_tag">/checkTag.do</string>
+    <string name="server_check_member">/checkMember.do</string>
+    <string name="server_save_member">/saveMember.do</string>
+    <string name="server_request_assemblyman">/requestAssemblyman.do</string>
+    <string name="server_request_bill">/requestBill.do</string>
+
+
+    <string name="app_name">국회의Want</string>
+    <string name="demo_btn_name">둘러보기</string>
+    <string name="action_settings">설정</string>
+    <string name="signup_button">추가정보입력</string>
+    <string name="action_logout">로그아웃</string>
+    <string name="address">주소</string>
+    <string name="birthday">생년월일</string>
+    <string name="gender">성별</string>
+
+    <string-array name="gender_types">
+        <item>남</item>
+        <item>여</item>
+    </string-array>
+</resources>
