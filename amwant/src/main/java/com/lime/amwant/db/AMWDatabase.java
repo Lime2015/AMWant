@@ -9,6 +9,7 @@ import android.util.Log;
 import com.lime.amwant.listitem.AssemblymanListItem;
 import com.lime.amwant.result.CheckTagResult;
 import com.lime.amwant.vo.Assemblyman;
+import com.lime.amwant.vo.Bill;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -183,40 +184,53 @@ public class AMWDatabase {
 
     public boolean insertAssemblymenList(List<Assemblyman> assList) {
 
-        try {
-            for (Assemblyman ass : assList) {
-                String sql = "insert into assemblyman values('" + ass.getAssemblymanId() +
-                        "','" + ass.getAssemblymanName() + "'," + ass.getUpdateTag() + ",'" + ass.getImageUrl() +
-                        "','" + ass.getOrgImageUrl() + "','" + ass.getModDttm() + "'," + ass.getPartyId() +
-                        ",'" + ass.getPartyName() + "','" + ass.getLocalConstituency() + "');";
-                execSQL(sql);
+
+        for (Assemblyman ass : assList) {
+            try {
+                String sql = "insert into assemblyman values('" + ass.getAssemblyman_id() +
+                        "','" + ass.getAssemblyman_name() + "'," + ass.getUpdate_tag() + ",'" + ass.getImage_url() +
+                        "','" + ass.getOrg_image_url() + "','" + ass.getMod_dttm() + "'," + ass.getParty_id() +
+                        ",'" + ass.getParty_name() + "','" + ass.getLocal_constituency() + "');";
+//                Log.d(TAG, sql);
+                db.execSQL(sql);
+
+            } catch (Exception ex) {
+                Log.d(TAG, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+                try {
+                    String sql = "update assemblyman set assemblyman_name='" + ass.getAssemblyman_name() +
+                            "', image_url='" + ass.getImage_url() + "', org_image_url= '" + ass.getOrg_image_url() +
+                            "' , mod_dttm= '" + ass.getMod_dttm() + "', party_id='" + ass.getParty_id() + "', party_name='" + ass.getParty_name() +
+                            "', local_constituency='" + ass.getLocal_constituency() + "', update_tag='" + ass.getUpdate_tag() + "' " +
+                            "where assemblyman_id='" + ass.getAssemblyman_id() + "';";
+                    db.execSQL(sql);
+                } catch (Exception e) {
+                    return false;
+                }
             }
-        } catch (Exception ex) {
-            return false;
         }
         return true;
     }
 
     public List<AssemblymanListItem> selectAssemblymenList(int type) {
         List<AssemblymanListItem> list = null;
-        String sql="";
+        String sql = "";
 
-        switch (type){
+        switch (type) {
             case 0:     // mod_dttm
-                sql="select * from assemblyman order by mod_dttm";
+                sql = "select * from assemblyman order by mod_dttm";
                 break;
             case 1:     // favorite
                 break;
             case 2:     // naming
-                sql="select * from assemblyman order by assemblyman_name";
+                sql = "select * from assemblyman order by assemblyman_name";
                 break;
         }
 
         Cursor cursor = rawQuery(sql);
 
-        if(cursor.moveToFirst()){
+        if (cursor.moveToFirst()) {
             list = new ArrayList<>();
-            while (cursor.moveToNext()){
+            while (cursor.moveToNext()) {
                 AssemblymanListItem item = new AssemblymanListItem();
                 item.setAssemblymanName(cursor.getString(1));
                 item.setCountDislike(0);
@@ -230,6 +244,10 @@ public class AMWDatabase {
         }
 
         return list;
+    }
+
+    public boolean insertBillList(List<Bill> billList) {
+        return false;
     }
 
 
