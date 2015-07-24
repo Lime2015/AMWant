@@ -7,9 +7,14 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.lime.amwant.listitem.AssemblymanListItem;
+import com.lime.amwant.listitem.BillListItem;
 import com.lime.amwant.result.CheckTagResult;
 import com.lime.amwant.vo.Assemblyman;
 import com.lime.amwant.vo.Bill;
+import com.lime.amwant.vo.CommitteeMeeting;
+import com.lime.amwant.vo.GeneralMeeting;
+import com.lime.amwant.vo.PartyHistory;
+import com.lime.amwant.vo.Vote;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -247,7 +252,158 @@ public class AMWDatabase {
     }
 
     public boolean insertBillList(List<Bill> billList) {
-        return false;
+
+        for (Bill bill : billList) {
+            try {
+                String sql = "insert into bill values('"+bill.getAssemblyman_id()+"', '"+bill.getUpdate_tag()+"', '"+bill.getBill_seq()+"', '"+bill.getBill_no()+"', '"+bill.getBill_status()+"'," +
+                        "'"+bill.getBill_title()+"', '"+bill.getProposer_info()+"', '"+bill.getBill_class()+"', '"+bill.getReceive_date()+"', '"+bill.getRefer_date()+"', '"+bill.getBill_date3()+"'," +
+                        "'"+bill.getCommittee_name()+"', '"+bill.getCommittee_id()+"', '"+bill.getCommittee_class()+"', '"+bill.getBill_result()+"', '"+bill.getBill_target_url()+"');";
+//                Log.d(TAG, sql);
+                db.execSQL(sql);
+
+            } catch (Exception ex) {
+                Log.d(TAG, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+                try {
+                    String sql = "update bill set assemblyman_id= '"+bill.getAssemblyman_id()+"', update_tag= '"+bill.getUpdate_tag()+"', bill_seq= '"+bill.getBill_seq()+"', bill_status= '"+bill.getBill_status()+"'," +
+                            "bill_title= '"+bill.getBill_title()+"', proposer_info='"+bill.getProposer_info()+"', bill_class='"+bill.getBill_class()+"', receive_date='"+bill.getReceive_date()+"'," +
+                            "refer_date='"+bill.getRefer_date()+"', bill_date3='"+bill.getBill_date3()+"', committee_name='"+bill.getCommittee_name()+"', committee_id='"+bill.getCommittee_id()+"', " +
+                            "committee_class='"+bill.getCommittee_class()+"', bill_result='"+bill.getBill_result()+"', bill_target_url='"+bill.getBill_target_url()+"' " +
+                            "where bill_no='"+bill.getBill_no()+"';";
+                    db.execSQL(sql);
+                } catch (Exception e) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public List<BillListItem> selectBillList(int type) {
+        List<BillListItem> list = null;
+        String sql = "";
+
+        switch (type) {
+            case 0:     // mod_dttm
+                sql = "select * from assemblyman order by update_tag";
+                break;
+            case 1:     // favorite
+                break;
+            case 2:     // naming
+                sql = "select * from assemblyman order by bill_name";
+                break;
+        }
+
+        Cursor cursor = rawQuery(sql);
+
+        if (cursor.moveToFirst()) {
+            list = new ArrayList<>();
+            while (cursor.moveToNext()) {
+                BillListItem item = new BillListItem();
+                item.setBillTitle(cursor.getString(6));
+                item.setCountDislike(0);
+                item.setCountLike(0);
+                item.setBillStatus(cursor.getString(4));
+                item.setProposerInfo(cursor.getString(7));
+                item.setCommitteeName(cursor.getString(12));
+                item.setReferDate(cursor.getString(10));
+
+                list.add(item);
+            }
+        }
+
+        return list;
+    }
+
+    public boolean insertCommitteeMeetingList(List<CommitteeMeeting> list) {
+
+        for (CommitteeMeeting com : list) {
+            try {
+                String sql = "insert into committee_meeting values('"+com.getAssemblyman_id()+"', '"+com.getUpdate_tag()+"', '"+com.getMeeting_id()+"', '"+com.getMeeting_name()+"'," +
+                        "'"+com.getMeeting_order()+"', '"+com.getMeeting_date()+"', '"+com.getAttend_status()+"');";
+//                Log.d(TAG, sql);
+                db.execSQL(sql);
+
+            } catch (Exception ex) {
+                Log.d(TAG, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+                try {
+                    String sql = "update committee_meeting set assemblyman_id='"+com.getAssemblyman_id()+"', update_tag='"+com.getUpdate_tag()+"', meeting_id='"+com.getMeeting_id()+"'," +
+                            "meeting_name='"+com.getMeeting_name()+"', meeting_order='"+com.getMeeting_order()+"', meeting_date='"+com.getMeeting_date()+"', attend_status='"+com.getAttend_status()+"' " +
+                            "where assemblyman_id='"+com.getAssemblyman_id()+"' AND meeting_name='"+com.getMeeting_name()+"' AND meeting_order='"+com.getMeeting_order()+"';";
+                    db.execSQL(sql);
+                } catch (Exception e) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public boolean insertGneralMeetingList(List<GeneralMeeting> list) {
+        for (GeneralMeeting gen : list) {
+            try {
+                String sql = "insert into general_meeting values('"+gen.getAssemblyman_id()+"', '"+gen.getUpdate_tag()+"', '"+gen.getMeeting_id()+"', '"+gen.getMeeting_order()+"'," +
+                        "'"+gen.getMeeting_dttm()+"', '"+gen.getAttend_status()+"');";
+//                Log.d(TAG, sql);
+                db.execSQL(sql);
+
+            } catch (Exception ex) {
+                Log.d(TAG, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+                try {
+                    String sql = "update general_meeting set assemblyman_id='"+gen.getAssemblyman_id()+"', update_tag='"+gen.getUpdate_tag()+"', meeting_id='"+gen.getMeeting_id()+"'," +
+                            "meeting_order='"+gen.getMeeting_order()+"', meeting_dttm='"+gen.getMeeting_dttm()+"', attend_status='"+gen.getAttend_status()+"' " +
+                            "where assemblyman_id='"+gen.getAssemblyman_id()+"' AND meeting_id='"+gen.getMeeting_id()+"';";
+                    db.execSQL(sql);
+                } catch (Exception e) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public boolean insertPartyHistoryList(List<PartyHistory> list) {
+        for (PartyHistory par : list) {
+            try {
+                String sql = "insert into party_history values('"+par.getUpdate_tag()+"', '"+par.getMember_seq()+"', '"+par.getParty_name()+"', '"+par.getIn_date()+"', '"+par.getOut_date()+"', '"+par.getNote()+"');";
+//                Log.d(TAG, sql);
+                db.execSQL(sql);
+
+            } catch (Exception ex) {
+                Log.d(TAG, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+                try {
+                    String sql = "update party_history set update_tag='"+par.getUpdate_tag()+"', member_seq='"+par.getMember_seq()+"', party_name='"+par.getParty_name()+"', in_date='"+par.getIn_date()+"'," +
+                            "out_date='"+par.getOut_date()+"', note='"+par.getNote()+"'" +
+                            "where party_name='"+par.getParty_name()+"' AND member_seq='"+par.getMember_seq()+"' AND in_date='"+par.getIn_date()+"';";
+                    db.execSQL(sql);
+                } catch (Exception e) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public boolean insertVoteList(List<Vote> list) {
+        for (Vote vote : list) {
+            try {
+                String sql = "insert into vote values('"+vote.getAssemblyman_id()+"', '"+vote.getUpdate_tag()+"', '"+vote.getBill_name()+"', '"+vote.getBill_no()+"', '"+vote.getVote_dttm()+"'," +
+                        "'"+vote.getBill_target_url()+"', '"+vote.getResult()+"', '"+vote.getAssemblyman_vote()+"');";
+//                Log.d(TAG, sql);
+                db.execSQL(sql);
+
+            } catch (Exception ex) {
+                Log.d(TAG, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+                try {
+                    String sql = "update vote set assemblyman_id='"+vote.getAssemblyman_id()+"', update_tag='"+vote.getUpdate_tag()+"', bill_name='"+vote.getBill_name()+"'," +
+                            "bill_no='"+vote.getBill_no()+"', vote_dttm='"+vote.getVote_dttm()+"', bill_target_url='"+vote.getBill_target_url()+"', result='"+vote.getResult()+"', assemblyman_vote='"+vote.getAssemblyman_vote()+"'" +
+                            "where assemblyman_id='"+vote.getAssemblyman_id()+"' AND bill_no='"+vote.getBill_no()+"';";
+                    db.execSQL(sql);
+                } catch (Exception e) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
 
@@ -328,7 +484,6 @@ public class AMWDatabase {
             query = "create table vote(" +
                     "assemblyman_id INT(10) NOT NULL, " +
                     "update_tag INT(10) NOT NULL," +
-                    "vote_id VARCHAR(60)," +
                     "bill_name VARCHAR(300)," +
                     "bill_no INT(10) NOT NULL," +
                     "vote_dttm VARCHAR(60)," +
