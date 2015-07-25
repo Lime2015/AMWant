@@ -3,8 +3,6 @@
 
     <string name="server_url">http://52.69.102.82</string>
     <!--<string name="server_url">http://192.168.50.2:8090</string>-->
-    <!--<string name="server_url">http://52.69.102.82</string>-->
-    <string name="server_url">http://192.168.56.1:8090</string>
     <!--<string name="server_name">/WatchAssemblyWebServer</string>-->
     <string name="server_name">/WAServer</string>
     <string name="server_check_tag">/checkTag.do</string>

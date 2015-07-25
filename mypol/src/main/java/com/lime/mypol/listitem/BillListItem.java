@@ -1,4 +1,4 @@
-package com.lime.amwant.listitem;
+package com.lime.mypol.listitem;
 
 /**
  * Created by AMD on 2015-07-25.

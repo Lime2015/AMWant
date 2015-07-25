@@ -1,4 +1,4 @@
-package com.lime.amwant.vo;
+package com.lime.mypol.vo;
 
 /**
  * Created by AMD on 2015-07-25.

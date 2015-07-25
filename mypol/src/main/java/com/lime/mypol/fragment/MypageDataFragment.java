@@ -26,14 +26,6 @@ import com.lime.mypol.listitem.TableInfoListItem;
 import com.lime.mypol.result.CheckTagResult;
 import com.lime.mypol.vo.Assemblyman;
 import com.lime.mypol.vo.Bill;
-import com.lime.mypol.R;
-import com.lime.mypol.adapter.RVMypageDataAdapter;
-import com.lime.mypol.db.AMWDatabase;
-import com.lime.mypol.listener.RecyclerItemClickListener;
-import com.lime.mypol.listitem.TableInfoListItem;
-import com.lime.mypol.result.CheckTagResult;
-import com.lime.mypol.vo.Assemblyman;
-import com.lime.mypol.vo.Bill;
 import com.lime.mypol.vo.CommitteeMeeting;
 import com.lime.mypol.vo.GeneralMeeting;
 import com.lime.mypol.vo.PartyHistory;
@@ -130,56 +122,6 @@ public class MypageDataFragment extends Fragment {
         return rootView;
     }
 
-    private void requestBill() {
-
-        Log.d(TAG, "requestBill start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-
-        AsyncHttpClient client = new AsyncHttpClient();
-        RequestParams params = new RequestParams();
-        params.put("tag", mDbTag.getTagList().get(1));
-
-        String url = getResources().getString(R.string.server_url) + getResources().getString(R.string.server_name) + getResources().getString(R.string.server_request_bill);
-        client.post(url, new AsyncHttpResponseHandler() {
-
-            @Override
-            public void onStart() {
-                super.onStart();
-                mProgressBar.setVisibility(ProgressBar.VISIBLE);
-            }
-
-            @Override
-            public void onProgress(int position, int length) {
-                super.onProgress(position, length);
-
-
-                Log.d(TAG, "ProgressBar position:" + position + " length:" + length + " >>>>> " + position * 100 / length);
-                mProgressBar.setProgress(position * 100 / length);
-//                mProgressBar.setMax(length);
-            }
-
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                String content = new String(responseBody);
-                Log.d(TAG, "requestBill result:" + content);
-
-                Gson gson = new GsonBuilder().create();
-                List<Bill> billList = gson.fromJson(content, new TypeToken<List<Bill>>() {
-                }.getType());
-
-                if (mDatabase.insertBillList(billList)) {
-                    Log.d(TAG, "bill db insert success!!");
-                    checkServerTag();
-                }
-            }
-            
-            @Override
-            public void onFailure(int statusCode, Throwable error, String content) {
-                Log.d(TAG, "requestBill response fail:" + statusCode);
-                Toast.makeText(getActivity().getApplicationContext(), "서버접속 실패!! 잠시후에 다시 시도하세요.", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-    
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         return super.onOptionsItemSelected(item);
@@ -367,19 +309,21 @@ public class MypageDataFragment extends Fragment {
                 super.onProgress(position, length);
 
 
-                Log.d(TAG, "ProgressBar position:" + position / 1000 + " length:" + length);
-                mProgressBar.setProgress(position / 1000);
+                Log.d(TAG, "ProgressBar position:" + position + " length:" + length + " >>>>> " + position * 100 / length);
+                mProgressBar.setProgress(position * 100 / length);
 //                mProgressBar.setMax(length);
             }
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String content = new String(responseBody);
-                Log.d(TAG, "requestAssemblyman result:" + content);
+                Log.d(TAG, "requestBill result:" + content);
 
                 Gson gson = new GsonBuilder().create();
-                List<Bill> billList = gson.fromJson(content, new TypeToken<List<Bill>>() {
-                }.getType());
+                List<Bill> billList = gson.fromJson(content, new TypeToken<List<Bill>>() {}.getType());
+                for(int i=0;i<billList.size();i++){
+                    billList.get(i).setBill_title(billList.get(i).getBill_title().replace("'", ""));
+                }
 
                 if (mDatabase.insertBillList(billList)) {
                     Log.d(TAG, "bill db insert success!!");
@@ -388,18 +332,11 @@ public class MypageDataFragment extends Fragment {
             }
 
             @Override
-            public void onFinish() {
-                super.onFinish();
-                mProgressBar.setVisibility(ProgressBar.INVISIBLE);
-            }
-
-            @Override
             public void onFailure(int statusCode, Throwable error, String content) {
-                Log.d(TAG, "requestAssemblyman response fail:" + statusCode);
+                Log.d(TAG, "requestBill response fail:" + statusCode);
                 Toast.makeText(getActivity().getApplicationContext(), "서버접속 실패!! 잠시후에 다시 시도하세요.", Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 
     private void requestCommitteeMeeting() {

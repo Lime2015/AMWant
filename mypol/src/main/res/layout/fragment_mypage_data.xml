@@ -9,9 +9,8 @@
         android:id="@+id/pb_data"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="fill_parent"
-        android:layout_height="4dp"
+        android:layout_height="7dp"
         android:layout_gravity="top"
-        android:max="100"
         android:paddingLeft="3dp"
         android:paddingRight="3dp" />
 

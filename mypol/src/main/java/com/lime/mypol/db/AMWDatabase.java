@@ -6,15 +6,15 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.lime.amwant.listitem.AssemblymanListItem;
-import com.lime.amwant.listitem.BillListItem;
-import com.lime.amwant.result.CheckTagResult;
-import com.lime.amwant.vo.Assemblyman;
-import com.lime.amwant.vo.Bill;
-import com.lime.amwant.vo.CommitteeMeeting;
-import com.lime.amwant.vo.GeneralMeeting;
-import com.lime.amwant.vo.PartyHistory;
-import com.lime.amwant.vo.Vote;
+import com.lime.mypol.listitem.AssemblymanListItem;
+import com.lime.mypol.listitem.BillListItem;
+import com.lime.mypol.result.CheckTagResult;
+import com.lime.mypol.vo.Assemblyman;
+import com.lime.mypol.vo.Bill;
+import com.lime.mypol.vo.CommitteeMeeting;
+import com.lime.mypol.vo.GeneralMeeting;
+import com.lime.mypol.vo.PartyHistory;
+import com.lime.mypol.vo.Vote;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +42,7 @@ public class AMWDatabase {
     /**
      * version
      */
-    public static int DATABASE_VERSION = 5;
+    public static int DATABASE_VERSION = 6;
 
     /**
      * Helper class defined
@@ -196,7 +196,6 @@ public class AMWDatabase {
                         "','" + ass.getAssemblyman_name() + "'," + ass.getUpdate_tag() + ",'" + ass.getImage_url() +
                         "','" + ass.getOrg_image_url() + "','" + ass.getMod_dttm() + "'," + ass.getParty_id() +
                         ",'" + ass.getParty_name() + "','" + ass.getLocal_constituency() + "');";
-//                Log.d(TAG, sql);
                 db.execSQL(sql);
 
             } catch (Exception ex) {
@@ -255,20 +254,20 @@ public class AMWDatabase {
 
         for (Bill bill : billList) {
             try {
-                String sql = "insert into bill values('"+bill.getAssemblyman_id()+"', '"+bill.getUpdate_tag()+"', '"+bill.getBill_seq()+"', '"+bill.getBill_no()+"', '"+bill.getBill_status()+"'," +
-                        "'"+bill.getBill_title()+"', '"+bill.getProposer_info()+"', '"+bill.getBill_class()+"', '"+bill.getReceive_date()+"', '"+bill.getRefer_date()+"', '"+bill.getBill_date3()+"'," +
-                        "'"+bill.getCommittee_name()+"', '"+bill.getCommittee_id()+"', '"+bill.getCommittee_class()+"', '"+bill.getBill_result()+"', '"+bill.getBill_target_url()+"');";
+                String sql = "insert into bill values('" + bill.getAssemblyman_id() + "', '" + bill.getUpdate_tag() + "', '" + bill.getBill_seq() + "', '" + bill.getBill_no() + "', '" + bill.getBill_status() + "'," +
+                        "'" + bill.getBill_title() + "', '" + bill.getProposer_info() + "', '" + bill.getBill_class() + "', '" + bill.getReceive_date() + "', '" + bill.getRefer_date() + "', '" + bill.getBill_date3() + "'," +
+                        "'" + bill.getCommittee_name() + "', '" + bill.getCommittee_id() + "', '" + bill.getCommittee_class() + "', '" + bill.getBill_result() + "', '" + bill.getBill_target_url() + "');";
 //                Log.d(TAG, sql);
                 db.execSQL(sql);
 
             } catch (Exception ex) {
                 Log.d(TAG, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
                 try {
-                    String sql = "update bill set assemblyman_id= '"+bill.getAssemblyman_id()+"', update_tag= '"+bill.getUpdate_tag()+"', bill_seq= '"+bill.getBill_seq()+"', bill_status= '"+bill.getBill_status()+"'," +
-                            "bill_title= '"+bill.getBill_title()+"', proposer_info='"+bill.getProposer_info()+"', bill_class='"+bill.getBill_class()+"', receive_date='"+bill.getReceive_date()+"'," +
-                            "refer_date='"+bill.getRefer_date()+"', bill_date3='"+bill.getBill_date3()+"', committee_name='"+bill.getCommittee_name()+"', committee_id='"+bill.getCommittee_id()+"', " +
-                            "committee_class='"+bill.getCommittee_class()+"', bill_result='"+bill.getBill_result()+"', bill_target_url='"+bill.getBill_target_url()+"' " +
-                            "where bill_no='"+bill.getBill_no()+"';";
+                    String sql = "update bill set assemblyman_id= '" + bill.getAssemblyman_id() + "', update_tag= '" + bill.getUpdate_tag() + "', bill_seq= '" + bill.getBill_seq() + "', bill_status= '" + bill.getBill_status() + "'," +
+                            "bill_title= '" + bill.getBill_title() + "', proposer_info='" + bill.getProposer_info() + "', bill_class='" + bill.getBill_class() + "', receive_date='" + bill.getReceive_date() + "'," +
+                            "refer_date='" + bill.getRefer_date() + "', bill_date3='" + bill.getBill_date3() + "', committee_name='" + bill.getCommittee_name() + "', committee_id='" + bill.getCommittee_id() + "', " +
+                            "committee_class='" + bill.getCommittee_class() + "', bill_result='" + bill.getBill_result() + "', bill_target_url='" + bill.getBill_target_url() + "' " +
+                            "where bill_no='" + bill.getBill_no() + "';";
                     db.execSQL(sql);
                 } catch (Exception e) {
                     return false;
@@ -318,17 +317,17 @@ public class AMWDatabase {
 
         for (CommitteeMeeting com : list) {
             try {
-                String sql = "insert into committee_meeting values('"+com.getAssemblyman_id()+"', '"+com.getUpdate_tag()+"', '"+com.getMeeting_id()+"', '"+com.getMeeting_name()+"'," +
-                        "'"+com.getMeeting_order()+"', '"+com.getMeeting_date()+"', '"+com.getAttend_status()+"');";
+                String sql = "insert into committee_meeting values('" + com.getAssemblyman_id() + "', '" + com.getUpdate_tag() + "', '" + com.getMeeting_id() + "', '" + com.getMeeting_name() + "'," +
+                        "'" + com.getMeeting_order() + "', '" + com.getMeeting_date() + "', '" + com.getAttend_status() + "');";
 //                Log.d(TAG, sql);
                 db.execSQL(sql);
 
             } catch (Exception ex) {
                 Log.d(TAG, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
                 try {
-                    String sql = "update committee_meeting set assemblyman_id='"+com.getAssemblyman_id()+"', update_tag='"+com.getUpdate_tag()+"', meeting_id='"+com.getMeeting_id()+"'," +
-                            "meeting_name='"+com.getMeeting_name()+"', meeting_order='"+com.getMeeting_order()+"', meeting_date='"+com.getMeeting_date()+"', attend_status='"+com.getAttend_status()+"' " +
-                            "where assemblyman_id='"+com.getAssemblyman_id()+"' AND meeting_name='"+com.getMeeting_name()+"' AND meeting_order='"+com.getMeeting_order()+"';";
+                    String sql = "update committee_meeting set assemblyman_id='" + com.getAssemblyman_id() + "', update_tag='" + com.getUpdate_tag() + "', meeting_id='" + com.getMeeting_id() + "'," +
+                            "meeting_name='" + com.getMeeting_name() + "', meeting_order='" + com.getMeeting_order() + "', meeting_date='" + com.getMeeting_date() + "', attend_status='" + com.getAttend_status() + "' " +
+                            "where assemblyman_id='" + com.getAssemblyman_id() + "' AND meeting_name='" + com.getMeeting_name() + "' AND meeting_order='" + com.getMeeting_order() + "';";
                     db.execSQL(sql);
                 } catch (Exception e) {
                     return false;
@@ -341,17 +340,17 @@ public class AMWDatabase {
     public boolean insertGneralMeetingList(List<GeneralMeeting> list) {
         for (GeneralMeeting gen : list) {
             try {
-                String sql = "insert into general_meeting values('"+gen.getAssemblyman_id()+"', '"+gen.getUpdate_tag()+"', '"+gen.getMeeting_id()+"', '"+gen.getMeeting_order()+"'," +
-                        "'"+gen.getMeeting_dttm()+"', '"+gen.getAttend_status()+"');";
+                String sql = "insert into general_meeting values('" + gen.getAssemblyman_id() + "', '" + gen.getUpdate_tag() + "', '" + gen.getMeeting_id() + "', '" + gen.getMeeting_order() + "'," +
+                        "'" + gen.getMeeting_dttm() + "', '" + gen.getAttend_status() + "');";
 //                Log.d(TAG, sql);
                 db.execSQL(sql);
 
             } catch (Exception ex) {
                 Log.d(TAG, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
                 try {
-                    String sql = "update general_meeting set assemblyman_id='"+gen.getAssemblyman_id()+"', update_tag='"+gen.getUpdate_tag()+"', meeting_id='"+gen.getMeeting_id()+"'," +
-                            "meeting_order='"+gen.getMeeting_order()+"', meeting_dttm='"+gen.getMeeting_dttm()+"', attend_status='"+gen.getAttend_status()+"' " +
-                            "where assemblyman_id='"+gen.getAssemblyman_id()+"' AND meeting_id='"+gen.getMeeting_id()+"';";
+                    String sql = "update general_meeting set assemblyman_id='" + gen.getAssemblyman_id() + "', update_tag='" + gen.getUpdate_tag() + "', meeting_id='" + gen.getMeeting_id() + "'," +
+                            "meeting_order='" + gen.getMeeting_order() + "', meeting_dttm='" + gen.getMeeting_dttm() + "', attend_status='" + gen.getAttend_status() + "' " +
+                            "where assemblyman_id='" + gen.getAssemblyman_id() + "' AND meeting_id='" + gen.getMeeting_id() + "';";
                     db.execSQL(sql);
                 } catch (Exception e) {
                     return false;
@@ -364,16 +363,16 @@ public class AMWDatabase {
     public boolean insertPartyHistoryList(List<PartyHistory> list) {
         for (PartyHistory par : list) {
             try {
-                String sql = "insert into party_history values('"+par.getUpdate_tag()+"', '"+par.getMember_seq()+"', '"+par.getParty_name()+"', '"+par.getIn_date()+"', '"+par.getOut_date()+"', '"+par.getNote()+"');";
+                String sql = "insert into party_history values('" + par.getUpdate_tag() + "', '" + par.getMember_seq() + "', '" + par.getParty_name() + "', '" + par.getIn_date() + "', '" + par.getOut_date() + "', '" + par.getNote() + "');";
 //                Log.d(TAG, sql);
                 db.execSQL(sql);
 
             } catch (Exception ex) {
                 Log.d(TAG, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
                 try {
-                    String sql = "update party_history set update_tag='"+par.getUpdate_tag()+"', member_seq='"+par.getMember_seq()+"', party_name='"+par.getParty_name()+"', in_date='"+par.getIn_date()+"'," +
-                            "out_date='"+par.getOut_date()+"', note='"+par.getNote()+"'" +
-                            "where party_name='"+par.getParty_name()+"' AND member_seq='"+par.getMember_seq()+"' AND in_date='"+par.getIn_date()+"';";
+                    String sql = "update party_history set update_tag='" + par.getUpdate_tag() + "', member_seq='" + par.getMember_seq() + "', party_name='" + par.getParty_name() + "', in_date='" + par.getIn_date() + "'," +
+                            "out_date='" + par.getOut_date() + "', note='" + par.getNote() + "'" +
+                            "where party_name='" + par.getParty_name() + "' AND member_seq='" + par.getMember_seq() + "' AND in_date='" + par.getIn_date() + "';";
                     db.execSQL(sql);
                 } catch (Exception e) {
                     return false;
@@ -386,17 +385,17 @@ public class AMWDatabase {
     public boolean insertVoteList(List<Vote> list) {
         for (Vote vote : list) {
             try {
-                String sql = "insert into vote values('"+vote.getAssemblyman_id()+"', '"+vote.getUpdate_tag()+"', '"+vote.getBill_name()+"', '"+vote.getBill_no()+"', '"+vote.getVote_dttm()+"'," +
-                        "'"+vote.getBill_target_url()+"', '"+vote.getResult()+"', '"+vote.getAssemblyman_vote()+"');";
+                String sql = "insert into vote values('" + vote.getAssemblyman_id() + "', '" + vote.getUpdate_tag() + "', '" + vote.getBill_name() + "', '" + vote.getBill_no() + "', '" + vote.getVote_dttm() + "'," +
+                        "'" + vote.getBill_target_url() + "', '" + vote.getResult() + "', '" + vote.getAssemblyman_vote() + "');";
 //                Log.d(TAG, sql);
                 db.execSQL(sql);
 
             } catch (Exception ex) {
                 Log.d(TAG, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
                 try {
-                    String sql = "update vote set assemblyman_id='"+vote.getAssemblyman_id()+"', update_tag='"+vote.getUpdate_tag()+"', bill_name='"+vote.getBill_name()+"'," +
-                            "bill_no='"+vote.getBill_no()+"', vote_dttm='"+vote.getVote_dttm()+"', bill_target_url='"+vote.getBill_target_url()+"', result='"+vote.getResult()+"', assemblyman_vote='"+vote.getAssemblyman_vote()+"'" +
-                            "where assemblyman_id='"+vote.getAssemblyman_id()+"' AND bill_no='"+vote.getBill_no()+"';";
+                    String sql = "update vote set assemblyman_id='" + vote.getAssemblyman_id() + "', update_tag='" + vote.getUpdate_tag() + "', bill_name='" + vote.getBill_name() + "'," +
+                            "bill_no='" + vote.getBill_no() + "', vote_dttm='" + vote.getVote_dttm() + "', bill_target_url='" + vote.getBill_target_url() + "', result='" + vote.getResult() + "', assemblyman_vote='" + vote.getAssemblyman_vote() + "'" +
+                            "where assemblyman_id='" + vote.getAssemblyman_id() + "' AND bill_no='" + vote.getBill_no() + "';";
                     db.execSQL(sql);
                 } catch (Exception e) {
                     return false;
@@ -507,6 +506,8 @@ public class AMWDatabase {
             query = "DROP TABLE IF EXISTS member_info;";
             db.execSQL(query);
             query = "DROP TABLE IF EXISTS assemblyman;";
+            db.execSQL(query);
+            query = "DROP TABLE IF EXISTS bill;";
             db.execSQL(query);
             query = "DROP TABLE IF EXISTS committee_meeting;";
             db.execSQL(query);
