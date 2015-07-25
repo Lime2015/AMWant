@@ -3,6 +3,8 @@
 
     <string name="server_url">http://52.69.102.82</string>
     <!--<string name="server_url">http://192.168.50.2:8090</string>-->
+    <!--<string name="server_url">http://52.69.102.82</string>-->
+    <string name="server_url">http://192.168.56.1:8090</string>
     <!--<string name="server_name">/WatchAssemblyWebServer</string>-->
     <string name="server_name">/WAServer</string>
     <string name="server_check_tag">/checkTag.do</string>
@@ -10,6 +12,10 @@
     <string name="server_save_member">/saveMember.do</string>
     <string name="server_request_assemblyman">/requestAssemblyman.do</string>
     <string name="server_request_bill">/requestBill.do</string>
+    <string name="server_request_committee">/requestCommitteeMeeting.do</string>
+    <string name="server_request_general">/requestGeneralMeeting.do</string>
+    <string name="server_request_vote">/requestVote.do</string>
+    <string name="server_request_party">/requestParty.do</string>
 
 
     <string name="app_name">국회의Want</string>
