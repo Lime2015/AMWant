@@ -29,9 +29,11 @@ import android.widget.Toast;
 
 import com.lime.mypol.R;
 import com.lime.mypol.adapter.RVAssemblymenListAdapter;
+import com.lime.mypol.adapter.RVBillListAdapter;
 import com.lime.mypol.db.AMWDatabase;
 import com.lime.mypol.listener.RecyclerItemClickListener;
 import com.lime.mypol.listitem.AssemblymanListItem;
+import com.lime.mypol.listitem.BillListItem;
 import com.lime.mypol.statics.AMWStatic;
 import com.lime.mypol.vo.MemberInfo;
 
@@ -57,8 +59,8 @@ public class BillListActivity extends ActionBarActivity {
 
     private RadioGroup mRgroup;
     private RecyclerView rv;
-    private RVAssemblymenListAdapter adapter;
-    private List<AssemblymanListItem> tables;
+    private RVBillListAdapter adapter;
+    private List<BillListItem> tables;
     private AMWDatabase database;
 
     @Override
@@ -121,7 +123,7 @@ public class BillListActivity extends ActionBarActivity {
                     public void onItemLongClick(MotionEvent e) {
                         View childView = rv.findChildViewUnder(e.getX(), e.getY());
                         int position = rv.getChildPosition(childView);
-                        Toast.makeText(getApplicationContext(), tables.get(position).getAssemblymanName() + " 관심의안 등록~~", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), tables.get(position).getBillTitle() + " 관심의안 등록~~", Toast.LENGTH_SHORT).show();
                     }
                 })
         );
@@ -148,6 +150,7 @@ public class BillListActivity extends ActionBarActivity {
 
     private void showBillActivity(int position) {
         Intent intent = new Intent(this, BillActivity.class);
+        intent.putExtra("name", tables.get(position).getBillTitle());
 //        intent.putExtra("id", billId);
         startActivity(intent);
     }
@@ -157,18 +160,19 @@ public class BillListActivity extends ActionBarActivity {
             Toast.makeText(getApplicationContext(), "마이페이지>데이터>국회의원 데이터를 다운받으세요.", Toast.LENGTH_SHORT).show();
             return;
         }
+        adapter = new RVBillListAdapter(this, tables);
 //        adapter = new RVAssemblymenListAdapter(this, tables);
         rv.setAdapter(adapter);
     }
 
     private void initializeData() {
         tables = new ArrayList<>();
-//        tables = database.selectAssemblymenList(0);      // modDttm:0, 인기순:1, 이름순:2
+        tables = database.selectBillList(0);      // modDttm:0, 인기순:1, 이름순:2
     }
 
     private void changeSorting(int type){
-//        tables = database.selectAssemblymenList(type);
-//        initializeAdapter();
+        tables = database.selectBillList(type);
+        initializeAdapter();
     }
 
     @Override

@@ -288,23 +288,24 @@ public class AMWDatabase {
             case 1:     // favorite
                 break;
             case 2:     // naming
-                sql = "select * from assemblyman order by bill_name";
+                sql = "select * from assemblyman order by bill_title";
                 break;
         }
 
         Cursor cursor = rawQuery(sql);
+        Log.d(TAG, cursor.getColumnName(1));
 
         if (cursor.moveToFirst()) {
             list = new ArrayList<>();
             while (cursor.moveToNext()) {
                 BillListItem item = new BillListItem();
-                item.setBillTitle(cursor.getString(6));
+                item.setBillTitle(cursor.getString(5));
                 item.setCountDislike(0);
                 item.setCountLike(0);
-                item.setBillStatus(cursor.getString(4));
-                item.setProposerInfo(cursor.getString(7));
-                item.setCommitteeName(cursor.getString(12));
-                item.setReferDate(cursor.getString(10));
+                item.setBillStatus(cursor.getString(3));
+                item.setProposerInfo(cursor.getString(6));
+                item.setCommitteeName(cursor.getString(0));
+                item.setReferDate(cursor.getString(0));
 
                 list.add(item);
             }

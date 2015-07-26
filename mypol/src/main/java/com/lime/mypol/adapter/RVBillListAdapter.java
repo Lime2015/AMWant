@@ -1,12 +1,17 @@
 package com.lime.mypol.adapter;
 
+import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.lime.mypol.R;
+import com.lime.mypol.listitem.AssemblymanListItem;
+import com.lime.mypol.listitem.BillListItem;
 import com.lime.mypol.vo.Bill;
 
 import java.util.List;
@@ -19,31 +24,34 @@ public class RVBillListAdapter  extends RecyclerView.Adapter<RVBillListAdapter.B
     public static class BillViewHolder extends RecyclerView.ViewHolder {
 
         CardView cv;
-//        TextView assName;
-//        TextView assPartyName;
-//        TextView assLocation;
-//        TextView countLike;
-//        TextView countDislike;
-//        ImageView assPhoto;
+        TextView billTitle;
+        TextView billCommitteeName;
+        TextView billDate;
+        TextView billStatue;
+        TextView countLike;
+        TextView countDislike;
+        ImageView billPhoto;
 
         BillViewHolder(View itemView) {
             super(itemView);
             cv = (CardView) itemView.findViewById(R.id.cv_bill);
-//            assName = (TextView) itemView.findViewById(R.id.ass_name);
-//            assPartyName = (TextView) itemView.findViewById(R.id.ass_party_name);
-//            assLocation = (TextView) itemView.findViewById(R.id.ass_location);
-//            countLike = (TextView) itemView.findViewById(R.id.count_like);
-//            countDislike = (TextView) itemView.findViewById(R.id.count_dislike);
-//            assPhoto = (ImageView) itemView.findViewById(R.id.ass_photo);
+            billTitle = (TextView) itemView.findViewById(R.id.bill_title);
+            billCommitteeName = (TextView) itemView.findViewById(R.id.bill_committee_name);
+            billDate = (TextView) itemView.findViewById(R.id.bill_date);
+            billStatue = (TextView) itemView.findViewById(R.id.bill_statue);
+            countLike = (TextView) itemView.findViewById(R.id.count_like);
+            countDislike = (TextView) itemView.findViewById(R.id.count_dislike);
+            billPhoto = (ImageView) itemView.findViewById(R.id.bill_photo);
         }
     }
 
-    List<Bill> tables;
+    List<BillListItem> tables;
+    Context context;
 
-    public RVBillListAdapter(List<Bill> tables) {
+    public RVBillListAdapter(Context context, List<BillListItem> tables) {
         this.tables = tables;
+        this.context = context;
     }
-
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
@@ -51,22 +59,21 @@ public class RVBillListAdapter  extends RecyclerView.Adapter<RVBillListAdapter.B
 
     @Override
     public BillViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.card_assemblymanlist, viewGroup, false);
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.card_billlist, viewGroup, false);
         BillViewHolder pvh = new BillViewHolder(v);
         return pvh;
     }
 
     @Override
     public void onBindViewHolder(BillViewHolder dataViewHolder, int i) {
-//        dataViewHolder.assName.setText(tables.get(i).getAssemblymanName());
-//        dataViewHolder.assPartyName.setText(tables.get(i).getPartyName());
-//        dataViewHolder.assLocation.setText(tables.get(i).getLocalConstituency());
-//        dataViewHolder.countLike.setText("" + tables.get(i).getCountLike());
-//        dataViewHolder.countDislike.setText("" + tables.get(i).getCountDislike());
+        dataViewHolder.billTitle.setText(tables.get(i).getBillTitle());
+        dataViewHolder.billCommitteeName.setText(tables.get(i).getCommitteeName());
+        dataViewHolder.billDate.setText(tables.get(i).getReferDate());
+        dataViewHolder.billStatue.setText(tables.get(i).getBillStatus());
+        dataViewHolder.countLike.setText("" + tables.get(i).getCountLike());
+        dataViewHolder.countDislike.setText("" + tables.get(i).getCountDislike());
 
     }
-
-
 
     @Override
     public int getItemCount() {
