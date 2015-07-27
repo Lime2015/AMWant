@@ -3,6 +3,7 @@ package com.lime.mypol.adapter;
 import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,6 +65,9 @@ public class RVAssemblymenListAdapter extends RecyclerView.Adapter<RVAssemblymen
 
     @Override
     public void onBindViewHolder(AssemblymanViewHolder dataViewHolder, int i) {
+
+        Log.d(">>>>>>>>>>>>>>>", i + "");
+
         dataViewHolder.assName.setText(tables.get(i).getAssemblymanName());
         dataViewHolder.assPartyName.setText(tables.get(i).getPartyName());
         dataViewHolder.assLocation.setText(tables.get(i).getLocalConstituency());

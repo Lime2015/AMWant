@@ -234,7 +234,7 @@ public class AMWDatabase {
 
         if (cursor.moveToFirst()) {
             list = new ArrayList<>();
-            while (cursor.moveToNext()) {
+            do {
                 AssemblymanListItem item = new AssemblymanListItem();
                 item.setAssemblymanName(cursor.getString(1));
                 item.setCountDislike(0);
@@ -244,7 +244,7 @@ public class AMWDatabase {
                 item.setPartyName(cursor.getString(7));
 
                 list.add(item);
-            }
+            } while (cursor.moveToNext());
         }
 
         return list;
@@ -283,17 +283,17 @@ public class AMWDatabase {
 
         switch (type) {
             case 0:     // mod_dttm
-                sql = "select * from assemblyman order by update_tag";
+                sql = "select * from bill order by update_tag";
                 break;
             case 1:     // favorite
                 break;
             case 2:     // naming
-                sql = "select * from assemblyman order by bill_title";
+                sql = "select * from bill order by bill_title";
                 break;
         }
 
         Cursor cursor = rawQuery(sql);
-        Log.d(TAG, cursor.getColumnName(1));
+//        Log.d(TAG, cursor.getColumnName(1));
 
         if (cursor.moveToFirst()) {
             list = new ArrayList<>();
@@ -304,8 +304,8 @@ public class AMWDatabase {
                 item.setCountLike(0);
                 item.setBillStatus(cursor.getString(3));
                 item.setProposerInfo(cursor.getString(6));
-                item.setCommitteeName(cursor.getString(0));
-                item.setReferDate(cursor.getString(0));
+                item.setCommitteeName(cursor.getString(11));
+                item.setReferDate(cursor.getString(9));
 
                 list.add(item);
             }
