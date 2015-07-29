@@ -6,10 +6,12 @@
         <option name="distributionType" value="LOCAL" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="gradleHome" value="C:\Program Files\Android\Android Studio\gradle\gradle-2.2.1" />
-        <option name="gradleJvm" value="1.7" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/androidAysncHttpMulitPartModifyLibrary" />
+            <option value="$PROJECT_DIR$/androidPullToRefreshLibrary" />
+            <option value="$PROJECT_DIR$/androidUniversalImageLoaderLibrary" />
             <option value="$PROJECT_DIR$/mypol" />
           </set>
         </option>
@@ -17,3 +19,4 @@
     </option>
   </component>
 </project>
+

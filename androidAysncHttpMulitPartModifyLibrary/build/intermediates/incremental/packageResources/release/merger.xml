@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet config="main"><source path="C:\Lime\dev\MyPol\androidAysncHttpMulitPartModifyLibrary\src\main\res"/><source path="C:\Lime\dev\MyPol\androidAysncHttpMulitPartModifyLibrary\build\generated\res\rs\release"/><source path="C:\Lime\dev\MyPol\androidAysncHttpMulitPartModifyLibrary\build\generated\res\generated\release"/></dataSet><dataSet config="release"><source path="C:\Lime\dev\MyPol\androidAysncHttpMulitPartModifyLibrary\src\release\res"/></dataSet><mergedItems/></merger>

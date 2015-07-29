@@ -18,6 +18,7 @@
 package com.lime.mypol.application;
 
 import android.app.Application;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.v4.util.LruCache;
 
@@ -26,6 +27,13 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 import com.kakao.Session;
 import com.kakao.helper.SystemInfo;
+import com.lime.mypol.R;
+import com.lime.mypol.manager.NetworkManager;
+import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import com.nostra13.universalimageloader.core.download.HttpClientImageDownloader;
 
 /**
  * 이미지를 캐시를 앱 수준에서 관리하기 위한 애플리케이션 객체이다.
@@ -34,64 +42,45 @@ import com.kakao.helper.SystemInfo;
  * @author MJ
  */
 public class GlobalApplication extends Application {
-    private static volatile GlobalApplication instance = null;
-    private ImageLoader imageLoader;
-
-    /**
-     * singleton 애플리케이션 객체를 얻는다.
-     * @return singleton 애플리케이션 객체
-     */
-    public static GlobalApplication getGlobalApplicationContext() {
-        if(instance == null)
-            throw new IllegalStateException("this application does not inherit com.kakao.GlobalApplication");
-        return instance;
-    }
-
-    /**
-     * 이미지 로더, 이미지 캐시, 요청 큐를 초기화한다.
-     */
+    private static Context mContext;
     @Override
     public void onCreate() {
         super.onCreate();
-        instance = this;
-
-        // 세션을 초기화 한다. 카카오톡으로만 로그인을 유도하고 싶다면 Session.initializeSession(this, AuthType.KAKAO_TALK)
+        mContext = this;
         Session.initialize(this);
         SystemInfo.initialize();
-
-        final RequestQueue requestQueue = Volley.newRequestQueue(this);
-
-        ImageLoader.ImageCache imageCache = new ImageLoader.ImageCache() {
-            final LruCache<String, Bitmap> imageCache = new LruCache<String, Bitmap>(3);
-
-            @Override
-            public void putBitmap(String key, Bitmap value) {
-                imageCache.put(key, value);
-            }
-
-            @Override
-            public Bitmap getBitmap(String key) {
-                return imageCache.get(key);
-            }
-        };
-
-        imageLoader = new ImageLoader(requestQueue, imageCache);
+        initImageLoader(this);
     }
 
-    /**
-     * 이미지 로더를 반환한다.
-     * @return 이미지 로더
-     */
-    public ImageLoader getImageLoader() {
-        return imageLoader;
+    public static Context getContext() {
+        return mContext;
     }
 
-    /**
-     * 애플리케이션 종료시 singleton 어플리케이션 객체 초기화한다.
-     */
-    @Override
-    public void onTerminate() {
-        super.onTerminate();
-        instance = null;
+    public static void initImageLoader(Context context) {
+        // This configuration tuning is custom. You can tune every option, you may tune some of them,
+        // or you can create default configuration by
+        //  ImageLoaderConfiguration.createDefault(this);
+        // method.
+        DisplayImageOptions options = new DisplayImageOptions.Builder()
+                .showImageOnLoading(R.drawable.ic_empty_photo)
+                .showImageForEmptyUri(R.drawable.ic_empty_photo)
+                .showImageOnFail(R.drawable.ic_empty_photo)
+                .cacheInMemory(true)
+                .cacheOnDisc(true)
+                .considerExifParams(true)
+                .build();
+
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
+                .threadPriority(Thread.NORM_PRIORITY - 2)
+                .denyCacheImageMultipleSizesInMemory()
+                .discCacheFileNameGenerator(new Md5FileNameGenerator())
+                .tasksProcessingOrder(QueueProcessingType.LIFO)
+                .writeDebugLogs() // Remove for release app
+                .defaultDisplayImageOptions(options)
+                .imageDownloader(new HttpClientImageDownloader(context, NetworkManager.getInstance().getHttpClient()))
+                .build();
+        com.nostra13.universalimageloader.core.ImageLoader.getInstance().init(config);
     }
+
+
 }

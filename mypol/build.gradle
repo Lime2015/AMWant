@@ -46,5 +46,7 @@ dependencies {
     compile 'com.readystatesoftware.systembartint:systembartint:1.0.3'
     compile 'com.nineoldandroids:library:2.4.0'
 
-    compile 'com.squareup.picasso:picasso:2.5.2'
+    compile project(':androidAysncHttpMulitPartModifyLibrary')
+    compile project(':androidUniversalImageLoaderLibrary')
+    compile project(':androidPullToRefreshLibrary')
 }
