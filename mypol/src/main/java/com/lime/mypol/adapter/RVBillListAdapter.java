@@ -10,9 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.lime.mypol.R;
-import com.lime.mypol.listitem.AssemblymanListItem;
-import com.lime.mypol.listitem.BillListItem;
-import com.lime.mypol.vo.Bill;
+import com.lime.mypol.listitem.BillItem;
 
 import java.util.List;
 
@@ -30,7 +28,7 @@ public class RVBillListAdapter  extends RecyclerView.Adapter<RVBillListAdapter.B
         TextView billStatue;
         TextView countLike;
         TextView countDislike;
-        ImageView billPhoto;
+//        ImageView billPhoto;
 
         BillViewHolder(View itemView) {
             super(itemView);
@@ -41,14 +39,14 @@ public class RVBillListAdapter  extends RecyclerView.Adapter<RVBillListAdapter.B
             billStatue = (TextView) itemView.findViewById(R.id.bill_statue);
             countLike = (TextView) itemView.findViewById(R.id.count_like);
             countDislike = (TextView) itemView.findViewById(R.id.count_dislike);
-            billPhoto = (ImageView) itemView.findViewById(R.id.bill_photo);
+//            billPhoto = (ImageView) itemView.findViewById(R.id.bill_photo);
         }
     }
 
-    List<BillListItem> tables;
+    List<BillItem> tables;
     Context context;
 
-    public RVBillListAdapter(Context context, List<BillListItem> tables) {
+    public RVBillListAdapter(Context context, List<BillItem> tables) {
         this.tables = tables;
         this.context = context;
     }

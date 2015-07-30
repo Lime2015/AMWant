@@ -1,5 +1,6 @@
 package com.lime.mypol.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;

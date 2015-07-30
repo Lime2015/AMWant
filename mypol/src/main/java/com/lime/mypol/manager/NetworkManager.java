@@ -37,7 +37,7 @@ import java.util.List;
 
 public class NetworkManager {
 
-	private static String TAG = "MypageDataFragment";
+	private static String TAG = "NetworkManager";
 
 	private static NetworkManager instance;
 	public static NetworkManager getInstance() {
@@ -86,6 +86,7 @@ public class NetworkManager {
 		Log.d(TAG, "checkServerTag start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
 		AsyncHttpClient client = new AsyncHttpClient();
+
 		String url = SERVER_URL + CHECK_TAG;
 		client.post(url, new AsyncHttpResponseHandler() {
 			@Override
@@ -113,8 +114,9 @@ public class NetworkManager {
 		RequestParams params = new RequestParams();
 		Gson gson = new GsonBuilder().create();
 		params.put("memberJSON", gson.toJson(kakaoMemberInfo));
+
 		String url = SERVER_URL + CHECK_MEMBER;
-		client.post(url, new AsyncHttpResponseHandler() {
+		client.post(url, params, new AsyncHttpResponseHandler() {
 			@Override
 			public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
 				InputStreamReader is = new InputStreamReader(new ByteArrayInputStream(responseBody));
@@ -140,8 +142,9 @@ public class NetworkManager {
 		RequestParams params = new RequestParams();
 		Gson gson = new GsonBuilder().create();
 		params.put("memberJSON", gson.toJson(kakaoMemberInfo));
+
 		String url = SERVER_URL + SAVE_MEMBER;
-		client.post(url, new AsyncHttpResponseHandler() {
+		client.post(url, params, new AsyncHttpResponseHandler() {
 			@Override
 			public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
 				InputStreamReader is = new InputStreamReader(new ByteArrayInputStream(responseBody));
@@ -167,7 +170,7 @@ public class NetworkManager {
 		params.put("tag", tag);
 
 		String url = SERVER_URL + REQUEST_ASSEMBLYMAN;
-		client.post(url, new AsyncHttpResponseHandler() {
+		client.post(url, params, new AsyncHttpResponseHandler() {
 
 			@Override
 			public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -193,7 +196,7 @@ public class NetworkManager {
 		params.put("tag", tag);
 
 		String url = SERVER_URL + REQUEST_BILL;
-		client.post(url, new AsyncHttpResponseHandler() {
+		client.post(url, params, new AsyncHttpResponseHandler() {
 
 			@Override
 			public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -222,7 +225,7 @@ public class NetworkManager {
 		params.put("tag", tag);
 
 		String url = SERVER_URL + REQUEST_COMMITTEE;
-		client.post(url, new AsyncHttpResponseHandler() {
+		client.post(url, params, new AsyncHttpResponseHandler() {
 
 			@Override
 			public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -248,7 +251,7 @@ public class NetworkManager {
 		params.put("tag", tag);
 
 		String url = SERVER_URL + REQUEST_GENERAL;
-		client.post(url, new AsyncHttpResponseHandler() {
+		client.post(url, params, new AsyncHttpResponseHandler() {
 
 			@Override
 			public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -274,7 +277,7 @@ public class NetworkManager {
 		params.put("tag", tag);
 
 		String url = SERVER_URL + REQUEST_PARTY;
-		client.post(url, new AsyncHttpResponseHandler() {
+		client.post(url, params, new AsyncHttpResponseHandler() {
 
 			@Override
 			public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -300,7 +303,7 @@ public class NetworkManager {
 		params.put("tag", tag);
 
 		String url = SERVER_URL + REQUEST_VOTE;
-		client.post(url, new AsyncHttpResponseHandler() {
+		client.post(url, params, new AsyncHttpResponseHandler() {
 
 			@Override
 			public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {

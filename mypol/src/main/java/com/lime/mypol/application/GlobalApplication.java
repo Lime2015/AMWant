@@ -28,6 +28,7 @@ import com.android.volley.toolbox.Volley;
 import com.kakao.Session;
 import com.kakao.helper.SystemInfo;
 import com.lime.mypol.R;
+import com.lime.mypol.manager.DatabaseManager;
 import com.lime.mypol.manager.NetworkManager;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -50,6 +51,11 @@ public class GlobalApplication extends Application {
         Session.initialize(this);
         SystemInfo.initialize();
         initImageLoader(this);
+        initDatabase(this);
+    }
+
+    private void initDatabase(Context context) {
+        DatabaseManager.getInstance(context).open();
     }
 
     public static Context getContext() {

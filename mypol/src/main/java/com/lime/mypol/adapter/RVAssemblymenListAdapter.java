@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.lime.mypol.R;
-import com.lime.mypol.listitem.AssemblymanListItem;
+import com.lime.mypol.listitem.AssemblymanItem;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
@@ -45,10 +45,10 @@ public class RVAssemblymenListAdapter extends RecyclerView.Adapter<RVAssemblymen
         }
     }
 
-    List<AssemblymanListItem> tables;
+    List<AssemblymanItem> tables;
     Context context;
     DisplayImageOptions options;
-    public RVAssemblymenListAdapter(Context context, List<AssemblymanListItem> tables) {
+    public RVAssemblymenListAdapter(Context context, List<AssemblymanItem> tables) {
         this.tables = tables;
         this.context = context;
         options = new DisplayImageOptions.Builder()
@@ -89,7 +89,8 @@ public class RVAssemblymenListAdapter extends RecyclerView.Adapter<RVAssemblymen
         String url = tables.get(i).getUrlPhoto();
         //new ImageLoadTask(url, dataViewHolder.assPhoto).execute();
 //        Picasso.with(context).load(url).into(dataViewHolder.assPhoto);
-        ImageLoader.getInstance().displayImage(url, dataViewHolder.assPhoto, options);
+        ImageLoader.getInstance().displayImage(url, dataViewHolder.assPhoto);
+//        ImageLoader.getInstance().displayImage(url, dataViewHolder.assPhoto, options);
     }
 
 

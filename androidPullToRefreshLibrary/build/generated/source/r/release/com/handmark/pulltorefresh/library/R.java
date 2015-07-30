@@ -316,7 +316,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static int pulling_progress_layout=0x7f030004;
     }
     public static final class string {
-        public static int app_name=0x7f080000;
+        public static int lib_name=0x7f080000;
         public static int pull_to_refresh_from_bottom_pull_label=0x7f080001;
         public static int pull_to_refresh_from_bottom_refreshing_label=0x7f080002;
         public static int pull_to_refresh_from_bottom_release_label=0x7f080003;
@@ -333,10 +333,10 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
  API 11 theme customizations can go here. 
  API 14 theme customizations can go here. 
          */
-        public static int AppBaseTheme=0x7f090000;
+        public static int LibBaseTheme=0x7f090000;
         /**  All customizations that are NOT specific to a particular API-level can go here. 
          */
-        public static int AppTheme=0x7f090001;
+        public static int LibTheme=0x7f090001;
     }
     public static final class xml {
         public static int pulltorefresh=0x7f050000;

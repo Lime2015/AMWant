@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.lime.mypol.R;
-import com.lime.mypol.listitem.TableInfoListItem;
+import com.lime.mypol.listitem.DataInfoItem;
 
 import java.util.List;
 
@@ -36,9 +36,9 @@ public class RVMypageDataAdapter extends RecyclerView.Adapter<RVMypageDataAdapte
         }
     }
 
-    List<TableInfoListItem> tables;
+    List<DataInfoItem> tables;
 
-    public RVMypageDataAdapter(List<TableInfoListItem> tables) {
+    public RVMypageDataAdapter(List<DataInfoItem> tables) {
         this.tables = tables;
     }
 
@@ -56,7 +56,7 @@ public class RVMypageDataAdapter extends RecyclerView.Adapter<RVMypageDataAdapte
 
     @Override
     public void onBindViewHolder(DataViewHolder dataViewHolder, int i) {
-        dataViewHolder.tableName.setText(tables.get(i).getTableName());
+        dataViewHolder.tableName.setText(tables.get(i).getDataName());
         dataViewHolder.appTag.setText("app tag : " + tables.get(i).getAppTag());
         dataViewHolder.serverTag.setText("server tag : " + tables.get(i).getServerTag());
         dataViewHolder.icTable.setImageResource(tables.get(i).getIcTable());

@@ -1,7 +1,7 @@
 /**
  * Copyright 2014 Daum Kakao Corp.
  *
- * Redistribution and modification in source or binary forms are not permitted without specific prior written permission. 
+ * Redistribution and modification in source or binary forms are not permitted without specific prior written permission. 
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.

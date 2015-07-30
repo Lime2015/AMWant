@@ -5,20 +5,25 @@
     android:orientation="vertical"
     android:padding="10dp">
 
-    <ProgressBar
-        android:id="@+id/pb_data"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="7dp"
-        android:layout_gravity="top"
-        android:paddingLeft="3dp"
-        android:paddingRight="3dp" />
+    <!--<ProgressBar-->
+    <!--android:id="@+id/pb_data"-->
+    <!--style="?android:attr/progressBarStyleHorizontal"-->
+    <!--android:layout_width="fill_parent"-->
+    <!--android:layout_height="7dp"-->
+    <!--android:layout_gravity="top"-->
+    <!--android:paddingLeft="3dp"-->
+    <!--android:paddingRight="3dp" />-->
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_mypage_data"
+    <!--<android.support.v7.widget.RecyclerView-->
+    <!--android:id="@+id/rv_mypage_data"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:scrollbarStyle="outsideOverlay"-->
+    <!--android:scrollbars="vertical" />-->
+
+    <ListView
+        android:id="@+id/list_mypage_data"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbarStyle="outsideOverlay"
-        android:scrollbars="vertical" />
+        android:layout_height="match_parent" />
 
 </LinearLayout>
