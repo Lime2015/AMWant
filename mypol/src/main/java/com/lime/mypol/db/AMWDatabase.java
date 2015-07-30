@@ -187,7 +187,7 @@ public class AMWDatabase {
         return result;
     }
 
-    public boolean insertAssemblymenList(List<Assemblyman> assList) {
+    public boolean insertAssemblymanList(List<Assemblyman> assList) {
 
 
         for (Assemblyman ass : assList) {

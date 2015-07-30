@@ -11,6 +11,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -43,7 +44,7 @@ import java.util.List;
 /**
  * Created by Administrator on 2015-07-13.
  */
-public class BillListActivity extends ActionBarActivity {
+public class BillListActivity extends AppCompatActivity {
 
     private final String TAG = "BillListActivity";
 

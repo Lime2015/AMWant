@@ -20,6 +20,7 @@ package com.lime.mypol.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.kakao.APIErrorResult;
@@ -31,7 +32,7 @@ import com.kakao.UserProfile;
  * 유효한 세션이 있다는 검증 후
  * me를 호출하여 가입 여부에 따라 가입 페이지를 그리던지 Main 페이지로 이동 시킨다.
  */
-public class SampleSignupActivity extends Activity {
+public class SampleSignupActivity extends AppCompatActivity {
 
     private static String TAG = "SampleSignupActivity";
 

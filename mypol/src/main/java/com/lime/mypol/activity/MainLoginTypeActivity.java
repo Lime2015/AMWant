@@ -4,6 +4,7 @@ package com.lime.mypol.activity;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -17,6 +18,7 @@ import com.kakao.UserProfile;
 import com.kakao.exception.KakaoException;
 import com.kakao.widget.LoginButton;
 import com.lime.mypol.R;
+import com.lime.mypol.manager.NetworkManager;
 import com.lime.mypol.vo.MemberInfo;
 import com.lime.mypol.result.CheckMemberResult;
 import com.loopj.android.http.AsyncHttpClient;
@@ -169,26 +171,9 @@ public class MainLoginTypeActivity extends ActionBarActivity {
     }
 
     private void checkMemberInServer() {
-        Log.d(TAG, "checkMemberInServer start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-
-        AsyncHttpClient client = new AsyncHttpClient();
-        RequestParams params = new RequestParams();
-        Gson gson = new GsonBuilder().create();
-
-        Log.d(TAG, "memberJSON:" + gson.toJson(kakaoMemberInfo));
-        params.put("memberJSON", gson.toJson(kakaoMemberInfo));
-
-        client.post(getResources().getString(R.string.server_url) + getResources().getString(R.string.server_name)  + getResources().getString(R.string.server_check_member), params, new AsyncHttpResponseHandler() {
-
+        NetworkManager.getInstance().checkMemberInServer(kakaoMemberInfo, new NetworkManager.OnNetResultListener<CheckMemberResult>() {
             @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                String content = new String(responseBody);
-
-                Log.d(TAG, "AsyncHttpClient response result:" + content);
-
-                Gson gson = new GsonBuilder().create();
-                CheckMemberResult result = gson.fromJson(content, CheckMemberResult.class);
-
+            public void onSuccess(CheckMemberResult result) {
                 if (result.getResult() == 0) {
                     // 신규회원
                     redirectWASignupActivity();
@@ -199,9 +184,8 @@ public class MainLoginTypeActivity extends ActionBarActivity {
             }
 
             @Override
-            public void onFailure(int statusCode, Throwable error, String content) {
-                Log.d(TAG, "checkMemberInServer response fail:" + statusCode);
-                Toast.makeText(getApplicationContext(), "서버접속 실패!! 잠시후에 다시 시도하세요.", Toast.LENGTH_SHORT).show();
+            public void onFail(int code) {
+                Toast.makeText(MainLoginTypeActivity.this, "서버접속 실패:" + code, Toast.LENGTH_SHORT).show();
             }
         });
     }

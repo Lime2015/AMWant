@@ -18,6 +18,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -40,7 +41,7 @@ import com.readystatesoftware.systembartint.SystemBarTintManager;
 /**
  * Created by Administrator on 2015-07-13.
  */
-public class PublicOpinionsActivity extends ActionBarActivity {
+public class PublicOpinionsActivity extends AppCompatActivity {
 
     private final String TAG = "PublicOpinionsActivity";
 

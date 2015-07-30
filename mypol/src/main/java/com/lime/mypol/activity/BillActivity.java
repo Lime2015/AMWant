@@ -13,6 +13,7 @@ import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.TypedValue;
@@ -26,7 +27,7 @@ import com.readystatesoftware.systembartint.SystemBarTintManager;
 /**
  * Created by Administrator on 2015-07-15.
  */
-public class BillActivity extends ActionBarActivity {
+public class BillActivity extends AppCompatActivity {
 
     private static final String TAG = "BillActivity";
 

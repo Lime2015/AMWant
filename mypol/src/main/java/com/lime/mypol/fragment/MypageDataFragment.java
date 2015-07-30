@@ -23,6 +23,7 @@ import com.lime.mypol.adapter.RVMypageDataAdapter;
 import com.lime.mypol.db.AMWDatabase;
 import com.lime.mypol.listener.RecyclerItemClickListener;
 import com.lime.mypol.listitem.TableInfoListItem;
+import com.lime.mypol.manager.NetworkManager;
 import com.lime.mypol.result.CheckTagResult;
 import com.lime.mypol.vo.Assemblyman;
 import com.lime.mypol.vo.Bill;
@@ -46,13 +47,15 @@ import java.util.List;
 public class MypageDataFragment extends Fragment {
 
     private static String TAG = "MypageDataFragment";
+    private final String DOWNLOAD_ERROR = "다운로드 실패:";
+    private final String DB_INSERT_ERROR = "DB insert 실패:";
 
+    private Context mContext;
     private RecyclerView mRv;
     private RVMypageDataAdapter mAdapter;
     private List<TableInfoListItem> mTables;
     private List<Boolean> mDownloadList;
 
-    private AMWDatabase mDatabase;
     private CheckTagResult mServerTag;
     private CheckTagResult mDbTag;
 
@@ -68,9 +71,9 @@ public class MypageDataFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_mypage_data, container, false);
-//        ViewCompat.setElevation(rootView, 50);
+        final View rootView = inflater.inflate(R.layout.fragment_mypage_data, container, false);
 
+        mContext = rootView.getContext();
         mRv = (RecyclerView) rootView.findViewById(R.id.rv_mypage_data);
         mProgressBar = (ProgressBar) rootView.findViewById(R.id.pb_data);
 
@@ -78,35 +81,116 @@ public class MypageDataFragment extends Fragment {
         mRv.setLayoutManager(llm);
         mRv.setHasFixedSize(true);
 
-        initializeDatabase(rootView.getContext());
         initializeData();
         initializeAdapter();
 
-        mRv.addOnItemTouchListener(new RecyclerItemClickListener(rootView.getContext(), new RecyclerItemClickListener.OnItemClickListener() {
+        mRv.addOnItemTouchListener(new RecyclerItemClickListener(mContext, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        // do whatever
-//                        Log.d(TAG, "RecycerItem click event view:" + view);
-//                        Log.d(TAG, "RecycerItem click event position:" + position);
                         if (mDownloadList.get(position)) {
+                            int tag = mDbTag.getTagList().get(position);
                             switch (position) {
                                 case 0:
-                                    requestAssemblyman();
+                                    NetworkManager.getInstance().requestAssemblyman(tag, new NetworkManager.OnNetResultListener<List<Assemblyman>>() {
+                                        @Override
+                                        public void onSuccess(List<Assemblyman> result) {
+                                            if (AMWDatabase.getInstance(mContext).insertAssemblymanList(result)) {
+                                                checkServerTag();
+                                            } else {
+                                                Toast.makeText(mContext, DB_INSERT_ERROR + "국회의원", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onFail(int code) {
+                                            Toast.makeText(mContext, DOWNLOAD_ERROR + code, Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
                                     break;
                                 case 1:
-                                    requestBill();
+                                    NetworkManager.getInstance().requestBill(tag, new NetworkManager.OnNetResultListener<List<Bill>>() {
+                                        @Override
+                                        public void onSuccess(List<Bill> result) {
+                                            if (AMWDatabase.getInstance(mContext).insertBillList(result)) {
+                                                checkServerTag();
+                                            } else {
+                                                Toast.makeText(mContext, DB_INSERT_ERROR + "의안", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onFail(int code) {
+                                            Toast.makeText(mContext, DOWNLOAD_ERROR + code, Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
                                     break;
                                 case 2:
-                                    requestCommitteeMeeting();
+                                    NetworkManager.getInstance().requestCommitteeMeeting(tag, new NetworkManager.OnNetResultListener<List<CommitteeMeeting>>() {
+                                        @Override
+                                        public void onSuccess(List<CommitteeMeeting> result) {
+                                            if (AMWDatabase.getInstance(mContext).insertCommitteeMeetingList(result)) {
+                                                checkServerTag();
+                                            } else {
+                                                Toast.makeText(mContext, DB_INSERT_ERROR + "상임위원회", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onFail(int code) {
+                                            Toast.makeText(mContext, DOWNLOAD_ERROR + code, Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
                                     break;
                                 case 3:
-                                    requestGeneralMeeting();
+                                    NetworkManager.getInstance().requestGeneralMeeting(tag, new NetworkManager.OnNetResultListener<List<GeneralMeeting>>() {
+                                        @Override
+                                        public void onSuccess(List<GeneralMeeting> result) {
+                                            if (AMWDatabase.getInstance(mContext).insertGneralMeetingList(result)) {
+                                                checkServerTag();
+                                            } else {
+                                                Toast.makeText(mContext, DB_INSERT_ERROR + "본회의", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onFail(int code) {
+                                            Toast.makeText(mContext, DOWNLOAD_ERROR + code, Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
                                     break;
                                 case 4:
-                                    requestPartyHistory();
+                                    NetworkManager.getInstance().requestPartyHistory(tag, new NetworkManager.OnNetResultListener<List<PartyHistory>>() {
+                                        @Override
+                                        public void onSuccess(List<PartyHistory> result) {
+                                            if (AMWDatabase.getInstance(mContext).insertPartyHistoryList(result)) {
+                                                checkServerTag();
+                                            } else {
+                                                Toast.makeText(mContext, DB_INSERT_ERROR + "정당", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onFail(int code) {
+                                            Toast.makeText(mContext, DOWNLOAD_ERROR + code, Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
                                     break;
                                 case 5:
-                                    requestVote();
+                                    NetworkManager.getInstance().requestVote(tag, new NetworkManager.OnNetResultListener<List<Vote>>() {
+                                        @Override
+                                        public void onSuccess(List<Vote> result) {
+                                            if (AMWDatabase.getInstance(mContext).insertVoteList(result)) {
+                                                checkServerTag();
+                                            } else {
+                                                Toast.makeText(mContext, DB_INSERT_ERROR + "표결", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onFail(int code) {
+                                            Toast.makeText(mContext, DOWNLOAD_ERROR + code, Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
                                     break;
                             }
                         }
@@ -125,23 +209,6 @@ public class MypageDataFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         return super.onOptionsItemSelected(item);
-    }
-    
-    private void initializeDatabase(Context context) {
-        if (mDatabase != null) {
-            mDatabase.close();
-            mDatabase = null;
-        }
-        
-        mDatabase = AMWDatabase.getInstance(context);
-        boolean isOpen = mDatabase.open();
-        if (isOpen) {
-            Log.d(TAG, "WatchAssembly database is open.");
-        } else {
-            Log.d(TAG, "WatchAssembly database is not open.");
-        }
-        
-        Log.d(TAG, "initializeDatabase success!!");
     }
 
     private void initializeData() {
@@ -171,34 +238,11 @@ public class MypageDataFragment extends Fragment {
     //////////////////////////////////////////////////////////////////////////////////////////////////////
 
     private void checkServerTag() {
-        Log.d(TAG, "checkServerTag start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-
-        AsyncHttpClient client = new AsyncHttpClient();
-        String url = getResources().getString(R.string.server_url) + getResources().getString(R.string.server_name) + getResources().getString(R.string.server_check_tag);
-        client.post(url, new AsyncHttpResponseHandler() {
-
+        NetworkManager.getInstance().checkServerTag(new NetworkManager.OnNetResultListener<CheckTagResult>() {
             @Override
-            public void onStart() {
-                super.onStart();
-                mProgressBar.setVisibility(ProgressBar.VISIBLE);
-            }
-
-            @Override
-            public void onProgress(int position, int length) {
-                super.onProgress(position, length);
-
-                mProgressBar.setProgress(position);
-                mProgressBar.setMax(length);
-            }
-
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                String content = new String(responseBody);
-                Log.d(TAG, "checkServerTag result:" + content);
-
-                Gson gson = new GsonBuilder().create();
-                mServerTag = gson.fromJson(content, CheckTagResult.class);
-                mDbTag = mDatabase.checkTag();
+            public void onSuccess(CheckTagResult result) {
+                mServerTag = result;
+                mDbTag = AMWDatabase.getInstance(mContext).checkTag();
 
                 for (int i = 0; i < mServerTag.getTagList().size(); i++) {
                     TableInfoListItem item = mTables.get(i);
@@ -217,354 +261,9 @@ public class MypageDataFragment extends Fragment {
             }
 
             @Override
-            public void onFinish() {
-                super.onFinish();
-                mProgressBar.setVisibility(ProgressBar.GONE);
-            }
-
-            @Override
-            public void onFailure(int statusCode, Throwable error, String content) {
-                Log.d(TAG, "checkServerTag response fail:" + statusCode);
-                Toast.makeText(getActivity().getApplicationContext(), "서버접속 실패!! 잠시후에 다시 시도하세요.", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-    }
-
-    private void requestAssemblyman() {
-        Log.d(TAG, "requestAssemblyman start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-
-        AsyncHttpClient client = new AsyncHttpClient();
-        RequestParams params = new RequestParams();
-        params.put("tag", mDbTag.getTagList().get(0));
-
-        String url = getResources().getString(R.string.server_url) + getResources().getString(R.string.server_name) + getResources().getString(R.string.server_request_assemblyman);
-        client.post(url, new AsyncHttpResponseHandler() {
-
-            @Override
-            public void onStart() {
-                super.onStart();
-                mProgressBar.setVisibility(ProgressBar.VISIBLE);
-            }
-
-            @Override
-            public void onProgress(int position, int length) {
-                super.onProgress(position, length);
-
-
-                Log.d(TAG, "ProgressBar position:" + position + " length:" + length + " >>>>> " + position * 100 / length);
-                mProgressBar.setProgress(position * 100 / length);
-//                mProgressBar.setMax(length);
-            }
-
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                String content = new String(responseBody);
-                Log.d(TAG, "requestAssemblyman result:" + content);
-
-                Gson gson = new GsonBuilder().create();
-                List<Assemblyman> assList = gson.fromJson(content, new TypeToken<List<Assemblyman>>() {
-                }.getType());
-
-                if (mDatabase.insertAssemblymenList(assList)) {
-                    Log.d(TAG, "assemblyman db insert success!!");
-                    checkServerTag();
-                }
-            }
-
-            @Override
-            public void onFinish() {
-                super.onFinish();
-                mProgressBar.setVisibility(ProgressBar.INVISIBLE);
-            }
-
-            @Override
-            public void onFailure(int statusCode, Throwable error, String content) {
-                Log.d(TAG, "requestAssemblyman response fail:" + statusCode);
-                Toast.makeText(getActivity().getApplicationContext(), "서버접속 실패!! 잠시후에 다시 시도하세요.", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-    }
-
-    private void requestBill() {
-
-        Log.d(TAG, "requestBill start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-
-        AsyncHttpClient client = new AsyncHttpClient();
-        RequestParams params = new RequestParams();
-        params.put("tag", mDbTag.getTagList().get(1));
-
-        String url = getResources().getString(R.string.server_url) + getResources().getString(R.string.server_name) + getResources().getString(R.string.server_request_bill);
-        client.post(url, new AsyncHttpResponseHandler() {
-
-            @Override
-            public void onStart() {
-                super.onStart();
-                mProgressBar.setVisibility(ProgressBar.VISIBLE);
-            }
-
-            @Override
-            public void onProgress(int position, int length) {
-                super.onProgress(position, length);
-
-
-                Log.d(TAG, "ProgressBar position:" + position + " length:" + length + " >>>>> " + position * 100 / length);
-                mProgressBar.setProgress(position * 100 / length);
-//                mProgressBar.setMax(length);
-            }
-
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                String content = new String(responseBody);
-                Log.d(TAG, "requestBill result:" + content);
-
-                Gson gson = new GsonBuilder().create();
-                List<Bill> billList = gson.fromJson(content, new TypeToken<List<Bill>>() {}.getType());
-                for(int i=0;i<billList.size();i++){
-                    billList.get(i).setBill_title(billList.get(i).getBill_title().replace("'", ""));
-                }
-
-                if (mDatabase.insertBillList(billList)) {
-                    Log.d(TAG, "bill db insert success!!");
-                    checkServerTag();
-                }
-            }
-
-            @Override
-            public void onFailure(int statusCode, Throwable error, String content) {
-                Log.d(TAG, "requestBill response fail:" + statusCode);
-                Toast.makeText(getActivity().getApplicationContext(), "서버접속 실패!! 잠시후에 다시 시도하세요.", Toast.LENGTH_SHORT).show();
+            public void onFail(int code) {
+                Toast.makeText(mContext, DOWNLOAD_ERROR + code, Toast.LENGTH_SHORT).show();
             }
         });
     }
-
-    private void requestCommitteeMeeting() {
-
-        Log.d(TAG, "requestCommitteeMeeting start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-
-        AsyncHttpClient client = new AsyncHttpClient();
-        RequestParams params = new RequestParams();
-        params.put("tag", mDbTag.getTagList().get(2));
-
-        String url = getResources().getString(R.string.server_url) + getResources().getString(R.string.server_name) + getResources().getString(R.string.server_request_committee);
-        client.post(url, new AsyncHttpResponseHandler() {
-
-            @Override
-            public void onStart() {
-                super.onStart();
-                mProgressBar.setVisibility(ProgressBar.VISIBLE);
-            }
-
-            @Override
-            public void onProgress(int position, int length) {
-                super.onProgress(position, length);
-
-
-                Log.d(TAG, "ProgressBar position:" + position / 1000 + " length:" + length);
-                mProgressBar.setProgress(position / 1000);
-//                mProgressBar.setMax(length);
-            }
-
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                String content = new String(responseBody);
-                Log.d(TAG, "requestAssemblyman result:" + content);
-
-                Gson gson = new GsonBuilder().create();
-                List<CommitteeMeeting> List = gson.fromJson(content, new TypeToken<List<CommitteeMeeting>>() {
-                }.getType());
-
-                if (mDatabase.insertCommitteeMeetingList(List)) {
-                    Log.d(TAG, "committee db insert success!!");
-                    checkServerTag();
-                }
-            }
-
-            @Override
-            public void onFinish() {
-                super.onFinish();
-                mProgressBar.setVisibility(ProgressBar.INVISIBLE);
-            }
-
-            @Override
-            public void onFailure(int statusCode, Throwable error, String content) {
-                Log.d(TAG, "requestAssemblyman response fail:" + statusCode);
-                Toast.makeText(getActivity().getApplicationContext(), "서버접속 실패!! 잠시후에 다시 시도하세요.", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-    }
-
-    private void requestGeneralMeeting() {
-
-        Log.d(TAG, "requestCommitteeMeeting start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-
-        AsyncHttpClient client = new AsyncHttpClient();
-        RequestParams params = new RequestParams();
-        params.put("tag", mDbTag.getTagList().get(3));
-
-        String url = getResources().getString(R.string.server_url) + getResources().getString(R.string.server_name) + getResources().getString(R.string.server_request_general);
-        client.post(url, new AsyncHttpResponseHandler() {
-
-            @Override
-            public void onStart() {
-                super.onStart();
-                mProgressBar.setVisibility(ProgressBar.VISIBLE);
-            }
-
-            @Override
-            public void onProgress(int position, int length) {
-                super.onProgress(position, length);
-
-
-                Log.d(TAG, "ProgressBar position:" + position / 1000 + " length:" + length);
-                mProgressBar.setProgress(position / 1000);
-//                mProgressBar.setMax(length);
-            }
-
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                String content = new String(responseBody);
-                Log.d(TAG, "requestAssemblyman result:" + content);
-
-                Gson gson = new GsonBuilder().create();
-                List<GeneralMeeting> List = gson.fromJson(content, new TypeToken<List<GeneralMeeting>>() {
-                }.getType());
-
-                if (mDatabase.insertGneralMeetingList(List)) {
-                    Log.d(TAG, "general db insert success!!");
-                    checkServerTag();
-                }
-            }
-
-            @Override
-            public void onFinish() {
-                super.onFinish();
-                mProgressBar.setVisibility(ProgressBar.INVISIBLE);
-            }
-
-            @Override
-            public void onFailure(int statusCode, Throwable error, String content) {
-                Log.d(TAG, "requestAssemblyman response fail:" + statusCode);
-                Toast.makeText(getActivity().getApplicationContext(), "서버접속 실패!! 잠시후에 다시 시도하세요.", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-    }
-
-    private void requestPartyHistory() {
-
-        Log.d(TAG, "requestCommitteeMeeting start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-
-        AsyncHttpClient client = new AsyncHttpClient();
-        RequestParams params = new RequestParams();
-        params.put("tag", mDbTag.getTagList().get(4));
-
-        String url = getResources().getString(R.string.server_url) + getResources().getString(R.string.server_name) + getResources().getString(R.string.server_request_party);
-        client.post(url, new AsyncHttpResponseHandler() {
-
-            @Override
-            public void onStart() {
-                super.onStart();
-                mProgressBar.setVisibility(ProgressBar.VISIBLE);
-            }
-
-            @Override
-            public void onProgress(int position, int length) {
-                super.onProgress(position, length);
-
-
-                Log.d(TAG, "ProgressBar position:" + position / 1000 + " length:" + length);
-                mProgressBar.setProgress(position / 1000);
-//                mProgressBar.setMax(length);
-            }
-
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                String content = new String(responseBody);
-                Log.d(TAG, "requestAssemblyman result:" + content);
-
-                Gson gson = new GsonBuilder().create();
-                List<PartyHistory> List = gson.fromJson(content, new TypeToken<List<PartyHistory>>() {
-                }.getType());
-
-                if (mDatabase.insertPartyHistoryList(List)) {
-                    Log.d(TAG, "party db insert success!!");
-                    checkServerTag();
-                }
-            }
-
-            @Override
-            public void onFinish() {
-                super.onFinish();
-                mProgressBar.setVisibility(ProgressBar.INVISIBLE);
-            }
-
-            @Override
-            public void onFailure(int statusCode, Throwable error, String content) {
-                Log.d(TAG, "requestAssemblyman response fail:" + statusCode);
-                Toast.makeText(getActivity().getApplicationContext(), "서버접속 실패!! 잠시후에 다시 시도하세요.", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-    }
-
-    private void requestVote() {
-
-        Log.d(TAG, "requestCommitteeMeeting start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-
-        AsyncHttpClient client = new AsyncHttpClient();
-        RequestParams params = new RequestParams();
-        params.put("tag", mDbTag.getTagList().get(5));
-
-        String url = getResources().getString(R.string.server_url) + getResources().getString(R.string.server_name) + getResources().getString(R.string.server_request_vote);
-        client.post(url, new AsyncHttpResponseHandler() {
-
-            @Override
-            public void onStart() {
-                super.onStart();
-                mProgressBar.setVisibility(ProgressBar.VISIBLE);
-            }
-
-            @Override
-            public void onProgress(int position, int length) {
-                super.onProgress(position, length);
-
-
-                Log.d(TAG, "ProgressBar position:" + position / 1000 + " length:" + length);
-                mProgressBar.setProgress(position / 1000);
-//                mProgressBar.setMax(length);
-            }
-
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                String content = new String(responseBody);
-                Log.d(TAG, "requestAssemblyman result:" + content);
-
-                Gson gson = new GsonBuilder().create();
-                List<Vote> List = gson.fromJson(content, new TypeToken<List<Vote>>() {
-                }.getType());
-
-                if (mDatabase.insertVoteList(List)) {
-                    Log.d(TAG, "party db insert success!!");
-                    checkServerTag();
-                }
-            }
-
-            @Override
-            public void onFinish() {
-                super.onFinish();
-                mProgressBar.setVisibility(ProgressBar.INVISIBLE);
-            }
-
-            @Override
-            public void onFailure(int statusCode, Throwable error, String content) {
-                Log.d(TAG, "requestAssemblyman response fail:" + statusCode);
-                Toast.makeText(getActivity().getApplicationContext(), "서버접속 실패!! 잠시후에 다시 시도하세요.", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-    }
-
 }

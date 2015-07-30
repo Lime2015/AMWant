@@ -12,7 +12,9 @@ import android.widget.TextView;
 
 import com.lime.mypol.R;
 import com.lime.mypol.listitem.AssemblymanListItem;
-import com.squareup.picasso.Picasso;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 
 import java.util.List;
 
@@ -45,10 +47,19 @@ public class RVAssemblymenListAdapter extends RecyclerView.Adapter<RVAssemblymen
 
     List<AssemblymanListItem> tables;
     Context context;
-
+    DisplayImageOptions options;
     public RVAssemblymenListAdapter(Context context, List<AssemblymanListItem> tables) {
         this.tables = tables;
         this.context = context;
+        options = new DisplayImageOptions.Builder()
+                .showImageOnLoading(R.drawable.ic_empty_photo)
+                .showImageForEmptyUri(R.drawable.ic_empty_photo)
+                .showImageOnFail(R.drawable.ic_empty_photo)
+                .cacheInMemory(true)
+                .cacheOnDisc(true)
+                .considerExifParams(true)
+                .displayer(new RoundedBitmapDisplayer(50))
+                .build();
     }
 
     @Override
@@ -77,7 +88,8 @@ public class RVAssemblymenListAdapter extends RecyclerView.Adapter<RVAssemblymen
         //사진 다운로드
         String url = tables.get(i).getUrlPhoto();
         //new ImageLoadTask(url, dataViewHolder.assPhoto).execute();
-        Picasso.with(context).load(url).into(dataViewHolder.assPhoto);
+//        Picasso.with(context).load(url).into(dataViewHolder.assPhoto);
+        ImageLoader.getInstance().displayImage(url, dataViewHolder.assPhoto, options);
     }
 
 

@@ -5,6 +5,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -25,7 +26,7 @@ import com.lime.mypol.vo.MemberInfo;
 /**
  * Created by SeongSan on 2015-06-24.
  */
-public class MainMenuActivity extends ActionBarActivity {
+public class MainMenuActivity extends AppCompatActivity {
 
     private static final String TAG = "MainMenuActivity";
 

@@ -3,6 +3,7 @@ package com.lime.mypol.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -12,6 +13,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.lime.mypol.R;
 import com.lime.mypol.frame.ExtraUserPropertyFrame;
+import com.lime.mypol.manager.NetworkManager;
 import com.lime.mypol.vo.MemberInfo;
 import com.lime.mypol.result.CheckMemberResult;
 import com.loopj.android.http.AsyncHttpClient;
@@ -26,7 +28,7 @@ import java.util.HashMap;
 /**
  * Created by SeongSan on 2015-06-18.
  */
-public class WASignupActivity extends Activity {
+public class WASignupActivity extends AppCompatActivity {
 
     private final String TAG = "WASignupActivity";
 
@@ -87,42 +89,24 @@ public class WASignupActivity extends Activity {
         if (strGenger != null)
             kakaoMemberInfo.setGender(strGenger);
 
-        AsyncHttpClient client = new AsyncHttpClient();
-        RequestParams params = new RequestParams();
-        Gson gson = new GsonBuilder().create();
-
-        Log.d(TAG, "memberJSON:" + gson.toJson(kakaoMemberInfo));
-        params.put("memberJSON", gson.toJson(kakaoMemberInfo));
-
-        client.post(getResources().getString(R.string.server_url) + getResources().getString(R.string.server_name)  + getResources().getString(R.string.server_save_member), params, new AsyncHttpResponseHandler() {
+        NetworkManager.getInstance().saveMemberServer(kakaoMemberInfo, new NetworkManager.OnNetResultListener<CheckMemberResult>() {
             @Override
-            public void onSuccess(String content) {
-
-                Log.d(TAG, "AsyncHttpClient response result:" + content);
-
-                Gson gson = new GsonBuilder().create();
-                CheckMemberResult serverResult = gson.fromJson(content, CheckMemberResult.class);
-
-                if (serverResult.getResult() == 1) {
+            public void onSuccess(CheckMemberResult result) {
+                if (result.getResult() == 1) {
                     // 정상 신규 등록
-                    Log.d(TAG, "complete to signup in server");
                     Toast.makeText(getApplicationContext(), "Success Signup !!", Toast.LENGTH_SHORT).show();
-
                     redirectKakaoActivity();
                 } else {
                     // 신규 등록 실패
-                    Log.d(TAG, "fail to request new member info in server");
                     Toast.makeText(getApplicationContext(), "fail to request new member info in server", Toast.LENGTH_SHORT).show();
-
                     redirectKakaoActivity();
                 }
+
             }
 
             @Override
-            public void onFailure(int statusCode, Throwable error, String content) {
-                Log.d(TAG, "AsyncHttpClient response fail:" + statusCode);
-                Toast.makeText(getApplicationContext(), "서버접속 실패!! 잠시후에 다시 시도하세요.", Toast.LENGTH_SHORT).show();
-
+            public void onFail(int code) {
+                Toast.makeText(WASignupActivity.this, "서버접속 실패:" + code, Toast.LENGTH_SHORT).show();
                 redirectKakaoActivity();
             }
         });
