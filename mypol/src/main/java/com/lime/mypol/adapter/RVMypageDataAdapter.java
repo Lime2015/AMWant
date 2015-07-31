@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -23,7 +24,7 @@ public class RVMypageDataAdapter extends RecyclerView.Adapter<RVMypageDataAdapte
         TextView appTag;
         TextView serverTag;
         ImageView icTable;
-        ImageButton btnRefresh;
+        Button btnRefresh;
 
         DataViewHolder(View itemView) {
             super(itemView);
@@ -32,7 +33,7 @@ public class RVMypageDataAdapter extends RecyclerView.Adapter<RVMypageDataAdapte
             appTag = (TextView) itemView.findViewById(R.id.app_tag);
             serverTag = (TextView) itemView.findViewById(R.id.server_tag);
             icTable = (ImageView) itemView.findViewById(R.id.ic_table);
-            btnRefresh = (ImageButton) itemView.findViewById(R.id.btn_refresh);
+            btnRefresh = (Button) itemView.findViewById(R.id.btn_refresh);
         }
     }
 
@@ -60,7 +61,7 @@ public class RVMypageDataAdapter extends RecyclerView.Adapter<RVMypageDataAdapte
         dataViewHolder.appTag.setText("app tag : " + tables.get(i).getAppTag());
         dataViewHolder.serverTag.setText("server tag : " + tables.get(i).getServerTag());
         dataViewHolder.icTable.setImageResource(tables.get(i).getIcTable());
-        dataViewHolder.btnRefresh.setImageResource(tables.get(i).getIcRefresh());
+        dataViewHolder.btnRefresh.setEnabled(tables.get(i).isEnabled());
     }
 
 

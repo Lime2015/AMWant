@@ -226,7 +226,7 @@ public class DatabaseManager {
             case 1:     // favorite
                 break;
             case 2:     // naming
-                sql = "select * from assemblyman order by assemblyman_name desc limit " + start + ", " + count;
+                sql = "select * from assemblyman order by assemblyman_name asc limit " + start + ", " + count;
                 break;
         }
 
@@ -288,7 +288,7 @@ public class DatabaseManager {
             case 1:     // favorite
                 break;
             case 2:     // naming
-                sql = "select * from bill order by bill_title desc limit " + start + ", " + count;
+                sql = "select * from bill order by bill_title asc limit " + start + ", " + count;
                 break;
         }
 

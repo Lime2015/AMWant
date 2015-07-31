@@ -2,6 +2,7 @@ package com.lime.mypol.frame;
 
 import android.content.Context;
 import android.support.v7.widget.CardView;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -25,7 +26,7 @@ public class DataInfoItemView extends FrameLayout {
     TextView appTag;
     TextView serverTag;
     ImageView icTable;
-    ImageButton btnRefresh;
+    Button btnRefresh;
     DataInfoItem mData;
     private void init() {
         inflate(getContext(), R.layout.card_mypage_data, this);
@@ -34,7 +35,7 @@ public class DataInfoItemView extends FrameLayout {
         appTag = (TextView) findViewById(R.id.app_tag);
         serverTag = (TextView) findViewById(R.id.server_tag);
         icTable = (ImageView) findViewById(R.id.ic_table);
-        btnRefresh = (ImageButton) findViewById(R.id.btn_refresh);
+        btnRefresh = (Button) findViewById(R.id.btn_refresh);
     }
 
     public void setItem(final DataInfoItem item) {
@@ -43,6 +44,6 @@ public class DataInfoItemView extends FrameLayout {
         appTag.setText("app tag : " + item.getAppTag());
         serverTag.setText("server tag : " + item.getServerTag());
         icTable.setImageResource(item.getIcTable());
-        btnRefresh.setImageResource(item.getIcRefresh());
+        btnRefresh.setEnabled(item.isEnabled());
     }
 }

@@ -66,11 +66,10 @@ public class MypageDataFragment extends Fragment {
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
                 Toast.makeText(mContext, "클릭 position:" + position, Toast.LENGTH_SHORT).show();
-                int index = position - 1;
-                if (mDownloadList.get(index)) {
-                    int tag = mDbTag.getTagList().get(index);
+                if (mDownloadList.get(position)) {
+                    int tag = mDbTag.getTagList().get(position);
                     switch (position) {
                         case 0:
                             NetworkManager.getInstance().requestAssemblyman(tag, new NetworkManager.OnNetResultListener<List<Assemblyman>>() {
@@ -193,12 +192,12 @@ public class MypageDataFragment extends Fragment {
     private void initializeData() {
 
         List<DataInfoItem> items = new ArrayList<>();
-        items.add(new DataInfoItem("국회의원", 0, 0, R.drawable.assemblyman, R.drawable.check_orange));
-        items.add(new DataInfoItem("의안", 0, 0, R.drawable.bill, R.drawable.check_orange));
-        items.add(new DataInfoItem("상임위원회", 0, 0, R.drawable.committee, R.drawable.check_orange));
-        items.add(new DataInfoItem("본회의", 0, 0, R.drawable.assembly, R.drawable.check_orange));
-        items.add(new DataInfoItem("정당", 0, 0, R.drawable.committee, R.drawable.check_orange));
-        items.add(new DataInfoItem("표결", 0, 0, R.drawable.assembly, R.drawable.check_orange));
+        items.add(new DataInfoItem("국회의원", 0, 0, R.drawable.assemblyman, false));
+        items.add(new DataInfoItem("의안", 0, 0, R.drawable.bill, false));
+        items.add(new DataInfoItem("상임위원회", 0, 0, R.drawable.committee, false));
+        items.add(new DataInfoItem("본회의", 0, 0, R.drawable.assembly, false));
+        items.add(new DataInfoItem("정당", 0, 0, R.drawable.committee, false));
+        items.add(new DataInfoItem("표결", 0, 0, R.drawable.assembly, false));
         mAdapter.addAll(items);
 
         mDownloadList = new ArrayList<>();
@@ -224,10 +223,12 @@ public class MypageDataFragment extends Fragment {
                     item.setAppTag(mDbTag.getTagList().get(i));
                     item.setServerTag(mServerTag.getTagList().get(i));
                     if (mServerTag.getTagList().get(i) > mDbTag.getTagList().get(i)) {
-                        item.setIcRefresh(R.drawable.download);
+//                        item.setIcRefresh(R.drawable.download);
+                        item.setEnabled(true);
                         mDownloadList.set(i, true);
                     } else {
-                        item.setIcRefresh(R.drawable.check_orange);
+//                        item.setIcRefresh(R.drawable.check_orange);
+                        item.setEnabled(false);
                         mDownloadList.set(i, false);
                     }
                 }

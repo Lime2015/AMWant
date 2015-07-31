@@ -116,12 +116,14 @@ public class AssemblymenListActivity extends AppCompatActivity {
         rvListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Toast.makeText(AssemblymenListActivity.this, "클릭 position:" + position, Toast.LENGTH_SHORT).show();
                 showAssemblymanActivity(position - 1);
             }
         });
         rvListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+//                Toast.makeText(AssemblymenListActivity.this, "롱클릭 position:" + position, Toast.LENGTH_SHORT).show();
                 Toast.makeText(getApplicationContext(), ((AssemblymanItem) mAdapter.getItem(position - 1)).getAssemblymanName() + " 관심의원 등록~~", Toast.LENGTH_SHORT).show();
                 return true;
             }

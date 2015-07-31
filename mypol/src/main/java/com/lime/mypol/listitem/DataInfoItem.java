@@ -8,17 +8,25 @@ public class DataInfoItem {
     private int appTag;
     private int serverTag;
     private int icTable;
-    private int icRefresh;
+    private boolean enabled;
 
     public DataInfoItem() {
     }
 
-    public DataInfoItem(String dataName, int appTag, int serverTag, int icTable, int icRefresh) {
+    public DataInfoItem(String dataName, int appTag, int serverTag, int icTable, boolean enabled) {
         this.dataName = dataName;
         this.appTag = appTag;
         this.serverTag = serverTag;
         this.icTable = icTable;
-        this.icRefresh = icRefresh;
+        this.enabled = enabled;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     public String getDataName() {
@@ -43,14 +51,6 @@ public class DataInfoItem {
 
     public void setIcTable(int icTable) {
         this.icTable = icTable;
-    }
-
-    public int getIcRefresh() {
-        return icRefresh;
-    }
-
-    public void setIcRefresh(int icRefresh) {
-        this.icRefresh = icRefresh;
     }
 
     public int getServerTag() {

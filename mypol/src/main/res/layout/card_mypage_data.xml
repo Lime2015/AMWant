@@ -43,16 +43,17 @@
             android:layout_below="@+id/table_name"
             android:layout_toRightOf="@+id/app_tag" />
 
-        <ImageButton
+        <Button
             android:id="@+id/btn_refresh"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
-            android:background="@android:color/transparent"
+            android:background="@drawable/button_download"
             android:focusable="false"
             android:padding="0dp"
+            android:enabled="false"
             android:scaleType="fitCenter" />
 
 
