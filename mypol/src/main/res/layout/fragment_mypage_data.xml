@@ -21,9 +21,18 @@
     <!--android:scrollbarStyle="outsideOverlay"-->
     <!--android:scrollbars="vertical" />-->
 
+    <Button
+        android:id="@+id/btn_init_server"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/holo_orange_dark"
+        android:text="데이터베이스 초기화(필수)"
+        android:visibility="gone" />
+
     <ListView
         android:id="@+id/list_mypage_data"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:visibility="gone" />
 
 </LinearLayout>

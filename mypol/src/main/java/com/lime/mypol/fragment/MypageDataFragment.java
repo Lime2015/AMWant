@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -25,6 +26,7 @@ import com.lime.mypol.vo.GeneralMeeting;
 import com.lime.mypol.vo.PartyHistory;
 import com.lime.mypol.vo.Vote;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +40,7 @@ public class MypageDataFragment extends Fragment {
     private final String DOWNLOAD_ERROR = "다운로드 실패:";
     private final String DB_INSERT_ERROR = "DB insert 실패:";
 
+    private Button btnInitServer;
     private Context mContext;
     private MypageDataAdapter mAdapter;
     private ListView listView;
@@ -63,6 +66,31 @@ public class MypageDataFragment extends Fragment {
         listView = (ListView) rootView.findViewById(R.id.list_mypage_data);
         mAdapter = new MypageDataAdapter();
         listView.setAdapter(mAdapter);
+
+        checkServerTag();
+        initializeData();
+
+        btnInitServer = (Button) rootView.findViewById(R.id.btn_init_server);
+        btnInitServer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NetworkManager.getInstance().requestInitDatabase(new NetworkManager.OnNetResultListener<File>() {
+                    @Override
+                    public void onSuccess(File result) {
+                        if(DatabaseManager.getInstance(mContext).initDatabase(result)){
+                            checkServerTag();
+                        } else {
+                            Toast.makeText(mContext, DB_INSERT_ERROR + "데이터베이스 초기화 실패", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFail(int code) {
+                        Toast.makeText(mContext, DOWNLOAD_ERROR + code, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -178,9 +206,6 @@ public class MypageDataFragment extends Fragment {
             }
         });
 
-        initializeData();
-        checkServerTag();
-
         return rootView;
     }
 
@@ -192,6 +217,8 @@ public class MypageDataFragment extends Fragment {
     private void initializeData() {
 
         List<DataInfoItem> items = new ArrayList<>();
+        mDownloadList = new ArrayList<>();
+
         items.add(new DataInfoItem("국회의원", 0, 0, R.drawable.assemblyman, false));
         items.add(new DataInfoItem("의안", 0, 0, R.drawable.bill, false));
         items.add(new DataInfoItem("상임위원회", 0, 0, R.drawable.committee, false));
@@ -200,7 +227,6 @@ public class MypageDataFragment extends Fragment {
         items.add(new DataInfoItem("표결", 0, 0, R.drawable.assembly, false));
         mAdapter.addAll(items);
 
-        mDownloadList = new ArrayList<>();
         mDownloadList.add(false);
         mDownloadList.add(false);
         mDownloadList.add(false);
@@ -234,6 +260,14 @@ public class MypageDataFragment extends Fragment {
                 }
 
                 mAdapter.notifyDataSetChanged();
+
+                if(mDbTag.getTagList().get(0) == 0) {
+                    btnInitServer.setVisibility(View.VISIBLE);
+                    listView.setVisibility(View.GONE);
+                } else {
+                    btnInitServer.setVisibility(View.GONE);
+                    listView.setVisibility(View.VISIBLE);
+                }
             }
 
             @Override

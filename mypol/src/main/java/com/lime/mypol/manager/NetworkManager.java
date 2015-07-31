@@ -1,5 +1,6 @@
 package com.lime.mypol.manager;
 
+import android.os.Environment;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -25,6 +26,8 @@ import org.apache.http.Header;
 import org.apache.http.client.HttpClient;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.security.KeyManagementException;
@@ -79,7 +82,7 @@ public class NetworkManager {
 	}
 
 
-	final String SERVER_URL = "http://52.69.102.82/WAServer";
+	final String SERVER_URL = "http://52.69.102.82:8080/WAServer";
 	final String CHECK_TAG = "/checkTag.do";
 	public void checkServerTag(final OnNetResultListener<CheckTagResult> listener){
 
@@ -94,6 +97,45 @@ public class NetworkManager {
 				InputStreamReader is = new InputStreamReader(new ByteArrayInputStream(responseBody));
 				Gson gson = new GsonBuilder().create();
 				CheckTagResult result = gson.fromJson(is, CheckTagResult.class);
+				listener.onSuccess(result);
+			}
+
+			@Override
+			public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+				listener.onFail(statusCode);
+			}
+		});
+
+	}
+
+	final String INIT_DATABASE = "/wadb.sql";
+	public void requestInitDatabase(final OnNetResultListener<File> listener){
+
+		Log.d(TAG, "requestInitDatabase start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+
+		AsyncHttpClient client = new AsyncHttpClient();
+
+		String url = SERVER_URL + INIT_DATABASE;
+		client.post(url, new AsyncHttpResponseHandler() {
+			@Override
+			public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+				File result=new File(Environment.getExternalStorageDirectory(), "wadb.sql");
+
+				if (result.exists()) {
+					result.delete();
+				}
+
+				try {
+					FileOutputStream fos=new FileOutputStream(result.getPath());
+					fos.write(responseBody);
+					fos.close();
+				}
+				catch (java.io.IOException e) {
+					listener.onFail(-999);
+					return;
+				}
+
+
 				listener.onSuccess(result);
 			}
 

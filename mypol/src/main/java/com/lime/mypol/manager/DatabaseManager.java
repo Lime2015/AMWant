@@ -9,6 +9,7 @@ import android.util.Log;
 import com.lime.mypol.listitem.AssemblymanItem;
 import com.lime.mypol.listitem.BillItem;
 import com.lime.mypol.result.CheckTagResult;
+import com.lime.mypol.utils.FileUtils;
 import com.lime.mypol.vo.Assemblyman;
 import com.lime.mypol.vo.Bill;
 import com.lime.mypol.vo.CommitteeMeeting;
@@ -16,6 +17,11 @@ import com.lime.mypol.vo.GeneralMeeting;
 import com.lime.mypol.vo.PartyHistory;
 import com.lime.mypol.vo.Vote;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,12 +43,12 @@ public class DatabaseManager {
     /**
      * database name
      */
-    public static String DATABASE_NAME = "wa.db";
+    public static String DATABASE_NAME = "wadb";
 
     /**
      * version
      */
-    public static int DATABASE_VERSION = 6;
+    public static int DATABASE_VERSION = 1;
 
     /**
      * Helper class defined
@@ -431,6 +437,13 @@ public class DatabaseManager {
         return count;
     }
 
+    public boolean initDatabase(File result) {
+        if(mDBHelper.initDatabase(result)){
+            return open();
+        }
+        return false;
+    }
+
     private class DatabaseHelper extends SQLiteOpenHelper {
 
         public DatabaseHelper(Context context) {
@@ -544,6 +557,26 @@ public class DatabaseManager {
             db.execSQL(query);
             onCreate(db);
             Log.d(TAG, "onUpgraded database [" + DATABASE_NAME + "].");
+        }
+
+
+        public String DB_FILEPATH = "/data/data/com.lime.mypol/databases/wadb";
+        public boolean initDatabase(File newDb) {
+            close();
+            File oldDb = new File(DB_FILEPATH);
+            if (newDb.exists()) {
+                try {
+                    FileUtils.copyFile(new FileInputStream(newDb), new FileOutputStream(oldDb));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return false;
+                }
+                // Access the copied database so SQLiteHelper will cache it and mark
+                // it as created.
+                getWritableDatabase().close();
+                return true;
+            }
+            return false;
         }
     }
 }
