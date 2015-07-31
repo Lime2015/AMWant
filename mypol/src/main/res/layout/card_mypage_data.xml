@@ -51,6 +51,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
             android:background="@android:color/transparent"
+            android:focusable="false"
             android:padding="0dp"
             android:scaleType="fitCenter" />
 

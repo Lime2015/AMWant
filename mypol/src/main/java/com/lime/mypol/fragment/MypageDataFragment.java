@@ -67,6 +67,7 @@ public class MypageDataFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(mContext, "클릭 position:" + position, Toast.LENGTH_SHORT).show();
                 int index = position - 1;
                 if (mDownloadList.get(index)) {
                     int tag = mDbTag.getTagList().get(index);
