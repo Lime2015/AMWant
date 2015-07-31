@@ -51,9 +51,6 @@ public class AssemblymenListActivity extends AppCompatActivity {
     private MemberInfo memberInfo;
 
     private RadioGroup mRgroup;
-//    private RecyclerView rv;
-//    private RVAssemblymenListAdapter adapter;
-//    private List<AssemblymanItem> tables;
 
     private PullToRefreshListView rv;
     private AssemblymenListAdapter mAdapter;
