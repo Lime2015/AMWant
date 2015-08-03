@@ -82,6 +82,9 @@ public class MypageDataFragment extends Fragment {
                         } else {
                             Toast.makeText(mContext, DB_INSERT_ERROR + "데이터베이스 초기화 실패", Toast.LENGTH_SHORT).show();
                         }
+
+                        //다운로드 파일 삭제
+                        result.delete();
                     }
 
                     @Override

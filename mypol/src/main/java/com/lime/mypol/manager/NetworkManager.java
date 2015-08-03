@@ -108,7 +108,7 @@ public class NetworkManager {
 
 	}
 
-	final String INIT_DATABASE = "/wadb.sql";
+	final String INIT_DATABASE = "/wadb.sqlite";
 	public void requestInitDatabase(final OnNetResultListener<File> listener){
 
 		Log.d(TAG, "requestInitDatabase start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
@@ -119,7 +119,7 @@ public class NetworkManager {
 		client.post(url, new AsyncHttpResponseHandler() {
 			@Override
 			public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-				File result=new File(Environment.getExternalStorageDirectory(), "wadb.sql");
+				File result=new File(Environment.getExternalStorageDirectory(), "wadb.sqlite");
 
 				if (result.exists()) {
 					result.delete();

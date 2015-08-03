@@ -438,7 +438,7 @@ public class DatabaseManager {
     }
 
     public boolean initDatabase(File result) {
-        if(mDBHelper.initDatabase(result)){
+        if (mDBHelper.initDatabase(mDB, result)) {
             return open();
         }
         return false;
@@ -452,84 +452,84 @@ public class DatabaseManager {
 
         @Override
         public void onCreate(SQLiteDatabase db) {
-            String query;
-            query = "CREATE TABLE member_info(" +
-                    "member_id VARCHAR(45)," +
-                    "logon_type_id int," +
-                    "member_nickname VARCHAR(45)," +
-                    "address VARCHAR(100)," +
-                    "birth_date DATE, gender CHAR(1)," +
-                    "CONSTRAINT tab_pk PRIMARY KEY (member_id, logon_type_id));";
-            db.execSQL(query);
-            query = "create table assemblyman(" +
-                    "assemblyman_id VARCHAR(30) NOT NULL primary key," +
-                    "assemblyman_name VARCHAR(30) NOT NULL," +
-                    "update_tag INT(10) NOT NULL," +
-                    "image_url VARCHAR(60)," +
-                    "org_image_url VARCHAR(60)," +
-                    "mod_dttm VARCHAR(60)," +
-                    "party_id INT(10)," +
-                    "party_name VARCHAR(60)," +
-                    "local_constituency VARCHAR(60));";
-            db.execSQL(query);
-            query = "create table bill(" +
-                    "assemblyman_id INT(10) NOT NULL," +
-                    "update_tag INT(10) NOT NULL," +
-                    "bill_seq INT(10)," +
-                    "bill_no VARCHAR(60) NOT NULL primary key," +
-                    "bill_status VARCHAR(60)," +
-                    "bill_title VARCHAR(300)," +
-                    "proposer_info VARCHAR(60)," +
-                    "bill_class VARCHAR(60)," +
-                    "receive_date VARCHAR(60)," +
-                    "refer_date VARCHAR(60)," +
-                    "bill_date3 VARCHAR(60)," +
-                    "committee_name VARCHAR(60)," +
-                    "committee_id INT(10)," +
-                    "committee_class INT(10)," +
-                    "bill_result VARCHAR(60)," +
-                    "bill_target_url VARCHAR(300));";
-            db.execSQL(query);
-            query = "create table committee_meeting(" +
-                    "assemblyman_id INT(10) NOT NULL, " +
-                    "update_tag INT(10) NOT NULL," +
-                    "meeting_id INT(10)," +
-                    "meeting_name VARCHAR(100) NOT NULL," +
-                    "meeting_order VARCHAR(60) NOT NULL," +
-                    "meeting_date VARCHAR(60)," +
-                    "attend_status VARCHAR(60)," +
-                    "CONSTRAINT tab_pk PRIMARY KEY (assemblyman_id, meeting_name, meeting_order));";
-            db.execSQL(query);
-            query = "create table general_meeting(" +
-                    "assemblyman_id INT(10) NOT NULL," +
-                    "update_tag INT(10) NOT NULL, " +
-                    "meeting_id INT(10) NOT NULL," +
-                    "meeting_order VARCHAR(60)," +
-                    "meeting_dttm VARCHAR(60)," +
-                    "attend_status VARCHAR(60)," +
-                    "CONSTRAINT tab_pk PRIMARY KEY (assemblyman_id, meeting_id));";
-            db.execSQL(query);
-            query = "create table party_history(" +
-                    "update_tag INT(10) NOT NULL," +
-                    "member_seq INT(10) NOT NULL," +
-                    "party_name VARCHAR(60) NOT NULL," +
-                    "in_date VARCHAR(60) NOT NULL," +
-                    "out_date VARCHAR(60)," +
-                    "note VARCHAR(60)," +
-                    "CONSTRAINT tab_pk PRIMARY KEY (party_name, member_seq, in_date));";
-            db.execSQL(query);
-            query = "create table vote(" +
-                    "assemblyman_id INT(10) NOT NULL, " +
-                    "update_tag INT(10) NOT NULL," +
-                    "bill_name VARCHAR(300)," +
-                    "bill_no INT(10) NOT NULL," +
-                    "vote_dttm VARCHAR(60)," +
-                    "bill_target_url VARCHAR(300)," +
-                    "result VARCHAR(60)," +
-                    "assemblyman_vote VARCHAR(60)," +
-                    "CONSTRAINT tab_pk PRIMARY KEY (assemblyman_id, bill_no));";
-            db.execSQL(query);
-            Log.d(TAG, "onCreated database [" + DATABASE_NAME + "].");
+//            String query;
+//            query = "CREATE TABLE member_info(" +
+//                    "member_id VARCHAR(45)," +
+//                    "logon_type_id int," +
+//                    "member_nickname VARCHAR(45)," +
+//                    "address VARCHAR(100)," +
+//                    "birth_date DATE, gender CHAR(1)," +
+//                    "CONSTRAINT tab_pk PRIMARY KEY (member_id, logon_type_id));";
+//            db.execSQL(query);
+//            query = "create table assemblyman(" +
+//                    "assemblyman_id VARCHAR(30) NOT NULL primary key," +
+//                    "assemblyman_name VARCHAR(30) NOT NULL," +
+//                    "update_tag INT(10) NOT NULL," +
+//                    "image_url VARCHAR(60)," +
+//                    "org_image_url VARCHAR(60)," +
+//                    "mod_dttm VARCHAR(60)," +
+//                    "party_id INT(10)," +
+//                    "party_name VARCHAR(60)," +
+//                    "local_constituency VARCHAR(60));";
+//            db.execSQL(query);
+//            query = "create table bill(" +
+//                    "assemblyman_id INT(10) NOT NULL," +
+//                    "update_tag INT(10) NOT NULL," +
+//                    "bill_seq INT(10)," +
+//                    "bill_no VARCHAR(60) NOT NULL primary key," +
+//                    "bill_status VARCHAR(60)," +
+//                    "bill_title VARCHAR(300)," +
+//                    "proposer_info VARCHAR(60)," +
+//                    "bill_class VARCHAR(60)," +
+//                    "receive_date VARCHAR(60)," +
+//                    "refer_date VARCHAR(60)," +
+//                    "bill_date3 VARCHAR(60)," +
+//                    "committee_name VARCHAR(60)," +
+//                    "committee_id INT(10)," +
+//                    "committee_class INT(10)," +
+//                    "bill_result VARCHAR(60)," +
+//                    "bill_target_url VARCHAR(300));";
+//            db.execSQL(query);
+//            query = "create table committee_meeting(" +
+//                    "assemblyman_id INT(10) NOT NULL, " +
+//                    "update_tag INT(10) NOT NULL," +
+//                    "meeting_id INT(10)," +
+//                    "meeting_name VARCHAR(100) NOT NULL," +
+//                    "meeting_order VARCHAR(60) NOT NULL," +
+//                    "meeting_date VARCHAR(60)," +
+//                    "attend_status VARCHAR(60)," +
+//                    "CONSTRAINT tab_pk PRIMARY KEY (assemblyman_id, meeting_name, meeting_order));";
+//            db.execSQL(query);
+//            query = "create table general_meeting(" +
+//                    "assemblyman_id INT(10) NOT NULL," +
+//                    "update_tag INT(10) NOT NULL, " +
+//                    "meeting_id INT(10) NOT NULL," +
+//                    "meeting_order VARCHAR(60)," +
+//                    "meeting_dttm VARCHAR(60)," +
+//                    "attend_status VARCHAR(60)," +
+//                    "CONSTRAINT tab_pk PRIMARY KEY (assemblyman_id, meeting_id));";
+//            db.execSQL(query);
+//            query = "create table party_history(" +
+//                    "update_tag INT(10) NOT NULL," +
+//                    "member_seq INT(10) NOT NULL," +
+//                    "party_name VARCHAR(60) NOT NULL," +
+//                    "in_date VARCHAR(60) NOT NULL," +
+//                    "out_date VARCHAR(60)," +
+//                    "note VARCHAR(60)," +
+//                    "CONSTRAINT tab_pk PRIMARY KEY (party_name, member_seq, in_date));";
+//            db.execSQL(query);
+//            query = "create table vote(" +
+//                    "assemblyman_id INT(10) NOT NULL, " +
+//                    "update_tag INT(10) NOT NULL," +
+//                    "bill_name VARCHAR(300)," +
+//                    "bill_no INT(10) NOT NULL," +
+//                    "vote_dttm VARCHAR(60)," +
+//                    "bill_target_url VARCHAR(300)," +
+//                    "result VARCHAR(60)," +
+//                    "assemblyman_vote VARCHAR(60)," +
+//                    "CONSTRAINT tab_pk PRIMARY KEY (assemblyman_id, bill_no));";
+//            db.execSQL(query);
+//            Log.d(TAG, "onCreated database [" + DATABASE_NAME + "].");
         }
 
         @Override
@@ -540,6 +540,12 @@ public class DatabaseManager {
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+            dropTables(db);
+            onCreate(db);
+            Log.d(TAG, "onUpgraded database [" + DATABASE_NAME + "].");
+        }
+
+        private void dropTables(SQLiteDatabase db) {
             String query;
             query = "DROP TABLE IF EXISTS member_info;";
             db.execSQL(query);
@@ -555,25 +561,26 @@ public class DatabaseManager {
             db.execSQL(query);
             query = "DROP TABLE IF EXISTS vote;";
             db.execSQL(query);
-            onCreate(db);
-            Log.d(TAG, "onUpgraded database [" + DATABASE_NAME + "].");
         }
 
-
         public String DB_FILEPATH = "/data/data/com.lime.mypol/databases/wadb";
-        public boolean initDatabase(File newDb) {
+        public boolean initDatabase(SQLiteDatabase db, File newDb) {
+            dropTables(db);
             close();
             File oldDb = new File(DB_FILEPATH);
             if (newDb.exists()) {
                 try {
                     FileUtils.copyFile(new FileInputStream(newDb), new FileOutputStream(oldDb));
+                    getWritableDatabase().close();
                 } catch (IOException e) {
+                    e.printStackTrace();
+                    return false;
+                } catch (Exception e) {
                     e.printStackTrace();
                     return false;
                 }
                 // Access the copied database so SQLiteHelper will cache it and mark
                 // it as created.
-                getWritableDatabase().close();
                 return true;
             }
             return false;
